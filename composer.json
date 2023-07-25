@@ -1,6 +1,7 @@
 {
     "require-dev": {
         "laravel/breeze": "^1.21",
-        "askdkc/breezejp": "^1.7"
+        "askdkc/breezejp": "^1.7",
+        "laravel-lang/lang": "^12.24"
     }
 }
