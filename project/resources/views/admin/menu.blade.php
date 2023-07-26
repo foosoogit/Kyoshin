@@ -8,13 +8,14 @@
 	<link rel="stylesheet" href="css/style.css">	
 	<link rel="stylesheet" href="{{ asset('/css/menu.css')  }}" >
 </head>
+<body>
 <div id="container">
 	<div id="main">
 		<ul class="sidenav">
 			<li><a class="active" href="#standby">待ち受け</a></li>
 			<li><a href="#history">入退出履歴</a></li>
 			<li><a href="#mail">メール</a></li>
-			<li><a href="#RegistStudent">生徒登録</a></li>
+			<li><a href="{{ route('StudentsList') }}">生徒一覧（追加・削除）</a></li>
 			<li><a href="#RegistTeacher">講師登録</a></li>
 		</ul>
 	</div>

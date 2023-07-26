@@ -33,7 +33,6 @@ return new class extends Migration
 			$table->string('address_locality')->nullable();
 			$table->string('address_banti')->nullable();
             $table->string('rank',10)->comment('管理者ランク');
-
             $table->rememberToken();
             $table->timestamps();
         });
