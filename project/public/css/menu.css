@@ -46,3 +46,11 @@ div.content {
 		float: none;
 	}
 }
+#container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4%;
+}
+#main {
+    width: 100%;
+}

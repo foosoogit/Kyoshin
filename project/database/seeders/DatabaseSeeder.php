@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +25,18 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
-        $init_users = [
+		/*
+		$faker = \Faker\Factory::create('ja_JP');
+		for ($i = 0; $i < 10; $i++) {
+			Student::create([
+				 'serial_student' => $faker->text(40),
+				 'email' => $faker->text(),
+				 'name_sei' => $user1->id
+			]);
+	   }
+	   */
+        /*
+		$init_users = [
 			[
 			'serial_user'=> "T_0000",
 			'email' => "foosoo200@gmail.com",
@@ -59,7 +70,6 @@ class DatabaseSeeder extends Seeder
 			
 			$user->save();
 		}
-
-
+		*/
     }
 }
