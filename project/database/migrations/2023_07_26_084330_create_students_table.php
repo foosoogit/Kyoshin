@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
             $table->string('serial_student')->unique()->comment('生徒番号');
             $table->string('email')->unique()->comment('メールアドレス（複数の場合はカンマでつなげる）');
             $table->string('name_sei',100)->comment('姓');

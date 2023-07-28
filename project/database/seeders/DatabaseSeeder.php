@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\configration;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -26,10 +27,29 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 		
+		/*
+		$configrations = [
+			[
+			'subject'=> "DdisplayLineNumStudentsList",
+			'value1' => "15",
+			'setumei' => "生徒リストの表示行数",
+            ]
+        ];
+		foreach($configrations as $configration) {
+			$conf = new configration();
+			$conf->subject=$configration['subject'];
+            $conf->value1 = $configration['value1'];
+			$conf->setumei = $configration['setumei'];
+			$conf->save();
+		}
+		*/
+
+
+		/*
 		$init_students = [
 			[
 			'serial_student'=> "S_00000",
-			'email' => "foosoo200@gmail.com",
+			'email' => "awa@szemi-gp.com",
 			'name_sei' => "鈴木",
 			'name_mei' => "文彦",
 			'name_sei_kana' => "スズキ",
@@ -58,8 +78,11 @@ class DatabaseSeeder extends Seeder
 			
 			$student->save();
 		}
+		*/
+
+		Student::factory()->count(50)->create();
 		/*
-		$faker = \Faker\Factory::create('ja_JP');
+		$faker = \Faker\Factory::create();
 		for ($i = 0; $i < 10; $i++) {
 			Student::create([
 				 'serial_student' => $faker->text(40),
@@ -68,16 +91,16 @@ class DatabaseSeeder extends Seeder
 			]);
 	   }
 	   */
-        /*
+		/*
 		$init_users = [
 			[
 			'serial_user'=> "T_0000",
 			'email' => "foosoo200@gmail.com",
 			'password' => "0000",
-			'last_name_kanji' => "鈴木",
-			'first_name_kanji' => "文彦",
-			'last_name_jp_kana' => "スズキ",
-			'first_name_jp_kana' => "フミヒコ",
+			'last_name_kanji' => "松浦",
+			'first_name_kanji' => "重雅",
+			'last_name_jp_kana' => "マツウラ",
+			'first_name_jp_kana' => "シゲマサ",
 			'rank' => "A",
 			//'last_name_eng'=> "Suzuki",
 			//'first_name_eng'=> "Fumihiko",
@@ -85,7 +108,6 @@ class DatabaseSeeder extends Seeder
 			//'address'=> "千葉県************",
             ]
         ];
-
         foreach($init_users as $init_user) {
 			$user = new User();
 			$user->serial_user=$init_user['serial_user'];

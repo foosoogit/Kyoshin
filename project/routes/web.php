@@ -24,22 +24,30 @@ Route::get('/dashboard', function () {
     return view('admin.menu');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+//Route::get('students/create', 'create')->name('student.create');
+//Route::middleware('auth')->group(function () {
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('students/list', function () {
+        return view('admin.ListStudents');
+    })->name('StudentsList');
     //Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     //Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::controller(StudentController::class)->prefix('students')->name('students')->group(function() {
+    //Route::controller(StudentController::class)->prefix('students')->name('students')->group(function() {
+        /*
         Route::get('students/list', function () {
             return view('admin.ListStudents');
         })->name('StudentsList');
-
-        Route::get('students/create', 'create')->name('create');
-        Route::post('students/create', 'store')->name('store');
-        Route::get('students/{student}', 'show')->name('show');
-        Route::get('students/{student}/edit', 'edit')->name('edit');
-        Route::put('students/{student}', 'update')->name('update');
-        Route::delete('students/{post}', 'destroy')->name('destroy');
-   });
+        */
+        /*
+        Route::get('students/create', 'create')->name('student.create');
+        Route::post('students/create', 'store')->name('student.store');
+        Route::get('students/{student}', 'show')->name('student.show');
+        Route::get('students/{student}/edit', 'edit')->name('student.edit');
+        Route::put('students/{student}', 'update')->name('student.update');
+        Route::delete('students/{post}', 'destroy')->name('student.destroy');
+        */
+   //});
 });
 
 require __DIR__.'/auth.php';

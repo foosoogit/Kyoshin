@@ -6,7 +6,7 @@
 	<title>入退出メニュー</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">	
-	<link rel="stylesheet" href="{{ asset('/css/menu.css')  }}" >
+	<link rel="stylesheet" href="{{ asset('/css/studentsList.css')  }}" >
     @livewireStyles
 </head>
 <body>

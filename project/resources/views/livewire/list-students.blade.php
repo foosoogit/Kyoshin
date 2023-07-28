@@ -9,9 +9,9 @@
             <div class="mb-4 font-medium text-sm text-green-600">削除が完了しました。</div>
             @endif
             <div class="pb-4">
-                <a href="{{ route('books.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">新規登録</a>
+                {{--  <a href="{{ route('student.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">新規登録</a>--}}
             </div>
-            <table class="w-full">
+            <table id="table_responsive">
                 <tr>
                     <th>生徒番号</th>
                     <th>姓</th>
@@ -32,14 +32,15 @@
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->note }}</td>
                     <td>履歴</td>
-                    <td>
-                        <form method="post" action="{{ route('books.destroy', $book->id) }}">
+                    <td>{{--  
+                        <form method="post" action="{{ route('student.destroy', $book->id) }}">
                             @csrf
                             @method('DELETE')
-                            <a href="{{ route('books.show', $book->id) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">詳細</a>
-                            <a href="{{ route('books.edit', $book->id) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">編集</a>
+                            <a href="{{ route('student.show', $book->id) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">詳細</a>
+                            <a href="{{ route('student.edit', $book->id) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">編集</a>
                             <button type="submit" onClick="return clickDelete()" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md">削除</button>
                         </form>
+                        --}}
                     </td>
                 </tr>
                 @endforeach
