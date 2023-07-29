@@ -9,15 +9,22 @@
             <div class="mb-4 font-medium text-sm text-green-600">削除が完了しました。</div>
             @endif
             <div class="pb-4">
-                {{--  <a href="{{ route('student.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">新規登録</a>--}}
+                <a href="{{ route('student.create') }}" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">新規登録</a>
+                <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" required autofocus /><a href="{{ route('student.create') }}" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">検索</a>
+                {{--<a href="{{ route('student.create') }}" >新規登録</a> --}}
             </div>
             <table id="table_responsive">
                 <tr>
-                    <th>生徒番号</th>
-                    <th>姓</th>
-                    <th>名</th>
-                    <th>学年</th>
-                    <th>メールアドレス</th>
+                    <th>生徒番号<br><button type="button" class="btn-orderby-border" wire:click="sort('serial_student-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('serial_student-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
+                    <th>姓<br><button type="button" class="btn-orderby-border" wire:click="sort('name_sei-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('name_sei-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
+                    <th>名<br><button type="button" class="btn-orderby-border" wire:click="sort('name_mei-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('name_mei-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
+                    <th>学年<br><button type="button" class="btn-orderby-border" wire:click="sort('grade-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('grade-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
+                    <th>メールアドレス<br><button type="button" class="btn-orderby-border" wire:click="sort('email-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('email-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>電話</th>
                     <th>メモ</th>
                     <th>履歴</th>
@@ -45,5 +52,6 @@
                 </tr>
                 @endforeach
             </table>
+            {{$students->appends(request()->query())->links('pagination::bootstrap-4')}}
         </div>
 </div>

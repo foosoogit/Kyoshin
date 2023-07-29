@@ -29,7 +29,13 @@ Route::get('/dashboard', function () {
 Route::group(['middleware' => ['auth']], function(){
     Route::get('students/list', function () {
         return view('admin.ListStudents');
-    })->name('StudentsList');
+        //return view('livewire.list-students');
+    })->name('Students.List');
+
+    Route::get('students/create', function () {
+        return view('admin.CreateStudent');
+    })->name('student.create');
+
     //Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     //Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -15,7 +15,7 @@
 			<li><a class="active" href="#standby">待ち受け</a></li>
 			<li><a href="#history">入退出履歴</a></li>
 			<li><a href="#mail">メール</a></li>
-			<li><a href="{{ route('StudentsList') }}">生徒一覧（追加・削除）</a></li>
+			<li><a href="{{ route('Students.List') }}">生徒一覧（追加・削除）</a></li>
 			<li><a href="#RegistTeacher">講師登録</a></li>
 		</ul>
 	</div>

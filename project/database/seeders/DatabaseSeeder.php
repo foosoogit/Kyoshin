@@ -27,8 +27,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 		
-		/*
-		$configrations = [
+			$configrations = [
 			[
 			'subject'=> "DdisplayLineNumStudentsList",
 			'value1' => "15",
@@ -42,8 +41,6 @@ class DatabaseSeeder extends Seeder
 			$conf->setumei = $configration['setumei'];
 			$conf->save();
 		}
-		*/
-
 
 		/*
 		$init_students = [
@@ -91,8 +88,8 @@ class DatabaseSeeder extends Seeder
 			]);
 	   }
 	   */
-		/*
-		$init_users = [
+
+	   $init_users = [
 			[
 			'serial_user'=> "T_0000",
 			'email' => "foosoo200@gmail.com",
@@ -125,6 +122,6 @@ class DatabaseSeeder extends Seeder
 			
 			$user->save();
 		}
-		*/
+
     }
 }
