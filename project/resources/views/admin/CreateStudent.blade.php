@@ -12,19 +12,48 @@
                     <form method="post" action="{{ route('books.store') }}" class="mt-6 space-y-6">
                         @csrf
                         <div>
-                            <x-input-label for="title" value="タイトル" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                            <x-input-label for="serial_student" value="生徒番号" />
+                            <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" :value="old('serial_student')" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
                         </div>
                         <div>
-                            <x-input-label for="category" value="カテゴリ" />
-                            <select id="category" name="category" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" required>
+                            <x-input-label for="name_sei" value="姓" />
+                            <x-text-input id="name_sei" name="name_sei" type="text" class="mt-1 block w-full" :value="old('name_sei')" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('name_sei')" />
+                        </div>
+                        <div>
+                            <x-input-label for="name_mei" value="名" />
+                            <x-text-input id="name_mei" name="name_mei" type="text" class="mt-1 block w-full" :value="old('name_mei')" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('name_mei')" />
+                        </div>
+                        <div>
+                            <x-input-label for="name_sei_kana" value="セイ" />
+                            <x-text-input id="name_sei_kana" name="name_sei_kana" type="text" class="mt-1 block w-full" :value="old('name_sei_kana')" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('name_sei_kana')" />
+                        </div>
+                        <div>
+                            <x-input-label for="name_mei_kana" value="名" />
+                            <x-text-input id="name_mei_kana" name="name_mei_kana" type="text" class="mt-1 block w-full" :value="old('name_mei_kana')" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
+                        </div>
+                        <div>
+                            <x-input-label for="phone" value="名" />
+                            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone')" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+                        </div>
+                        <div>
+                            <x-input-label for="grade" value="学年" />
+                            <select id="grade" name="grade" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" required>
                                 <option value="" disabled selected style="display:none;"></option>
-                                <option value="{{ BookCategoryType::NOVEL }}" @if(old('category')==BookCategoryType::NOVEL) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::NOVEL) }}</option>
-                                <option value="{{ BookCategoryType::SPORTS }}" @if(old('category')==BookCategoryType::SPORTS) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::SPORTS) }}</option>
-                                <option value="{{ BookCategoryType::PROGRAMMING }}" @if(old('category')==BookCategoryType::PROGRAMMING) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::PROGRAMMING) }}</option>
-                                <option value="{{ BookCategoryType::BUSINESS }}" @if(old('category')==BookCategoryType::BUSINESS) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::BUSINESS) }}</option>
-                                <option value="{{ BookCategoryType::OTHER }}" @if(old('category')==BookCategoryType::OTHER) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::OTHER) }}</option>
+                                <option value="{{ BookCategoryType::小学1年 }}" @if(old('category')==BookCategoryType::NOVEL) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::NOVEL) }}</option>
+                                <option value="{{ BookCategoryType::小学2年 }}" @if(old('category')==BookCategoryType::SPORTS) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::SPORTS) }}</option>
+                                <option value="{{ BookCategoryType::小学3年 }}" @if(old('category')==BookCategoryType::PROGRAMMING) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::PROGRAMMING) }}</option>
+                                <option value="{{ BookCategoryType::小学4年 }}" @if(old('category')==BookCategoryType::BUSINESS) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::BUSINESS) }}</option>
+                                <option value="{{ BookCategoryType::小学5年 }}" @if(old('category')==BookCategoryType::OTHER) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::OTHER) }}</option>
+                                <option value="{{ BookCategoryType::小学6年 }}" @if(old('category')==BookCategoryType::OTHER) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::OTHER) }}</option>
+                                <option value="{{ BookCategoryType::中学1年 }}" @if(old('category')==BookCategoryType::OTHER) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::OTHER) }}</option>
+                                <option value="{{ BookCategoryType::中学2年 }}" @if(old('category')==BookCategoryType::OTHER) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::OTHER) }}</option>
+                                <option value="{{ BookCategoryType::中学3年 }}" @if(old('category')==BookCategoryType::OTHER) selected @endif>{{ BookCategoryType::getDescription(BookCategoryType::OTHER) }}</option>
                             </select>
                             <x-input-error class="mt-2" :messages="$errors->get('category')" />
                         </div>

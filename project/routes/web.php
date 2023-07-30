@@ -30,6 +30,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('students/list', function () {
         return view('admin.ListStudents');
         //return view('livewire.list-students');
+    });
+
+    Route::post('students/list', function () {
+        return view('admin.ListStudents');
+        //return view('livewire.list-students');
     })->name('Students.List');
 
     Route::get('students/create', function () {

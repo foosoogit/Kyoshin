@@ -73,7 +73,8 @@ class ListStudents extends Component
                     ->orwhere('name_sei_kana','like',self::$key)
                     ->orwhere('name_mei_kana','like',self::$key)
                     ->orwhere('grade','like',self::$key)
-                    ->orwhere('email',self::$key);
+                    ->orwhere('phone','like',self::$key)
+                    ->orwhere('email','like',self::$key);
     
         $targetSortKey="";
         if(session('sort_key')<>""){
@@ -81,7 +82,13 @@ class ListStudents extends Component
         }else{
             $targetSortKey=$this->sort_key_p;
         }
-    
+        /*
+        if($this->asc_desc_p=="ASC"){
+            $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'asc');
+        }else{
+            $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'desc');
+        }
+        */
         if($this->sort_key_p<>''){
             if($this->sort_key_p=="name_sei"){
                 if($this->asc_desc_p=="ASC"){
@@ -107,13 +114,14 @@ class ListStudents extends Component
                 }
             }
         }
-    
+
         if(session('target_page_for_pager')!==null){
             $targetPage=session('target_page_for_pager');
             session(['target_page_for_pager'=>null]);
         }else{
             $targetPage=null;
         }
+        if(self::$key=="%%"){$targetPage=null;}
         //dd($StudentQuery->toSql(), $StudentQuery->getBindings());
         //dd($StudentQuery->dump());
         //print "sort_key=".session('sort_key');
