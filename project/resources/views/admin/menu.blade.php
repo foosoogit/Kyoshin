@@ -16,7 +16,7 @@
 			<li><a href="#history">入退出履歴</a></li>
 			<li><a href="#mail">メール</a></li>
 			<li><a href="{{ route('Students.List') }}">生徒一覧（追加・削除）</a></li>
-			<li><a href="#RegistTeacher">新規生徒登録</a></li>
+			<li><a href="{{ route('Students.Create') }}">新規生徒登録</a></li>
 			<li><a href="#RegistTeacher">講師登録・追加・削除</a></li>
 		</ul>
 	</div>

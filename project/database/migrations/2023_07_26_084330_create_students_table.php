@@ -23,6 +23,7 @@ return new class extends Migration
 			$table->string('name_mei',100)->comment('名');
 			$table->string('name_sei_kana',100)->comment('セイ');
 			$table->string('name_mei_kana',100)->comment('メイ');
+            $table->string('protector',100)->comment('保護者');
 			$table->string('gender',10)->nullable();
 			$table->string('birth_year',10)->nullable();
 			$table->string('birth_month',10)->nullable();

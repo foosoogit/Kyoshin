@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Student;
 
 class OtherFunc extends Controller
 {
@@ -19,5 +20,11 @@ class OtherFunc extends Controller
 			$_SESSION['access_history']=array();
 			$_SESSION['access_history'][]=$REFERER;
 		}
+	}
+
+	public static function get_student_new_serial(){
+		$max_serial=Student::max('serial_student');
+		$new_serial=$max_serial++;
+		return $new_serial;
 	}
 }
