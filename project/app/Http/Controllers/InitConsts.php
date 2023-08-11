@@ -14,21 +14,9 @@ class InitConsts extends Controller
         return $inits_array->value1;
     }
 
-    public static function Grade(){
-        $GradeArray=array();
-        $GradeArray['el1']='小1';
-        $GradeArray['el2']='小2';
-        $GradeArray['el3']='小3';
-        $GradeArray['el4']='小4';
-        $GradeArray['el5']='小5';
-        $GradeArray['el6']='小6';
-        $GradeArray['jh1']='中1';
-        $GradeArray['jh2']='中2';
-        $GradeArray['jh3']='中3';
-        $GradeArray['jh1']='中1';
-        $GradeArray['hs1']='高1';
-        $GradeArray['hs2']='高2';
-        $GradeArray['hs3']='高3';
-        return $GradeArray;
+    public static function GradeArray(){
+        $Tgrade=configration::where('subject','=','Grade')->first();
+        $grade_array=explode(",", $Tgrade->value1);
+        return $grade_array;
     }
 }

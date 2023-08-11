@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InitConsts;
+use App\Models\Student;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,10 @@ Route::get('/dashboard', function () {
 //Route::get('students/create', 'create')->name('student.create');
 //Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function(){
+    Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
+    //Route::get('students/test', [\App\Http\Controllers\StudentController::class,'test'])->name('student.test');
+    //Route::put('students/{student}', 'update')->name('student.update');
+    
     Route::get('students/list', function () {
         return view('admin.ListStudents');
         //return view('livewire.list-students');
@@ -37,6 +42,24 @@ Route::group(['middleware' => ['auth']], function(){
         return view('admin.ListStudents');
         //return view('livewire.list-students');
     })->name('Students.List');
+    
+    Route::get('students/list_ck_store', function () {
+        session(['serchKey' =>""]);
+        session(['sort_key' =>"serial_student"]);
+        session(['asc_desc' =>'desc']);
+        return view('admin.ListStudents');
+        //return view('livewire.list-students');
+    })->name('Students.list_ck_store');
+
+    Route::get('students/list_ck_modify/{stud_seraial}', [\App\Http\Controllers\StudentController::class,'ShowStudentModifyList'])->name('Students.list_ck_modify');
+
+    Route::post('students/list_ck_store', function () {
+        session(['serchKey' =>""]);
+        session(['sort_key' =>"serial_student"]);
+        session(['asc_desc' =>'desc']);
+        return view('admin.ListStudents');
+        //return view('livewire.list-students');
+    })->name('Students.list_ck_store');
 
     /*
     Route::get('students/create', function () {
@@ -49,13 +72,20 @@ Route::group(['middleware' => ['auth']], function(){
         return view('admin.CreateStudent');
     })->name('students.store');
 
+    //Route::get('students/{student}/edit', 'edit')->name('student.edit');
+    Route::post('students/ShowInputStudent', [\App\Http\Controllers\StudentController::class,'ShowInputStudent'])->name('ShowInputStudent.Modify');
+    
     Route::get('students/create', [\App\Http\Controllers\StudentController::class,'show_inp_store'])->name('Students.Create');
 
-    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     //Route::post('students/create', 'store')->name('student.store');
+    
     Route::post('students', [\App\Http\Controllers\StudentController::class,'store'])->name('student');
     Route::post('students/store', [\App\Http\Controllers\StudentController::class,'store'])->name('student.store');
+    //Route::post('students/update', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
+    //Route::post('students/{student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
+    
+    //Route::put('students/{student}', 'update')->name('student.update');
     //Route::post('admin', 'store')->name('student.store');
     //Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

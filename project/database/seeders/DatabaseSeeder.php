@@ -32,7 +32,12 @@ class DatabaseSeeder extends Seeder
 			'subject'=> "DdisplayLineNumStudentsList",
 			'value1' => "15",
 			'setumei' => "生徒リストの表示行数",
-            ]
+            ],
+			[
+				'subject'=> "Grade",
+				'value1' => "小1,小2,小3,小4,小5,小6,中1,中2,中3,高1,高2,高3",
+				'setumei' => "学年",
+			]
         ];
 		foreach($configrations as $configration) {
 			$conf = new configration();
@@ -78,16 +83,7 @@ class DatabaseSeeder extends Seeder
 		*/
 
 		Student::factory()->count(50)->create();
-		/*
-		$faker = \Faker\Factory::create();
-		for ($i = 0; $i < 10; $i++) {
-			Student::create([
-				 'serial_student' => $faker->text(40),
-				 'email' => $faker->text(),
-				 'name_sei' => $user1->id
-			]);
-	   }
-	   */
+
 
 	   $init_users = [
 			[
@@ -115,11 +111,6 @@ class DatabaseSeeder extends Seeder
 			$user->name_sei_kana = $init_user['last_name_jp_kana'];
 			$user->name_mei_kana = $init_user['first_name_jp_kana'];
 			$user->rank = $init_user['rank'];
-			//$user->rank = $init_user['last_name_eng'];
-				
-			//$user->phone = $init_user['phone'];
-			//$user->address = $init_user['address'];
-			
 			$user->save();
 		}
 

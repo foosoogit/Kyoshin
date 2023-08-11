@@ -11,60 +11,56 @@ use App\Http\Requests\StoreStudentRequest;
 
 class StudentController extends Controller
 {
+    public function ShowStudentModifyList($stud_seraial){
+		session(['serchKey' =>$stud_seraial]);
+        $target_key=$stud_seraial;
+        return view('admin.ListStudents',compact("target_key"));
+	}
+    public function ShowInputStudent(Request $request){
+		session(['fromPage' => 'InputStudent']);
+		$stud_inf=Student::where('serial_student','=',$request->StudentSerial_Btn)->first();
+        $html_grade_slct=OtherFunc::make_html_grade_slct($stud_inf->grade);
+        $student_serial=$stud_inf->serial_student;
+        $mnge='modify';
+        return view('admin.CreateStudent',compact("stud_inf","html_grade_slct","student_serial","mnge"));
+	}
+    
     public function store(StoreStudentRequest $request)
     {
-        /*
-        $request->validate([
-            'title' => 'required|string',
-            'category' => 'required|integer|digits_between:1,2',
-            'author' => 'nullable|string',
-            'purchase_date' => 'nullable|date|before_or_equal:today',
-            'evaluation' => 'nullable|integer|between:1,5',
-            'memo' => 'nullable|string',
-        ]);
-        */
-        //print "store";
-
-        $request->validate([
-            'email' => 'required|unique:users',
-            //'name_sei' => 'required',
-       ]);
-
-      //print_r($request);
-
-       /*
-      $validator = Validator::make($request->all(), [
-        'email' => 'required|unique:users,email',
-        ]);
-        */
-             //print "validated=".$validator->fails();
-        /*
-        if ($validator->fails()) {
-            //exit;
-            return redirect('/usersregister')
-                ->withInput()
-                ->withErrors($validator);
-            
-        }else{
-            return view('admin.menu');
-        }
-        */
-        /*
-        if ($validated_data->fails()) {
-            /// バリデーション失敗時の処理...
-            exit;
-        }
-        */
         Student::create($request->all());
-        //return view('admin.menu');
-        //return Redirect::route('books.index')->with('status', 'books-stored');
+        //$request->session()->flash('message', '処理が成功しました。');
+        $msg="登録しました。";
+        $mnge='create';
+        return view('admin.menu_after_student_store',compact("msg","mnge"));
     }
 
     public function show_inp_store(Request $request)
     {
-        $students_array=InitConsts::Grade();
+        $targetgrade="";
+        $html_grade_slct=OtherFunc::make_html_grade_slct($targetgrade);
         $student_serial=OtherFunc::get_student_new_serial();
         $student_serial++;
-        return view('admin.CreateStudent',compact("student_serial","students_array"));
+        $stud_inf=Student::where('serial_student','=',"0000")->first();
+        session(['StudentManage' => 'create']);
+        $mnge='create';
+        return view('admin.CreateStudent',compact("stud_inf","student_serial","html_grade_slct","mnge"));
+    }
+
+    public function edit(Student $Student)
+    {
+        session(['StudentManage' => 'modify']);
+        return view('students.CreateStudent', ['Student' => $Student]);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        //print $student;
+        $student = Student::find($id);
+        //$student->update($request->only(['comment']));
+        $student->update($request->all());
+        $msg="修正しました。";
+        $mnge='modify';
+        $serial=$student->serial_student;
+        return view('admin.menu_after_student_store',compact("msg","mnge","serial"));
     }
 }
