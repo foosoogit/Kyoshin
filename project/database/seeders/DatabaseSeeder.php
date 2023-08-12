@@ -27,16 +27,21 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 		
-			$configrations = [
+		$configrations = [
 			[
-			'subject'=> "DdisplayLineNumStudentsList",
-			'value1' => "15",
-			'setumei' => "生徒リストの表示行数",
+				'subject'=> "DdisplayLineNumStudentsList",
+				'value1' => "15",
+				'setumei' => "生徒リストの表示行数",
             ],
 			[
 				'subject'=> "Grade",
 				'value1' => "小1,小2,小3,小4,小5,小6,中1,中2,中3,高1,高2,高3",
 				'setumei' => "学年",
+			],
+			[
+				'subject'=> "Course",
+				'value1' => "学習塾,英会話",
+				'setumei' => "コース",
 			]
         ];
 		foreach($configrations as $configration) {
@@ -47,45 +52,9 @@ class DatabaseSeeder extends Seeder
 			$conf->save();
 		}
 
-		/*
-		$init_students = [
-			[
-			'serial_student'=> "S_00000",
-			'email' => "awa@szemi-gp.com",
-			'name_sei' => "鈴木",
-			'name_mei' => "文彦",
-			'name_sei_kana' => "スズキ",
-			'name_mei_kana' => "フミヒコ",
-			'phone' => "0000-00-0000",
-			'grade'=> "中学3年",
-			//'first_name_eng'=> "Fumihiko",
-			//'phone'=> "000-0000-0000",
-			//'address'=> "千葉県************",
-            ]
-        ];
-		foreach($init_students as $init_student) {
-			$student = new student();
-			$student->serial_student=$init_student['serial_student'];
-            $student->email = $init_student['email'];
-			$student->name_sei = $init_student['name_sei'];
-			$student->name_mei = $init_student['name_mei'];
-			$student->name_sei_kana = $init_student['name_sei_kana'];
-			$student->name_mei_kana = $init_student['name_mei_kana'];
-			$student->phone = $init_student['phone'];
-			$student->grade = $init_student['grade'];
-			//$user->rank = $init_student['last_name_eng'];
-				
-			//$user->phone = $init_student['phone'];
-			//$user->address = $init_student['address'];
-			
-			$student->save();
-		}
-		*/
-
 		Student::factory()->count(50)->create();
 
-
-	   $init_users = [
+		$init_users = [
 			[
 			'serial_user'=> "T_0000",
 			'email' => "foosoo200@gmail.com",

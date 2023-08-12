@@ -79,6 +79,15 @@
                             <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
                         <div>
+                            <x-input-label for="course" value="コース" />
+                            {!!$html_cource_ckbox!!}
+                            {{--                            
+                                <x-input-label><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="学習塾" @if(old('evaluation')=='1') checked @endif> 学習塾</x-input-label>
+                                <x-input-label><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="英会話" @if(old('evaluation')=='2') checked @endif> 英会話</x-input-label>
+                            --}}
+                            <x-input-error class="mt-2" :messages="$errors->get('course')" />
+                        </div>
+                        <div>
                             <x-input-label for="phone" value="電話" />
                             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone',optional($stud_inf)->phone)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('phone')" />

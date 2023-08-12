@@ -8,7 +8,22 @@ use App\Http\Controllers\InitConsts;
 
 class OtherFunc extends Controller
 {
-    public static function set_access_history($REFERER){
+    public static function make_html_course_ckbox($target){
+		//print "targetgrade=".$targetgrade;
+		$target_CourceArray_array=InitConsts::CourceArray();
+		$htm_cource_ckbox='';
+		foreach($target_CourceArray_array as $cource){
+			$cked='';
+			//print "cource=".$cource."<br>";
+			//mb_strstr($cource, $target)!== false;
+			if(mb_strstr( $target,$cource)!== false){$cked='checked="checked"';}
+			$htm_cource_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="'.$cource.'" '.$cked.'>'.$cource.'<label>';
+		}
+        $htm_cource_ckbox.='</select>';
+		return $htm_cource_ckbox;
+	}
+
+	public static function set_access_history($REFERER){
 		//print isset($_SESSION['access_history']);
 		if(isset($_SESSION['access_history'])){
 			if(is_array($_SESSION['access_history'])){
@@ -43,5 +58,4 @@ class OtherFunc extends Controller
         $htm_grade_slct.='</select>';
 		return $htm_grade_slct;
 	}
-
 }

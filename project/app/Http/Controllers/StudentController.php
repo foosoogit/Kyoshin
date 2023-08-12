@@ -11,6 +11,12 @@ use App\Http\Requests\StoreStudentRequest;
 
 class StudentController extends Controller
 {
+    public function destroy($id)
+    {
+        Student::destroy($id);
+        return back();
+    }
+
     public function ShowStudentModifyList($stud_seraial){
 		session(['serchKey' =>$stud_seraial]);
         $target_key=$stud_seraial;
@@ -20,14 +26,31 @@ class StudentController extends Controller
 		session(['fromPage' => 'InputStudent']);
 		$stud_inf=Student::where('serial_student','=',$request->StudentSerial_Btn)->first();
         $html_grade_slct=OtherFunc::make_html_grade_slct($stud_inf->grade);
+        $html_cource_ckbox=OtherFunc::make_html_course_ckbox($stud_inf->course);
         $student_serial=$stud_inf->serial_student;
         $mnge='modify';
-        return view('admin.CreateStudent',compact("stud_inf","html_grade_slct","student_serial","mnge"));
+        return view('admin.CreateStudent',compact("html_cource_ckbox","stud_inf","html_grade_slct","student_serial","mnge"));
 	}
     
     public function store(StoreStudentRequest $request)
     {
-        Student::create($request->all());
+        $course = implode( ",", $request->course );
+
+        Student::create([
+            'serial_student'=>$request->serial_student,
+            'email'=>$request->email,
+            'name_sei'=>$request->name_sei,
+            'name_mei'=>$request->name_mei,
+            'name_sei_kana'=>$request->name_sei_kana,
+            'name_mei_kana'=>$request->name_mei_kana,
+            'protector'=>$request->protector,
+            'gender'=>$request->gender,
+            'phone'=>$request->phone,
+            'grade'=>$request->grade,
+            'note'=>$request->note,
+            'course'=>$course,
+        ]);
+        //Student::create($request->all());
         //$request->session()->flash('message', '処理が成功しました。');
         $msg="登録しました。";
         $mnge='create';
@@ -38,12 +61,14 @@ class StudentController extends Controller
     {
         $targetgrade="";
         $html_grade_slct=OtherFunc::make_html_grade_slct($targetgrade);
+        $TargetCource="";
+        $html_cource_ckbox=OtherFunc::make_html_course_ckbox($TargetCource);
         $student_serial=OtherFunc::get_student_new_serial();
         $student_serial++;
         $stud_inf=Student::where('serial_student','=',"0000")->first();
         session(['StudentManage' => 'create']);
         $mnge='create';
-        return view('admin.CreateStudent',compact("stud_inf","student_serial","html_grade_slct","mnge"));
+        return view('admin.CreateStudent',compact("html_cource_ckbox","stud_inf","student_serial","html_grade_slct","mnge"));
     }
 
     public function edit(Student $Student)

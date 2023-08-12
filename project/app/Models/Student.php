@@ -21,5 +21,6 @@ class Student extends Model
         'phone',
         'grade',
         'note',
+        'course',
     ];
 }

@@ -29,37 +29,35 @@
                         <button type="button" class="btn-orderby-border" wire:click="sort('name_sei_kana-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>学年<br><button type="button" class="btn-orderby-border" wire:click="sort('grade-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
                         <button type="button" class="btn-orderby-border" wire:click="sort('grade-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
+                    <th>コース<br><button type="button" class="btn-orderby-border" wire:click="sort('course-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('course-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>メールアドレス<br><button type="button" class="btn-orderby-border" wire:click="sort('email-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
                         <button type="button" class="btn-orderby-border" wire:click="sort('email-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>電話</th>
                     <th>メモ</th>
                     <th>履歴</th>
+                    <th>削除</th>
                 </tr>
                 @foreach ($students as $student)
                 <tr>
                     <td><form action="{{route('ShowInputStudent.Modify')}}" method="POST">@csrf<input name="StudentSerial_Btn" type="submit" value="{{ $student->serial_student}}"></form>
-                        {{-- 
-                        <a href="{{ route('student.show', {{ $student->serial_student}}) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">詳細</a>
-                        <a href="{{ route('student.edit', {{ $student->serial_student}}) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">編集</a>
-                        <button type="submit" onClick="return clickDelete()" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md">削除</button>
-                        --}}
                     </td>
                     <td>{{ $student->name_sei }} {{ $student->name_mei }}</td>
                     <td>{{ $student->name_sei_kana }} {{ $student->name_mei_kana }}</td>
                     <td>{{ $student->grade }}</td>
+                    <td>{{ $student->course }}</td>
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->note }}</td>
                     <td>履歴</td>
-                    <td>{{--  
-                        <form method="post" action="{{ route('student.destroy', $book->id) }}">
+                    
+                    <td>
+                        {{--<a href="{{route('student.delete', $student->id)}}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">削除</a>--}}
+                        <form method="post" action="{{ route('student.delete', $student->id) }}">
                             @csrf
                             @method('DELETE')
-                            <a href="{{ route('student.show', $book->id) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">詳細</a>
-                            <a href="{{ route('student.edit', $book->id) }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">編集</a>
-                            <button type="submit" onClick="return clickDelete()" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md">削除</button>
+                            <input type="submit" onClick="return clickDelete('{{ $student->name_sei }} {{ $student->name_mei }}')" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md" value="削除">
                         </form>
-                        --}}
                     </td>
                 </tr>
                 @endforeach

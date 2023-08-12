@@ -29,6 +29,18 @@ Route::get('/dashboard', function () {
 //Route::get('students/create', 'create')->name('student.create');
 //Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function(){
+
+    Route::controller(TeachersController::class)->name('teachers.')->group(function() {
+        Route::get('teachers', 'index')->name('index');
+        Route::get('teachers/create', 'create')->name('create');
+        Route::post('teachers', 'store')->name('store');
+        Route::get('teachers/{teacher}', 'show')->name('show');
+        Route::get('teacherss/{teacher}/edit', 'edit')->name('edit');
+        Route::put('teachers/{teacher}', 'update')->name('update');
+        Route::delete('teachers/{teacher}', 'destroy')->name('destroy');
+    });
+
+    Route::delete('students/delete/{id}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
     //Route::get('students/test', [\App\Http\Controllers\StudentController::class,'test'])->name('student.test');
     //Route::put('students/{student}', 'update')->name('student.update');
@@ -42,7 +54,7 @@ Route::group(['middleware' => ['auth']], function(){
         return view('admin.ListStudents');
         //return view('livewire.list-students');
     })->name('Students.List');
-    
+
     Route::get('students/list_ck_store', function () {
         session(['serchKey' =>""]);
         session(['sort_key' =>"serial_student"]);

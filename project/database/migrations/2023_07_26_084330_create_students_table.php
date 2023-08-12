@@ -34,7 +34,7 @@ return new class extends Migration
 			$table->string('address_banti')->nullable();
             $table->string('phone',15)->nullable();
             $table->string('grade',10)->comment('学年');
-            $table->string('subject',10)->nullable()->comment('受講教科');            
+            $table->string('course',50)->nullable()->comment('受講コース');            
             $table->text('note')->nullable()->comment('備考');
         });
     }

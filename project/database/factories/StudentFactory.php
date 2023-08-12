@@ -35,6 +35,7 @@ class StudentFactory extends Factory
             'address_banti'=> $this->faker->streetAddress(),
             'phone'=> $this->faker->phoneNumber(),
             'grade'=> $this->faker->randomElement(['小1', '小2', '小3', '小4', '小5', '小6', '中1', '中2', '中3', '高1', '高2', '高3']),
+            'course'=> $this->faker->randomElement(['英会話', '学習塾','英会話,学習塾']),
         ];
     }
 }

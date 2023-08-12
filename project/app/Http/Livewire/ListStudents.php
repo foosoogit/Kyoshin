@@ -74,6 +74,7 @@ class ListStudents extends Component
                     ->orwhere('name_mei_kana','like',self::$key)
                     ->orwhere('grade','like',self::$key)
                     ->orwhere('phone','like',self::$key)
+                    ->orwhere('course','like',self::$key)
                     ->orwhere('email','like',self::$key);
     
         $targetSortKey="";
