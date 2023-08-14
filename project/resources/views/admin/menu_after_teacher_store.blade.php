@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>入退出メニュー</title>
+	<title>{{$msg}}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">	
 	<link rel="stylesheet" href="{{ asset('/css/menu.css')  }}" >
@@ -11,22 +11,11 @@
 <body>
 <div id="container">
 	<div id="main">
+		{{$msg}}
 		<ul class="sidenav">
-			{{--<li><a href="{{ route('teachers.show_standby_display') }}">待ち受け画面</a></li>--}}
-			<li><a href="{{ route('teachers.show_standby_display') }}">待ち受け画面</a></li>
-			
-			{{--<li><a href="{{ route('teachers.index') }}">待ち受け画面</a></li>--}}
-			<li><a href="#history">入退出履歴</a></li>
-			<li><a href="#mail">メール配信</a></li>
-			
-			<li><a href="{{ route('Students.List') }}">生徒一覧（新規登録・追加・削除）</a></li>
-			<li><a href="{{ route('Students.Create') }}">新規生徒登録</a></li>
-			{{--<li><a href="{{ route('teachers.index') }}">講師登録・追加・削除</a></li>--}}
+			<li><a href="{{ route('dashboard') }}">メニューに戻る</a></li>
+			<li><a href="{{ route('teachers.index') }}">一覧表で確認</a></li>
 		</ul>
-		<form action="{{ route('logout') }}" method="post">
-			@csrf
-			<input type="submit" value="ログアウト">
-		  </form>
 	</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

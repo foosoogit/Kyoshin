@@ -25,7 +25,8 @@ return new class extends Migration
 			$table->string('name_mei',100)->comment('名');
 			$table->string('name_sei_kana',100)->comment('セイ');
 			$table->string('name_mei_kana',100)->comment('メイ');
-			$table->string('gender',10)->nullable();
+            $table->string('gender',10)->nullable();
+            $table->string('phone',20)->nullable();
 			$table->string('birth_year',10)->nullable();
 			$table->string('birth_month',10)->nullable();
 			$table->string('birth_day',10)->nullable();
@@ -34,6 +35,7 @@ return new class extends Migration
 			$table->string('address_locality')->nullable();
 			$table->string('address_banti')->nullable();
             $table->string('rank',10)->comment('管理者ランク');
+            $table->text('note')->nullable()->comment('メモ');
             $table->rememberToken();
             $table->timestamps();
         });

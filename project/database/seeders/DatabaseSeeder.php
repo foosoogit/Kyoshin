@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
 				'subject'=> "Course",
 				'value1' => "学習塾,英会話",
 				'setumei' => "コース",
-			]
+			],
         ];
 		foreach($configrations as $configration) {
 			$conf = new configration();
@@ -63,7 +63,9 @@ class DatabaseSeeder extends Seeder
 			'first_name_kanji' => "重雅",
 			'last_name_jp_kana' => "マツウラ",
 			'first_name_jp_kana' => "シゲマサ",
-			'rank' => "A",
+			'rank' => "学習塾,英会話",
+			'phone'=> "123-4567-8901",
+			'gender' => "男",
 			//'last_name_eng'=> "Suzuki",
 			//'first_name_eng'=> "Fumihiko",
 			//'phone'=> "000-0000-0000",
@@ -80,6 +82,7 @@ class DatabaseSeeder extends Seeder
 			$user->name_sei_kana = $init_user['last_name_jp_kana'];
 			$user->name_mei_kana = $init_user['first_name_jp_kana'];
 			$user->rank = $init_user['rank'];
+			$user->phone = $init_user['phone'];
 			$user->save();
 		}
 

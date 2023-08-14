@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InitConsts;
 use App\Models\Student;
+use App\Http\Controllers\TeachersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,11 @@ use App\Models\Student;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function () {
+    $user = User::first();
+    Mail::send(new ContactMail($user));
+    return view('welcome');
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,11 +41,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('teachers/create', 'create')->name('create');
         Route::post('teachers', 'store')->name('store');
         Route::get('teachers/{teacher}', 'show')->name('show');
-        Route::get('teacherss/{teacher}/edit', 'edit')->name('edit');
+        //Route::get('teachers/{teacher}/edit', 'edit')->name('edit');
+        Route::post('teachers/edit', 'edit')->name('edit');
         Route::put('teachers/{teacher}', 'update')->name('update');
         Route::delete('teachers/{teacher}', 'destroy')->name('destroy');
+        Route::get('teachers/{id}/show_change_password', 'show_change_password')->name('show_change_password');
+        Route::post('teachers/store_password', 'store_password')->name('store_password');
+        //Route::get('teachers/show_standby_display', 'show_standby_display')->name('show_standby_display');
+        Route::get('show_standby_display', function () {
+            return view('admin.StandbyDisplay');
+        })->name('show_standby_display');
+        Route::get('show_standby_display','show_standby_display')->name('show_standby_display');
+        Route::post('teachers','send_mail')->name('sendmail');
     });
-
+    //Route::get('teachers/show_standby_display', [\App\Http\Controllers\TeachersController::class,'show_standby_display'])->name('show_standby_display');
     Route::delete('students/delete/{id}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
     //Route::get('students/test', [\App\Http\Controllers\StudentController::class,'test'])->name('student.test');
@@ -116,6 +131,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('students/{post}', 'destroy')->name('student.destroy');
         */
    //});
+   Route::get('/logout', 'Auth\LoginController@logout');
 });
-
 require __DIR__.'/auth.php';

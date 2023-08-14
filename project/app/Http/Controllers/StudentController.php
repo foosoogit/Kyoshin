@@ -8,9 +8,21 @@ use App\Http\Controllers\InitConsts;
 use App\Http\Controllers\OtherFunc;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
+use App\Mail\ContactMail;
 
 class StudentController extends Controller
 {
+    public function SendInOutMail(Request $request)
+    {
+        $content = Student::where('serial_student','=',$request->StudentSerial)->first();
+        $content = $request->input('content'); 
+        //$user = auth()->user();
+	
+    	Mail::to($user->email)->send(new ContactMail($content));
+	// メール送信後の処理
+	
+    }
+    
     public function destroy($id)
     {
         Student::destroy($id);

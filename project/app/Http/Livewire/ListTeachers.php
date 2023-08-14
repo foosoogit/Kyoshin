@@ -3,11 +3,125 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\User;
+use Livewire\WithPagination;
+use App\Http\Controllers\InitConsts;
+use App\Http\Controllers\OtherFunc;
 
 class ListTeachers extends Component
 {
+    use WithPagination;
+    public $sort_key_p = '',$asc_desc_p="",$serch_key_p="";
+	public $kensakukey="";
+    public static $key="";
+
+    public function searchClear(){
+		$this->serch_key_p="";
+		$this->kensakukey="";
+		session(['serchKey' => '']);
+	}
+
+    public function search_from_top_menu(Request $request){
+		$this->serch_key_p=$request->input('user_serial');
+		session(['serchKey' => $request->input('user_serial')]);
+	}
+
+    public function search(){
+		$this->serch_key_p=$this->kensakukey;
+		session(['serchKey' => $this->kensakukey]);
+	}
+
+    public function sort($sort_key){
+		$sort_key_array=array();
+		$sort_key_array=explode("-", $sort_key);
+		session(['sort_key' =>$sort_key_array[0]]);
+		session(['asc_desc' =>$sort_key_array[1]]);
+        //print "sort_key1=".session('sort_key');
+	}
+
     public function render()
     {
-        return view('livewire.list-teachers');
+        if(isset($_SERVER['HTTP_REFERER'])){
+            OtherFunc::set_access_history($_SERVER['HTTP_REFERER']);
+        }
+        
+        if(!isset($sort_key_p) and session('sort_key')==null){
+            session(['sort_key' =>'']);
+        }
+        $this->sort_key_p=session('sort_key');
+    
+        if(!isset($asc_desc_p) and session('asc_desc')==null){
+            session(['asc_desc' =>'ASC']);
+        }
+        $this->asc_desc_p=session('asc_desc');
+    
+        $TeacherQuery = User::query();
+        $from_place="";$target_day="";$backdayly=false;
+    
+        if(isset($_POST['btn_serial'])){
+            session(['serchKey' => $_POST['btn_serial']]);
+            
+        }else if(session('serchKey')==""){
+            session(['serchKey' => $this->serch_key_p]);
+        }
+        self::$key="%".session('serchKey')."%";
+        $TeacherQuery =$TeacherQuery->where('serial_user','like',self::$key)
+                    ->orwhere('name_sei','like',self::$key)
+                    ->orwhere('name_mei','like',self::$key)
+                    ->orwhere('name_sei_kana','like',self::$key)
+                    ->orwhere('name_mei_kana','like',self::$key)
+                    ->orwhere('phone','like',self::$key)
+                    ->orwhere('email','like',self::$key)
+                    ->orwhere('rank','like',self::$key);
+    
+        $targetSortKey="";
+        if(session('sort_key')<>""){
+            $targetSortKey=session('sort_key');
+        }else{
+            $targetSortKey=$this->sort_key_p;
+        }
+
+        if($this->sort_key_p<>''){
+            if($this->sort_key_p=="name_sei"){
+                if($this->asc_desc_p=="ASC"){
+                    $TeacherQuery =$TeacherQuery->orderBy('name_sei', 'asc');
+                    $TeacherQuery =$TeacherQuery->orderBy('name_mei', 'asc');
+                }else{
+                    $TeacherQuery =$TeacherQuery->orderBy('name_sei', 'desc');
+                    $TeacherQuery =$TeacherQuery->orderBy('name_mei', 'desc');
+                }
+            }else if($this->sort_key_p=="name_sei_kana"){
+                if($this->asc_desc_p=="ASC"){
+                    $TeacherQuery =$TeacherQuery->orderBy('name_sei_kana', 'asc');
+                    $TeacherQuery =$TeacherQuery->orderBy('name_mei_kana', 'asc');
+                }else{
+                    $TeacherQuery =$TeacherQuery->orderBy('name_sei_kana', 'desc');
+                    $TeacherQuery =$TeacherQuery->orderBy('name_mei_kana', 'desc');
+                }
+            }else{
+                if($this->asc_desc_p=="ASC"){
+                    $TeacherQuery =$TeacherQuery->orderBy($this->sort_key_p, 'asc');
+                }else{
+                    $TeacherQuery =$TeacherQuery->orderBy($this->sort_key_p, 'desc');
+                }
+            }
+        }
+
+        if(session('target_page_for_pager')!==null){
+            $targetPage=session('target_page_for_pager');
+            session(['target_page_for_pager'=>null]);
+        }else{
+            $targetPage=null;
+        }
+        if(self::$key=="%%"){$targetPage=null;}
+        //dd($TeacherQuery->toSql(), $TeacherQuery->getBindings());
+        //dd($TeacherQuery->dump());
+        //print "sort_key=".session('sort_key');
+		//print "asc_desc=".session('asc_desc');
+        //$TeacherQuery =$TeacherQuery->orderBy('serial_student', 'asc');
+        $teachers=$TeacherQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
+        
+        //$teachers=$UserQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
+        return view('livewire.list-teachers',compact("teachers"));
     }
 }

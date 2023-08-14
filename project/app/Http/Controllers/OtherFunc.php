@@ -5,17 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Http\Controllers\InitConsts;
+use App\Models\User;
 
 class OtherFunc extends Controller
 {
     public static function make_html_course_ckbox($target){
-		//print "targetgrade=".$targetgrade;
 		$target_CourceArray_array=InitConsts::CourceArray();
 		$htm_cource_ckbox='';
 		foreach($target_CourceArray_array as $cource){
 			$cked='';
-			//print "cource=".$cource."<br>";
-			//mb_strstr($cource, $target)!== false;
 			if(mb_strstr( $target,$cource)!== false){$cked='checked="checked"';}
 			$htm_cource_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="'.$cource.'" '.$cked.'>'.$cource.'<label>';
 		}
@@ -36,6 +34,12 @@ class OtherFunc extends Controller
 			$_SESSION['access_history']=array();
 			$_SESSION['access_history'][]=$REFERER;
 		}
+	}
+
+	public static function get_teacher_new_serial(){
+		$max_serial=User::max('serial_user');
+		$new_serial=$max_serial++;
+		return $new_serial;
 	}
 
 	public static function get_student_new_serial(){

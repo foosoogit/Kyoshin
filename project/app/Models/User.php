@@ -21,6 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'serial_user',
+        'email',
+        'name_sei',
+        'name_mei',
+        'name_sei_kana',
+        'name_mei_kana',
+        'gender',
+        'phone',
+        'note',
+        'rank',
     ];
 
     /**
