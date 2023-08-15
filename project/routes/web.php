@@ -27,16 +27,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+//Route::get('/dashboard', function () {
+Route::get('/menu', function () {
     //return view('dashboard');
     return view('admin.menu');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('menu');
 
 //Route::get('students/create', 'create')->name('student.create');
 //Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function(){
 
     Route::controller(TeachersController::class)->name('teachers.')->group(function() {
+        
+        
         Route::get('teachers', 'index')->name('index');
         Route::get('teachers/create', 'create')->name('create');
         Route::post('teachers', 'store')->name('store');
@@ -54,6 +57,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('show_standby_display','show_standby_display')->name('show_standby_display');
         Route::post('teachers','send_mail')->name('sendmail');
     });
+
+    Route::post('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('students.ShowRireki');
+
     //Route::get('teachers/show_standby_display', [\App\Http\Controllers\TeachersController::class,'show_standby_display'])->name('show_standby_display');
     Route::delete('students/delete/{id}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');

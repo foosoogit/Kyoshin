@@ -42,7 +42,7 @@ class ContactMail extends Mailable
         }
         */
         $from    = new Address($this->target_item_array['email'], $this->target_item_array['protector']);
-        $subject = $this->target_item_array['name_sei'].' '.$this->target_item_array['name_mei'].'さんが'.$this->target_item_array['type'].'入室されました。';
+        $subject = $this->target_item_array['name_sei'].' '.$this->target_item_array['name_mei'].'さんが'.$this->target_item_array['type'].'されました。';
         //$from    = new Address($target_item_array['email'], $target_item_array['protector']);
         //$subject = $target_item_array['name_sei'].' '.$target_item_array['name_mei'].'さんが'.$$target_item_array['type'].'入室されました。';
         return new Envelope(

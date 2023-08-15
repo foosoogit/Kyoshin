@@ -13,7 +13,7 @@ class StoreInOutHistoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,15 @@ class StoreInOutHistoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'student_serial' => ['exists:students,serial_student'],
         ];
     }
+
+    public function messages()
+    {
+      return [
+        'student_serial.exists' => '番号が登録されていません。',
+      ];
+    }
+
 }

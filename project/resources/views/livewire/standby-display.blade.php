@@ -4,7 +4,7 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <div class="flex items-center gap-4">
-                        <x-primary-button onclick="location.href='{{route('dashboard')}}'" >メニューに戻る</x-primary-button>
+                        <x-primary-button onclick="location.href='{{route('menu')}}'" >メニューに戻る</x-primary-button>
                     </div>
                     <form method="post" action="{{ route('teachers.sendmail') }}" class="mt-6 space-y-6">@csrf
                         <div>

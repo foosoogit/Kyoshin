@@ -12,6 +12,13 @@ use App\Mail\ContactMail;
 
 class StudentController extends Controller
 {
+    
+    public function ShowRireki(Request $request){
+		//session(['serchKey' =>$stud_seraial]);
+        $target_key=$stud_seraial;
+        return view('admin.ListStudents',compact("target_key"));
+	}
+
     public function SendInOutMail(Request $request)
     {
         $content = Student::where('serial_student','=',$request->StudentSerial)->first();
@@ -20,7 +27,6 @@ class StudentController extends Controller
 	
     	Mail::to($user->email)->send(new ContactMail($content));
 	// メール送信後の処理
-	
     }
     
     public function destroy($id)

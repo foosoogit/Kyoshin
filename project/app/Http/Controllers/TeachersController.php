@@ -11,11 +11,13 @@ use App\Models\Student;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Models\InOutHistory;
+use App\Http\Requests\StoreInOutHistoryRequest;
 
 class TeachersController extends Controller
 {
     
-    public function send_mail(Request $request)
+    //public function send_mail(Request $request)
+    public function send_mail(StoreInOutHistoryRequest $request)
     {
         //$target_time = date("Y-m-d H:i:s");
         $StudentInfSql=Student::where('serial_student','=',$request->student_serial)->first();
