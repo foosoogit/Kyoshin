@@ -20,10 +20,11 @@ class ContactMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public Student $student)
+    //public function __construct(public Student $student)
+    public function __construct(public array $target_item_array)
     {
-        //$this->name = $name;
-        //$this->email = $email;
+        //$student->name
+        //$this->target_item = $content;
     }
 
     /**
@@ -33,15 +34,24 @@ class ContactMail extends Mailable
      */
     public function envelope()
     {
-        $from    = new Address($this->student['email'], $this->student['protector']);
-        $subject = $this->student['name_seiname_mei'].'さんが入室されました。';
-
+        //print_r($this->target_item_array);
+        /*
+        $type_msg='退室';
+        if($this->target_item_array['type']=='in'){
+            $type_msg='入室';
+        }
+        */
+        $from    = new Address($this->target_item_array['email'], $this->target_item_array['protector']);
+        $subject = $this->target_item_array['name_sei'].' '.$this->target_item_array['name_mei'].'さんが'.$this->target_item_array['type'].'入室されました。';
+        //$from    = new Address($target_item_array['email'], $target_item_array['protector']);
+        //$subject = $target_item_array['name_sei'].' '.$target_item_array['name_mei'].'さんが'.$$target_item_array['type'].'入室されました。';
         return new Envelope(
-            subject: 'Contact Mail',
+            subject: $subject,
             from: 'inf@szemi-gp.com',
-            to: 'awa@szemi-gp.com',
+            to: $this->target_item_array['email'],
             replyTo:'inf@szemi-gp.com',
         );
+
     }
 
     /**

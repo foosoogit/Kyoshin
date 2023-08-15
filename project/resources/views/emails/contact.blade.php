@@ -1,13 +1,4 @@
-<x-mail::message>
-# Introduction
+{!! $target_item_array['protector'] !!} 様
 
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
-
-Thanks,<br>
-{{ config('app.name') }}
-</x-mail::message>
-{!! $student->name !!} です。
+{!! $target_item_array['name_sei']!!} {!! $target_item_array['name_mei'] !!}様が、教進セミナーに{!! $target_item_array['type'] !!}されました。
+入出時間：{!! $target_item_array['target_time'] !!}

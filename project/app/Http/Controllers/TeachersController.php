@@ -10,21 +10,56 @@ use App\Http\Requests\StoreTeacherRequest;
 use App\Models\Student;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
+use App\Models\InOutHistory;
 
 class TeachersController extends Controller
 {
     
     public function send_mail(Request $request)
     {
-        $StudentInf=Student::where('serial_student','=',$request->student_serial)->first();
-        Mail::send(new ContactMail($StudentInf));
+        //$target_time = date("Y-m-d H:i:s");
+        $StudentInfSql=Student::where('serial_student','=',$request->student_serial)->first();
+        if($StudentInfSql->count()>0){
+            $StudentInf=$StudentInfSql->first();
+            $target_item_array['target_time']=date("Y-m-d H:i:s");
+            $target_item_array['target_date']=date("Y-m-d");
+            $target_item_array['student_serial']=$request->student_serial;
+            $target_item_array['email']=$StudentInf->email;
+            $target_item_array['name_sei']=$StudentInf->name_sei;
+            $target_item_array['name_mei']=$StudentInf->name_mei;
+            $target_item_array['protector']=$StudentInf->protector;
+            //$target_item_array['target_time']=$target_time;
+            $serch_target_history=InOutHistory::where('student_serial','=',$request->student_serial)
+                        ->where('target_date','=',date("Y-m-d"))
+                        ->whereNull('time_out')
+                        ->orderBy('id', 'desc');
+            if($serch_target_history->count()>0){
+                $target_history=$serch_target_history->first();
+                $target_item_array['type']='退室';
+                $inOutHistory = InOutHistory::find($target_history->id);
+                $inOutHistory->update([  
+                    "time_out" => $target_item_array['target_time'],  
+                ]);  
+            }else{
+                $target_item_array['type']='入室';
+                InOutHistory::create([
+                    'student_serial'=>$request->student_serial,
+                    'target_date'=>$target_item_array['target_date'],
+                    'time_in'=>$target_item_array['target_time'],
+                    'student_name'=>$StudentInf->name_sei.' '.$StudentInf->name_mei,
+                    'to_mail_address'=>$StudentInf->email,
+                    'from_mail_address'=>'inf@szemi-gp.com',
+                ]);
+            }
+            Mail::send(new ContactMail($target_item_array));
+        }else{
+
+        }
         return view('admin.StandbyDisplay');
     }
 
     public function show_standby_display()
     {
-        //return view('admin.ListTeachers');
-        //print "test";
         return view('admin.StandbyDisplay');
     }
 
