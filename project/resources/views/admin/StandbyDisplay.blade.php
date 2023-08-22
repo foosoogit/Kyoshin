@@ -26,6 +26,11 @@
 				return false;
 			}
 		}
+		{{--
+		$(document).ready( function(){
+		document.getElementById('uketukeNo').focus();
+		});
+		--}}
 	</script>
 </body>
 </html>

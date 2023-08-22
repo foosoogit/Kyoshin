@@ -19,10 +19,12 @@ class TeachersController extends Controller
     //public function send_mail(Request $request)
     public function send_mail(StoreInOutHistoryRequest $request)
     {
-        //$target_time = date("Y-m-d H:i:s");
-        $StudentInfSql=Student::where('serial_student','=',$request->student_serial)->first();
+        //print "student_serial=".$request->student_serial;
+        //$TargetSerial="S_".$request->student_serial;
+        $StudentInfSql=Student::where('serial_student','=',$request->student_serial);
         if($StudentInfSql->count()>0){
             $StudentInf=$StudentInfSql->first();
+            //print_r($StudentInf);
             $target_item_array['target_time']=date("Y-m-d H:i:s");
             $target_item_array['target_date']=date("Y-m-d");
             $target_item_array['student_serial']=$request->student_serial;
@@ -35,20 +37,26 @@ class TeachersController extends Controller
                         ->where('target_date','=',date("Y-m-d"))
                         ->whereNull('time_out')
                         ->orderBy('id', 'desc');
+            //dd($serch_target_history->toSql(), $serch_target_history->getBindings());
             if($serch_target_history->count()>0){
                 $target_history=$serch_target_history->first();
+                //$targetRec=InOutHistory::find($target_history->id);
+                
                 $target_item_array['type']='退室';
+                $target_item_array['type_word']='から退室';
                 $inOutHistory = InOutHistory::find($target_history->id);
                 $inOutHistory->update([  
                     "time_out" => $target_item_array['target_time'],  
                 ]);  
             }else{
                 $target_item_array['type']='入室';
+                $target_item_array['type_word']='に入室';
                 InOutHistory::create([
                     'student_serial'=>$request->student_serial,
                     'target_date'=>$target_item_array['target_date'],
                     'time_in'=>$target_item_array['target_time'],
                     'student_name'=>$StudentInf->name_sei.' '.$StudentInf->name_mei,
+                    'student_name_kana'=>$StudentInf->name_sei_kana.' '.$StudentInf->name_mei_kana,
                     'to_mail_address'=>$StudentInf->email,
                     'from_mail_address'=>'inf@szemi-gp.com',
                 ]);
@@ -93,6 +101,8 @@ class TeachersController extends Controller
      */
     public function index()
     {
+        
+        if(session('sort_key')=='time_in' || session('sort_key')=='time_out'){session('sort_key')=="";}
         return view('admin.ListTeachers');
     }
 

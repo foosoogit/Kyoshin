@@ -6,7 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreInOutHistoryRequest extends FormRequest
 {
-    /**
+  //const HeaderSerial = "S_";
+  /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -23,8 +24,10 @@ class StoreInOutHistoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+      //$target=self::HeaderSerial.$request->student_serial;
+      return [
             'student_serial' => ['exists:students,serial_student'],
+            //'student_serial' => ['exists:students,$target'],
         ];
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->string('serial_student')->unique()->comment('生徒番号');
-            $table->string('email')->unique()->comment('メールアドレス（複数の場合はカンマでつなげる）');
+            $table->string('email')->comment('メールアドレス（複数の場合はカンマでつなげる）');
             $table->string('name_sei',100)->comment('姓');
 			$table->string('name_mei',100)->comment('名');
 			$table->string('name_sei_kana',100)->comment('セイ');

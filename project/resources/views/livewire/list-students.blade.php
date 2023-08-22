@@ -35,7 +35,7 @@
                         <button type="button" class="btn-orderby-border" wire:click="sort('email-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>電話</th>
                     <th>メモ</th>
-                    <th>履歴</th>
+                    <th>入退出履歴</th>
                     <th>削除</th>
                 </tr>
                 @foreach ($students as $student)
@@ -49,10 +49,14 @@
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->note }}</td>
-                    <td><form action="{{route('ShowRireki')}}" method="POST">@csrf<input name="ShowRireki_Btn" type="submit" value="履歴"></form></td>
-                    
                     <td>
-                        {{--<a href="{{route('student.delete', $student->id)}}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md">削除</a>--}}
+                        {{--<form action="{{route('showRireki')}}" method="POST">--}}
+                        <form action="{{route('admin.showRireki')}}" method="POST">
+                        {{--<form action="ShowRireki" method="POST">--}}
+                            @csrf<input name="ShowRireki_Btn" type="submit" value="入退出履歴">
+                            <input type="hidden" id="studserial" name="studserial" value="{{$student->student_serial}}">
+                        </form></td>
+                    <td>
                         <form method="post" action="{{ route('student.delete', $student->id) }}">
                             @csrf
                             @method('DELETE')

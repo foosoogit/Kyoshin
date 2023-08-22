@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('student_serial')->comment('生徒番号');
+            $table->string('student_serial')->unique()->comment('生徒番号');
             $table->string('target_date',10)->comment('日付');
             $table->string('time_in',20)->comment('時間');
             $table->string('time_out',20)->nullable()->comment('時間');
             $table->string('student_name',50)->comment('生徒氏名');
+            $table->string('student_name_kana',50)->comment('セイトシメイ');
             $table->string('to_mail_address',50)->comment('送り先メールアドレス');
             $table->string('from_mail_address',50)->comment('送り元メールアドレス');
         });

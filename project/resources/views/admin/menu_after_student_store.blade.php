@@ -13,7 +13,7 @@
 	<div id="main">
 		{{$msg}}
 		<ul class="sidenav">
-			<li><a href="{{ route('dashboard') }}">メニューに戻る</a></li>
+			<li><a href="{{ route('menu') }}">メニューに戻る</a></li>
 			@if($mnge=="modify")
 				<li><a href="{{ route('Students.list_ck_modify',$serial) }}">一覧表で確認</a></li>
 			@else

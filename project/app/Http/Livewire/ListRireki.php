@@ -3,14 +3,12 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Student;
-use App\Http\Controllers\InitConsts;
+use App\Models\InOutHistory;
 use App\Http\Controllers\OtherFunc;
-use Illuminate\Support\Collection;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\InitConsts;
 
-class ListStudents extends Component
+class ListRireki extends Component
 {
     use WithPagination;
     public $sort_key_p = '',$asc_desc_p="",$serch_key_p="";
@@ -29,8 +27,16 @@ class ListStudents extends Component
 	}
 
     public function search(){
-		$this->serch_key_p=$this->kensakukey;
-		session(['serchKey' => $this->kensakukey]);
+		if(session(['serchKey' => $this->kensakukey])==""){
+           $this->serch_key_p=$this->kensakukey;
+        }else{
+	    	session(['serchKey' => $this->kensakukey]);
+        }
+	}
+
+    public function search_from_rireki($user_serial){
+		$this->serch_key_p=$user_serial;
+		session(['serchKey' => $user_serial]);
 	}
 
     public function sort($sort_key){
@@ -57,25 +63,19 @@ class ListStudents extends Component
         }
         $this->asc_desc_p=session('asc_desc');
     
-        $StudentQuery = Student::query();
+        $InOutHistory = InOutHistory::query();
         $from_place="";$target_day="";$backdayly=false;
     
-        if(isset($_POST['btn_serial'])){
-            session(['serchKey' => $_POST['btn_serial']]);
-            
-        }else if(session('serchKey')==""){
+        if(session('serchKey')==""){
             session(['serchKey' => $this->serch_key_p]);
         }
+        
         self::$key="%".session('serchKey')."%";
-        $StudentQuery =$StudentQuery->where('serial_student','like',self::$key)
-                    ->orwhere('name_sei','like',self::$key)
-                    ->orwhere('name_mei','like',self::$key)
-                    ->orwhere('name_sei_kana','like',self::$key)
-                    ->orwhere('name_mei_kana','like',self::$key)
-                    ->orwhere('grade','like',self::$key)
-                    ->orwhere('phone','like',self::$key)
-                    ->orwhere('course','like',self::$key)
-                    ->orwhere('email','like',self::$key);
+        $InOutHistory =$InOutHistory->where('student_serial','like',self::$key)
+                    ->orwhere('time_in','like',self::$key)
+                    ->orwhere('time_out','like',self::$key)
+                    ->orwhere('student_name','like',self::$key)
+                    ->orwhere('to_mail_address','like',self::$key);
     
         $targetSortKey="";
         if(session('sort_key')<>""){
@@ -84,33 +84,37 @@ class ListStudents extends Component
             $targetSortKey=$this->sort_key_p;
         }
 
-        if($this->sort_key_p=='time_in' | $this->sort_key_p=='time_out'){
-            $this->sort_key_p='serial_student';
-        }
         if($this->sort_key_p<>''){
-            if($this->sort_key_p=="name_sei"){
+            if($this->asc_desc_p=="ASC"){
+                $InOutHistory =$InOutHistory->orderBy($this->sort_key_p, 'asc');
+            }else{
+                $InOutHistory =$InOutHistory->orderBy($this->sort_key_p, 'desc');
+            }
+            /*
+            if($this->sort_key_p=="name"){
                 if($this->asc_desc_p=="ASC"){
-                    $StudentQuery =$StudentQuery->orderBy('name_sei', 'asc');
-                    $StudentQuery =$StudentQuery->orderBy('name_mei', 'asc');
+                    $InOutHistory =$InOutHistory->orderBy('name_sei', 'asc');
+                    $InOutHistory =$InOutHistory->orderBy('name_mei', 'asc');
                 }else{
-                    $StudentQuery =$StudentQuery->orderBy('name_sei', 'desc');
-                    $StudentQuery =$StudentQuery->orderBy('name_mei', 'desc');
+                    $InOutHistory =$InOutHistory->orderBy('name_sei', 'desc');
+                    $InOutHistory =$InOutHistory->orderBy('name_mei', 'desc');
                 }
             }else if($this->sort_key_p=="name_sei_kana"){
                 if($this->asc_desc_p=="ASC"){
-                    $StudentQuery =$StudentQuery->orderBy('name_sei_kana', 'asc');
-                    $StudentQuery =$StudentQuery->orderBy('name_mei_kana', 'asc');
+                    $InOutHistory =$InOutHistory->orderBy('name_sei_kana', 'asc');
+                    $InOutHistory =$InOutHistory->orderBy('name_mei_kana', 'asc');
                 }else{
-                    $StudentQuery =$StudentQuery->orderBy('name_sei_kana', 'desc');
-                    $StudentQuery =$StudentQuery->orderBy('name_mei_kana', 'desc');
+                    $InOutHistory =$InOutHistory->orderBy('name_sei_kana', 'desc');
+                    $InOutHistory =$InOutHistory->orderBy('name_mei_kana', 'desc');
                 }
             }else{
                 if($this->asc_desc_p=="ASC"){
-                    $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'asc');
+                    $InOutHistory =$InOutHistory->orderBy($this->sort_key_p, 'asc');
                 }else{
-                    $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'desc');
+                    $InOutHistory =$InOutHistory->orderBy($this->sort_key_p, 'desc');
                 }
             }
+            */
         }
 
         if(session('target_page_for_pager')!==null){
@@ -120,14 +124,14 @@ class ListStudents extends Component
             $targetPage=null;
         }
         if(self::$key=="%%"){$targetPage=null;}
-        //dd($StudentQuery->toSql(), $StudentQuery->getBindings());
-        //dd($StudentQuery->dump());
+        //dd($InOutHistory->toSql(), $InOutHistory->getBindings());
+        //dd($InOutHistory->dump());
         //print "sort_key=".session('sort_key');
 		//print "asc_desc=".session('asc_desc');
-        //$StudentQuery =$StudentQuery->orderBy('serial_student', 'asc');
-        $students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
-
-        //$students=Student::paginate(initConsts::DdisplayLineNumStudentsList());
-        return view('livewire.list-students',compact("students"));
+        //$InOutHistory =$InOutHistory->orderBy('serial_student', 'asc');
+        $histories=$InOutHistory->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
+        
+        //$teachers=$UserQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
+        return view('livewire.list-rireki',compact("histories"));
     }
 }

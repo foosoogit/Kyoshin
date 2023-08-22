@@ -29,7 +29,7 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <div class="flex items-center gap-4">
-                        <x-primary-button onclick="location.href='{{route('dashboard')}}'" >メニューに戻る</x-primary-button>
+                        <x-primary-button onclick="location.href='{{route('menu')}}'" >メニューに戻る</x-primary-button>
                     </div>
                     {{--  
                         <button type="button" name="ToMenuBtn" id="ToMenuBtn" onclick="location.href='{{route('dashboard')}}'" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">メニューに戻る</button>
@@ -46,9 +46,11 @@
                             @csrf
                     @endif
                         <div>
-                            <x-input-label for="serial_student" value="生徒番号" />{{ $student_serial }}
-                            <input type="hidden" id="serial_student" name="serial_student" value="{{ $student_serial }}">
+                            <x-input-label for="serial_student" value="生徒番号" />
+                            <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" :value="old('serial_student',optional($stud_inf)->serial_student)" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
                             {{--
+                            <input type="hidden" id="serial_student" name="serial_student" value="{{ $student_serial }}">
                             <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" readonly value="{{ $student_serial }}"/>
                             <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
                             --}}
@@ -69,7 +71,7 @@
                             <x-input-error class="mt-2" :messages="$errors->get('name_sei_kana')" />
                         </div>
                         <div>
-                            <x-input-label for="name_mei_kana" value="名" />
+                            <x-input-label for="name_mei_kana" value="メイ" />
                             <x-text-input id="name_mei_kana" name="name_mei_kana" type="text" class="mt-1 block w-full" :value="old('name_mei_kana',optional($stud_inf)->name_mei_kana)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
                         </div>

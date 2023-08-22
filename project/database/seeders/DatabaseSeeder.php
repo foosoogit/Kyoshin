@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
 		$init_users = [
 			[
 			'serial_user'=> "T_0000",
-			'email' => "foosoo200@gmail.com",
+			'email' => "kyoushin.fb@gmail.com",
 			'password' => "0000",
 			'last_name_kanji' => "松浦",
 			'first_name_kanji' => "重雅",

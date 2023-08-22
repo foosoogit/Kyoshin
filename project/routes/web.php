@@ -6,6 +6,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InitConsts;
 use App\Models\Student;
 use App\Http\Controllers\TeachersController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +39,6 @@ Route::get('/menu', function () {
 Route::group(['middleware' => ['auth']], function(){
 
     Route::controller(TeachersController::class)->name('teachers.')->group(function() {
-        
-        
         Route::get('teachers', 'index')->name('index');
         Route::get('teachers/create', 'create')->name('create');
         Route::post('teachers', 'store')->name('store');
@@ -58,40 +57,44 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('teachers','send_mail')->name('sendmail');
     });
 
-    Route::post('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('students.ShowRireki');
+    //Route::get('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
 
-    //Route::get('teachers/show_standby_display', [\App\Http\Controllers\TeachersController::class,'show_standby_display'])->name('show_standby_display');
+    Route::get('ShowRireki', function () {
+        session(['serchKey' =>'']);
+        session(['sort_key' =>"time_in"]);
+        session(['asc_desc' =>'desc']);
+        return view('admin.ListRireki');
+    })->name('admin.showRireki');
+
+    Route::post('ShowRireki', function (Request $request) {
+        session(['serchKey' =>$request->studserial]);
+        session(['sort_key' =>"time_in"]);
+        session(['asc_desc' =>'desc']);
+        return view('admin.ListRireki');
+    })->name('admin.showRireki');
+
+    //Route::post('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
+    //Route::get('students/ShowRireki/{studserial}', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
     Route::delete('students/delete/{id}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
-    //Route::get('students/test', [\App\Http\Controllers\StudentController::class,'test'])->name('student.test');
-    //Route::put('students/{student}', 'update')->name('student.update');
-    
     Route::get('students/list', function () {
         return view('admin.ListStudents');
-        //return view('livewire.list-students');
     });
-
     Route::post('students/list', function () {
         return view('admin.ListStudents');
-        //return view('livewire.list-students');
     })->name('Students.List');
-
     Route::get('students/list_ck_store', function () {
         session(['serchKey' =>""]);
         session(['sort_key' =>"serial_student"]);
         session(['asc_desc' =>'desc']);
         return view('admin.ListStudents');
-        //return view('livewire.list-students');
     })->name('Students.list_ck_store');
-
     Route::get('students/list_ck_modify/{stud_seraial}', [\App\Http\Controllers\StudentController::class,'ShowStudentModifyList'])->name('Students.list_ck_modify');
-
     Route::post('students/list_ck_store', function () {
         session(['serchKey' =>""]);
         session(['sort_key' =>"serial_student"]);
         session(['asc_desc' =>'desc']);
         return view('admin.ListStudents');
-        //return view('livewire.list-students');
     })->name('Students.list_ck_store');
 
     /*

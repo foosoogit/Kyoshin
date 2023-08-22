@@ -16,12 +16,14 @@ class StudentFactory extends Factory
      * @return array<string, mixed>
      */
 
-     protected $model = Student::class;
-
+    protected $model = Student::class;
+    private static int $sequence = 1;
+    
     public function definition()
     {
         return [
-            'serial_student' => $this->faker->regexify('S_[0-9]{5}'),
+            //'serial_student' => $this->faker->regexify('[0-9]{5}'),'name' => 'hogehoge'.self::$sequence++,
+            'serial_student' => sprintf('%04d', self::$sequence++),
 			'email' => $this->faker->unique()->safeEmail(),
             'name_sei' => $this->faker->lastName(),
             'name_mei'=> $this->faker->firstName(),
