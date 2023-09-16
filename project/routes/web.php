@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     //Route::post('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
     //Route::get('students/ShowRireki/{studserial}', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
-    Route::delete('students/delete/{id}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
+    Route::delete('students/delete/{StudentID}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
     Route::get('students/list', function () {
         return view('admin.ListStudents');
@@ -83,6 +83,16 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('students/list', function () {
         return view('admin.ListStudents');
     })->name('Students.List');
+
+    Route::get('students/list_ner_num', function () {
+        session(['serchKey' =>""]);
+        session(['sort_key' =>"email"]);
+        session(['sort_key2' =>"id"]);
+        session(['asc_desc' =>'ASC']);
+        session(['asc_desc2' =>'ASC']);
+        return view('admin.ListStudents');
+    })->name('Students.NewNumList');
+
     Route::get('students/list_ck_store', function () {
         session(['serchKey' =>""]);
         session(['sort_key' =>"serial_student"]);

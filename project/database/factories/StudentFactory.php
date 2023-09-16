@@ -17,27 +17,33 @@ class StudentFactory extends Factory
      */
 
     protected $model = Student::class;
-    private static int $sequence = 1;
+    private static int $sequence = 900400001;
     
     public function definition()
     {
-        return [
-            //'serial_student' => $this->faker->regexify('[0-9]{5}'),'name' => 'hogehoge'.self::$sequence++,
-            'serial_student' => sprintf('%04d', self::$sequence++),
-			'email' => $this->faker->unique()->safeEmail(),
-            'name_sei' => $this->faker->lastName(),
-            'name_mei'=> $this->faker->firstName(),
-            'name_sei_kana'=> $this->faker->lastKanaName(),
-            'name_mei_kana'=> $this->faker->firstKanaName(),
-            'gender'=> $this->faker->randomElement(['男', '女']),
-            'protector'=> $this->faker->Name(),
-            'postal'=> $this->faker->postcode(),
-            'address_region'=> $this->faker->prefecture(),
-            'address_locality'=> $this->faker->city(),
-            'address_banti'=> $this->faker->streetAddress(),
-            'phone'=> $this->faker->phoneNumber(),
-            'grade'=> $this->faker->randomElement(['小1', '小2', '小3', '小4', '小5', '小6', '中1', '中2', '中3', '高1', '高2', '高3']),
-            'course'=> $this->faker->randomElement(['英会話', '学習塾','英会話,学習塾']),
-        ];
+        if(self::$sequence<=900400020){
+            return [
+                //'serial_student' => $this->faker->regexify('[0-9]{5}'),'name' => 'hogehoge'.self::$sequence++,
+                'serial_student' => sprintf('%09d', self::$sequence++),
+                'email' => $this->faker->unique()->safeEmail(),
+                'name_sei' => $this->faker->lastName(),
+                'name_mei'=> $this->faker->firstName(),
+                'name_sei_kana'=> $this->faker->lastKanaName(),
+                'name_mei_kana'=> $this->faker->firstKanaName(),
+                'gender'=> $this->faker->randomElement(['男', '女']),
+                'protector'=> $this->faker->Name(),
+                'postal'=> $this->faker->postcode(),
+                'address_region'=> $this->faker->prefecture(),
+                'address_locality'=> $this->faker->city(),
+                'address_banti'=> $this->faker->streetAddress(),
+                'phone'=> $this->faker->phoneNumber(),
+                'grade'=> $this->faker->randomElement(['小1', '小2', '小3', '小4', '小5', '小6', '中1', '中2', '中3', '高1', '高2', '高3']),
+                'course'=> $this->faker->randomElement(['英会話', '学習塾','英会話,学習塾']),
+            ];
+        }else{
+            return [
+                'serial_student' => sprintf('%09d', self::$sequence++),
+            ]; 
+        }
     }
 }

@@ -21,6 +21,7 @@ class ListStudents extends Component
 		$this->serch_key_p="";
 		$this->kensakukey="";
 		session(['serchKey' => '']);
+        session(['sort_key2' => '']);
 	}
 
     public function search_from_top_menu(Request $request){
@@ -111,6 +112,9 @@ class ListStudents extends Component
                     $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'desc');
                 }
             }
+        }
+        if(session('sort_key2')<>""){
+            $StudentQuery =$StudentQuery->orderBy(session('sort_key2'), session('asc_desc2'));
         }
 
         if(session('target_page_for_pager')!==null){

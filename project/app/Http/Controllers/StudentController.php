@@ -9,13 +9,12 @@ use App\Http\Controllers\OtherFunc;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
 use App\Mail\ContactMail;
+use App\Models\InOutHistory;
 
 class StudentController extends Controller
 {
     
     public function ShowRireki(){
-		//session(['serchKey' =>$stud_seraial]);
-        //$target_key=$studserial;
         return view('admin.ListStudents',compact("target_key"));
 	}
 
@@ -29,10 +28,37 @@ class StudentController extends Controller
 	// メール送信後の処理
     }
     
-    public function destroy($id)
+    public function destroy($StudentID)
     {
         //Student::destroy($id);
-        $student = Student::find($id);
+        
+        //delete from InOutHistory where student_serial in(select student_serial from students where StudentID='id')
+        //print "StudentID=!".$StudentID;
+
+        $InOutquery=inouthistory::whereIn("student_serial", function($query) use($StudentID){
+            $query->from("students")
+            ->select("serial_student")
+            ->where("id", "=", $StudentID);
+        })->delete();
+
+        /*
+        DB::table("inouthistory")
+        ->whereIn("student_serial", function($query){
+            $query->from("students")
+            ->select("student_serial")
+            ->where("studentid", "=", id);
+        })
+        ->get();
+        */
+        /*
+        $InOutquery=InOutHistory::where('student_serial', function($query,$StudentID){
+            $query->select('serial_student')
+            ->from('students')
+            ->where('id','=', $StudentID);
+          });
+        */
+       //dd($InOutquery->toSql(), $InOutquery->getBindings());
+        $student = Student::find($StudentID);
         $student->update([
             //'serial_student'=>$request->serial_student,
             'email'=>"",
@@ -47,7 +73,6 @@ class StudentController extends Controller
             'note'=>"",
             'course'=>"",
         ]);
-
         return back();
     }
 
@@ -114,7 +139,6 @@ class StudentController extends Controller
     
     public function update(Request $request, $id)
     {
-        
         $course = implode( ",", $request->course );
         //print "course=".$course;
         $student = Student::find($id);

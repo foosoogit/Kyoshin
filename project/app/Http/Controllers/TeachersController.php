@@ -15,7 +15,6 @@ use App\Http\Requests\StoreInOutHistoryRequest;
 
 class TeachersController extends Controller
 {
-    
     //public function send_mail(Request $request)
     public function send_mail(StoreInOutHistoryRequest $request)
     {
