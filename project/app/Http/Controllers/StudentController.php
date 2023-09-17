@@ -41,24 +41,10 @@ class StudentController extends Controller
             ->where("id", "=", $StudentID);
         })->delete();
 
-        /*
-        DB::table("inouthistory")
-        ->whereIn("student_serial", function($query){
-            $query->from("students")
-            ->select("student_serial")
-            ->where("studentid", "=", id);
-        })
-        ->get();
-        */
-        /*
-        $InOutquery=InOutHistory::where('student_serial', function($query,$StudentID){
-            $query->select('serial_student')
-            ->from('students')
-            ->where('id','=', $StudentID);
-          });
-        */
        //dd($InOutquery->toSql(), $InOutquery->getBindings());
-        $student = Student::find($StudentID);
+       Student::find($StudentID)->delete();
+       /*
+       $student = Student::find($StudentID);
         $student->update([
             //'serial_student'=>$request->serial_student,
             'email'=>"",
@@ -73,6 +59,7 @@ class StudentController extends Controller
             'note'=>"",
             'course'=>"",
         ]);
+        */
         return back();
     }
 
@@ -106,29 +93,33 @@ class StudentController extends Controller
             'gender'=>$request->gender,
             'phone'=>$request->phone,
             'grade'=>$request->grade,
+            'elementary'=>$request->elementary,
+            'junior_high'=>$request->junior_high,
+            'high_school'=>$request->high_school,
             'note'=>$request->note,
             'course'=>$course,
         ]);
-        //Student::create($request->all());
-        //$request->session()->flash('message', '処理が成功しました。');
         $msg="登録しました。";
         $mnge='create';
         return view('admin.menu_after_student_store',compact("msg","mnge"));
     }
 
-    public function show_inp_store(Request $request)
+    public function ShowInputNewStudent(Request $request)
     {
         $targetgrade="";
         $html_grade_slct=OtherFunc::make_html_grade_slct($targetgrade);
         $TargetCource="";
         $html_cource_ckbox=OtherFunc::make_html_course_ckbox($TargetCource);
         //$student_serial=OtherFunc::get_student_new_serial();
-        $student_serial="";
+        
         //$student_serial++;
-        $stud_inf=Student::where('serial_student','=',"0000")->first();
+        //$stud_inf=Student::where('email','=',"0000")->first();
+        $stud_inf=Student::whereNull('email')->orderby('id')->first();
+        //$student_serial=$stud_inf;
         session(['StudentManage' => 'create']);
         $mnge='create';
-        return view('admin.CreateStudent',compact("html_cource_ckbox","stud_inf","student_serial","html_grade_slct","mnge"));
+        //return view('admin.CreateStudent',compact("html_cource_ckbox","stud_inf","student_serial","html_grade_slct","mnge"));
+        return view('admin.CreateStudent',compact("html_cource_ckbox","stud_inf","html_grade_slct","mnge"));
     }
 
     public function edit(Student $Student)
@@ -139,14 +130,13 @@ class StudentController extends Controller
     
     public function update(Request $request, $id)
     {
+        
         $course = implode( ",", $request->course );
-        //print "course=".$course;
+        print "id=".$id;
         $student = Student::find($id);
-        //$student->update($request->only(['comment']));
-        //$student->update($request->all());
-
         $student->update([
             //'serial_student'=>$request->serial_student,
+
             'email'=>$request->email,
             'name_sei'=>$request->name_sei,
             'name_mei'=>$request->name_mei,
@@ -156,6 +146,9 @@ class StudentController extends Controller
             'gender'=>$request->gender,
             'phone'=>$request->phone,
             'grade'=>$request->grade,
+            'elementary'=>$request->elementary,
+            'junior_high'=>$request->junior_high,
+            'high_school'=>$request->high_school,
             'note'=>$request->note,
             'course'=>$course,
         ]);

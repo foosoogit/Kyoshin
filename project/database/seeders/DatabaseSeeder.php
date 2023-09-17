@@ -43,6 +43,11 @@ class DatabaseSeeder extends Seeder
 				'value1' => "学習塾,英会話",
 				'setumei' => "コース",
 			],
+			[
+				'subject'=> "Interval",
+				'value1' => "5",
+				'setumei' => "退出時間までの最短時間（分、以上）",
+			],
         ];
 		foreach($configrations as $configration) {
 			$conf = new configration();

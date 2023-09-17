@@ -22,5 +22,8 @@ class Student extends Model
         'grade',
         'note',
         'course',
+        'elementary',
+        'junior_high',
+        'high_school',
     ];
 }

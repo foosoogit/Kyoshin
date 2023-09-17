@@ -60,7 +60,7 @@
                         <form method="post" action="{{ route('student.delete', $student->id) }}">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" onClick="return clickDelete('{{ $student->name_sei }} {{ $student->name_mei }}')" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md" value="削除">
+                            <input type="submit" onClick="return clickDelete('{{ $student->name_sei }} {{ $student->name_mei }}')" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md" value="退会">
                         </form>
                     </td>
                 </tr>

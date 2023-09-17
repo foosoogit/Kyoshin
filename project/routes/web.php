@@ -121,7 +121,7 @@ Route::group(['middleware' => ['auth']], function(){
     //Route::get('students/{student}/edit', 'edit')->name('student.edit');
     Route::post('students/ShowInputStudent', [\App\Http\Controllers\StudentController::class,'ShowInputStudent'])->name('ShowInputStudent.Modify');
     
-    Route::get('students/create', [\App\Http\Controllers\StudentController::class,'show_inp_store'])->name('Students.Create');
+    Route::get('students/create', [\App\Http\Controllers\StudentController::class,'ShowInputNewStudent'])->name('Students.Create');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     //Route::post('students/create', 'store')->name('student.store');

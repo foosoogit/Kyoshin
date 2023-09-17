@@ -31,16 +31,20 @@
                     <div class="flex items-center gap-4">
                         <x-primary-button onclick="location.href='{{route('menu')}}'" >メニューに戻る</x-primary-button>
                     </div>
-                     {{--@if($mnge=="modify")--}}
+                    {{--  
+                        <button type="button" name="ToMenuBtn" id="ToMenuBtn" onclick="location.href='{{route('dashboard')}}'" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">メニューに戻る</button>
+                    --}}
+                    {{--<form method="post" action="{{ route('student.update', $student_serial) }}" class="mt-6 space-y-6">--}}
+                    @if($mnge=="modify")
                         <form method="post" action="{{ route('student.update', $stud_inf->id) }}" class="mt-6 space-y-6">
+                    {{--<form method="get" action="{{ route('student.test') }}" class="mt-6 space-y-6">--}}
+                    {{--<form method="post" action="{{$student_serial}}" class="mt-6 space-y-6">--}}
                         @csrf
                         @method('PUT')
-                        {{--
-                            @else
+                    @else
                         <form method="post" action="{{ route('student.store') }}" class="mt-6 space-y-6">
                             @csrf
                     @endif
-                    --}}
                         <div>
                             <x-input-label for="serial_student" value="生徒番号" />
                             <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{optional($stud_inf)->serial_student}}" readonly/>
