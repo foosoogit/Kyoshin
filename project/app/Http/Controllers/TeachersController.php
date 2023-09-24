@@ -12,25 +12,106 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
 use App\Models\InOutHistory;
 use App\Http\Requests\StoreInOutHistoryRequest;
+use App\Models\configration;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\InitConsts;
+//use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeachersController extends Controller
 {
-    //public function send_mail(Request $request)
+    //use Factory;
+    //static $faker = Factory::create('ja_JP');
+    //Factory::create('ja_JP')->userName();
+    public function send_test_mail($type)
+    {
+        /*
+        Mail::to($request->user());
+            ->cc($moreUsers)
+            ->bcc($evenMoreUsers)
+            ->send(new OrderShipped($order));
+        */
+        $user = Auth::user();
+        $target_item_array['to_email']=$user->email;
+        $target_item_array['from_email']=$user->email;
+        if($type=="MsgIn"){
+            $msg=InitConsts::MsgIn();
+            $sbj=InitConsts::sbjIn();
+        }else if($type=="MsgOut"){
+            $msg=InitConsts::MsgOut();
+            $sbj=InitConsts::sbjOut();
+        }else if($type=="MsgTest"){
+            $msg=InitConsts::MsgTest();
+            $sbj=InitConsts::sbjTest();
+        }
+        $msg=str_replace('[name-protector]', OtherFunc::randomName(), $msg);
+        $msg=str_replace('[name-student]', OtherFunc::randomName(), $msg);
+        $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
+        $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
+        $target_item_array['msg']=$msg."\r\n".InitConsts::MsgFooter();
+
+        $sbj=str_replace('[name-protector]', OtherFunc::randomName(), $sbj);
+        $sbj=str_replace('[name-student]', OtherFunc::randomName(), $sbj);
+        $sbj=str_replace('[time]', date("Y-m-d H:i:s"), $sbj);
+        $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
+        $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
+        $target_item_array['subject']=$sbj;
+        Mail::send(new ContactMail($target_item_array));
+    }
+
+    public function update_setting(Request $request)
+    {
+        $configration_all_array=configration::all();
+        foreach($configration_all_array as $configration_array){
+            if(isset($_POST[$configration_array['subject']])){
+
+                $udsql=configration::where('subject','=',$configration_array['subject'])
+                    ->update(['value1' => $_POST[$configration_array['subject']]]);
+
+            }
+        }
+        $configration_all_array=configration::all();
+        foreach($configration_all_array as $configration){
+            $configration_array[$configration['subject']]=$configration['value1'];
+        }
+        
+        if(isset($request->SendMsgInBtn)){
+            $this->send_test_mail("MsgIn");
+        }else if(isset($request->SendMsgOutBtn)){
+            $this->send_test_mail("MsgOut");
+        }else if(isset($request->SendMsgTestBtn)){
+            $this->send_test_mail("MsgTest");
+        }
+        return view('admin.Setting',compact("configration_array"));
+    }
+
+    public function show_setting()
+    {
+        $configration_all=configration::all();
+        foreach($configration_all as $configration){
+            $configration_array[$configration['subject']]=$configration['value1'];
+        }
+        return view('admin.Setting',compact("configration_array"));
+    }
+
     public function send_mail(StoreInOutHistoryRequest $request)
     {
-        //print "student_serial=".$request->student_serial;
-        //$TargetSerial="S_".$request->student_serial;
         $StudentInfSql=Student::where('serial_student','=',$request->student_serial);
         if($StudentInfSql->count()>0){
+            //$target_item_array['to_email']=$user->email;
+            //$target_item_array['to_email']=$user->email;
+            $user = Auth::user();
+            $target_item_array['from_email']=$user->email;
             $StudentInf=$StudentInfSql->first();
-            //print_r($StudentInf);
+            
             $target_item_array['target_time']=date("Y-m-d H:i:s");
             $target_item_array['target_date']=date("Y-m-d");
             $target_item_array['student_serial']=$request->student_serial;
-            $target_item_array['email']=$StudentInf->email;
+            //$target_item_array['email']=$StudentInf->email;
+            $target_item_array['to_email']=$StudentInf->email;
             $target_item_array['name_sei']=$StudentInf->name_sei;
             $target_item_array['name_mei']=$StudentInf->name_mei;
             $target_item_array['protector']=$StudentInf->protector;
+
             //$target_item_array['target_time']=$target_time;
             $serch_target_history=InOutHistory::where('student_serial','=',$request->student_serial)
                         ->where('target_date','=',date("Y-m-d"))
@@ -38,18 +119,24 @@ class TeachersController extends Controller
                         ->orderBy('id', 'desc');
             //dd($serch_target_history->toSql(), $serch_target_history->getBindings());
             if($serch_target_history->count()>0){
+                session(['seated_type' => 'out']);
+                $msg=InitConsts::MsgOut();
+                $sbj=InitConsts::sbjOut();
                 $target_history=$serch_target_history->first();
                 //$targetRec=InOutHistory::find($target_history->id);
                 
-                $target_item_array['type']='退室';
-                $target_item_array['type_word']='から退室';
+                //$target_item_array['type']='退室';
+                //$target_item_array['type_word']='から退室';
                 $inOutHistory = InOutHistory::find($target_history->id);
                 $inOutHistory->update([  
                     "time_out" => $target_item_array['target_time'],  
                 ]);  
             }else{
-                $target_item_array['type']='入室';
-                $target_item_array['type_word']='に入室';
+                session(['seated_type' => 'in']);
+                $msg=InitConsts::MsgIn();
+                $sbj=InitConsts::sbjIn();
+                //$target_item_array['type']='入室';
+                //$target_item_array['type_word']='に入室';
                 InOutHistory::create([
                     'student_serial'=>$request->student_serial,
                     'target_date'=>$target_item_array['target_date'],
@@ -60,6 +147,19 @@ class TeachersController extends Controller
                     'from_mail_address'=>'inf@szemi-gp.com',
                 ]);
             }
+
+            $msg=str_replace('[name-protector]', $StudentInf->protector, $msg);
+            $msg=str_replace('[name-student]', $StudentInf->name_sei." ".$StudentInf->name_mei, $msg);
+            $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
+            $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
+            $target_item_array['msg']=$msg."\r\n".InitConsts::MsgFooter();
+
+            $sbj=str_replace('[name-protector]', $StudentInf->protector, $sbj);
+            $sbj=str_replace('[name-student]', $StudentInf->name_sei." ".$StudentInf->name_mei, $sbj);
+            $sbj=str_replace('[time]', date("Y-m-d H:i:s"), $sbj);
+            $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
+            $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
+            $target_item_array['subject']=$sbj;
             Mail::send(new ContactMail($target_item_array));
         }else{
 

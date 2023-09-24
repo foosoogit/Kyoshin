@@ -9,9 +9,11 @@
                     <form method="post" action="{{ route('teachers.sendmail') }}" class="mt-6 space-y-6">@csrf
                         <div>
                             <x-input-label for="name_sei" value="生徒番号の読み込み" />
-                            <x-text-input id="student_serial" name="student_serial" type="text" class="mt-1 block w-full" autofocus/>
+                            <x-text-input id="student_serial" name="student_serial" type="text" wire:onchange="send_mail()" class="mt-1 block w-full" autofocus/>
+                            {{$type}}
                             <x-input-error class="mt-2" :messages="$errors->get('student_serial')" />
                         </div>
+                        
                     </form>
                 </div>
             </div>

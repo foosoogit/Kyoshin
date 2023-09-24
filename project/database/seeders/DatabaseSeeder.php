@@ -29,6 +29,11 @@ class DatabaseSeeder extends Seeder
 		
 		$configrations = [
 			[
+				'subject'=> "JyukuName",
+				'value1' => "教進セミナー",
+				'setumei' => "塾名",
+            ],
+			[
 				'subject'=> "DdisplayLineNumStudentsList",
 				'value1' => "15",
 				'setumei' => "生徒リストの表示行数",
@@ -48,6 +53,49 @@ class DatabaseSeeder extends Seeder
 				'value1' => "5",
 				'setumei' => "退出時間までの最短時間（分、以上）",
 			],
+			[
+				'subject'=> "sbjIn",
+				'value1' => "[name-student]様が入室されました。---[name-jyuku]---",
+				'setumei' => "入出メッセージの件名",
+			],
+			[
+				'subject'=> "MsgIn",
+				'value1' => "[name-protector]様
+				[name-student]さんが入室されました。
+				入出時間：[time]",
+				'setumei' => "入室時メッセージ",
+			],
+			[
+				'subject'=> "sbjOut",
+				'value1' => "[name-student]様が退出されました。---[name-jyuku]---",
+				'setumei' => "退出メッセージの件名",
+			],
+			[
+				'subject'=> "MsgOut",
+				'value1' => "[name-protector]様
+				[name-student]さんが退出されました。
+				退室時間：[time]",
+				'setumei' => "入室時メッセージ",
+			],
+			[
+				'subject'=> "MsgTest",
+				'value1' => "[name-protector]様
+				このメールは送信テストです。受け取られましたら、そのまま返信ください。
+				生徒お名前：[name-student]様
+				受け取られる方のお名前：[name-protector]様
+				送信時間：[time]",
+				'setumei' => "送信テストメッセージ",
+			],
+			[
+				'subject'=> "MsgFooter",
+				'value1' => "教進セミナー",
+				'setumei' => "送信メールフッター",
+			],
+			[
+				'subject'=> "sbjTest",
+				'value1' => "テストメール --[name-jyuku]--",
+				'setumei' => "テストメールの件名",
+			],
         ];
 		foreach($configrations as $configration) {
 			$conf = new configration();
@@ -62,12 +110,14 @@ class DatabaseSeeder extends Seeder
 		$init_users = [
 			[
 			'serial_user'=> "T_0000",
-			'email' => "kyoushin.fb@gmail.com",
+			//'email' => "kyoushin.fb@gmail.com",
+			//'email' => "foosoo200@gmail.com",
+			'email' => "awa@szemi-gp.com",
 			'password' => "0000",
-			'last_name_kanji' => "松浦",
-			'first_name_kanji' => "重雅",
-			'last_name_jp_kana' => "マツウラ",
-			'first_name_jp_kana' => "シゲマサ",
+			'last_name_kanji' => "鈴木",
+			'first_name_kanji' => "文彦",
+			'last_name_jp_kana' => "スズキ",
+			'first_name_jp_kana' => "フミヒコ",
 			'rank' => "学習塾,英会話",
 			'phone'=> "123-4567-8901",
 			'gender' => "男",
@@ -75,7 +125,24 @@ class DatabaseSeeder extends Seeder
 			//'first_name_eng'=> "Fumihiko",
 			//'phone'=> "000-0000-0000",
 			//'address'=> "千葉県************",
-            ]
+            ],
+			[
+				'serial_user'=> "T_0001",
+				'email' => "kyoushin.fb@gmail.com",
+				//'email' => "foosoo200@gmail.com",
+				'password' => "1111",
+				'last_name_kanji' => "松浦",
+				'first_name_kanji' => "重雅",
+				'last_name_jp_kana' => "マツウラ",
+				'first_name_jp_kana' => "シゲマサ",
+				'rank' => "学習塾,英会話",
+				'phone'=> "123-4567-8901",
+				'gender' => "男",
+				//'last_name_eng'=> "Suzuki",
+				//'first_name_eng'=> "Fumihiko",
+				//'phone'=> "000-0000-0000",
+				//'address'=> "千葉県************",
+			],
         ];
         foreach($init_users as $init_user) {
 			$user = new User();
@@ -90,6 +157,5 @@ class DatabaseSeeder extends Seeder
 			$user->phone = $init_user['phone'];
 			$user->save();
 		}
-
     }
 }

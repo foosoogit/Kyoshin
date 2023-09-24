@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('student_serial')->unique()->comment('生徒番号');
+            $table->string('student_serial')->comment('生徒番号');
             $table->string('target_date',10)->comment('日付');
             $table->string('time_in',20)->comment('時間');
             $table->string('time_out',20)->nullable()->comment('時間');

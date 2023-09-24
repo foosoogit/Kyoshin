@@ -10,6 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Student;
 use Illuminate\Mail\Mailables\Address;
+use App\Http\Controllers\OtherFunc;
 
 class ContactMail extends Mailable
 {
@@ -34,22 +35,33 @@ class ContactMail extends Mailable
      */
     public function envelope()
     {
-        //print_r($this->target_item_array);
-        /*
-        $type_msg='退室';
-        if($this->target_item_array['type']=='in'){
-            $type_msg='入室';
-        }
-        */
-        $from    = new Address($this->target_item_array['email'], $this->target_item_array['protector']);
-        $subject = $this->target_item_array['name_sei'].' '.$this->target_item_array['name_mei'].'さんが'.$this->target_item_array['type'].'されました。';
+        //print 'jyuku_name='.$this->target_item_array['jyuku_name']."<br>";
+        //$from    = new Address($this->target_item_array['from_email']);
+        //$from    = new Address($this->target_item_array['from_email'], $this->target_item_array['jyuku_name']);
+        //$subject = $this->target_item_array['name_sei'].' '.$this->target_item_array['name_mei'].'さんが'.$this->target_item_array['type'].'されました。';
+        //$from= new Address($this->target_item_array['from_email'], $this->target_item_array['jyuku_name']);
+        //$subject = $this->target_item_array['subject'];
+        //$subject=str_replace('[name-protector]', OtherFunc::randomName(), $msg);
+        //$subject = $this->target_item_array['subject'];
         //$from    = new Address($target_item_array['email'], $target_item_array['protector']);
         //$subject = $target_item_array['name_sei'].' '.$target_item_array['name_mei'].'さんが'.$$target_item_array['type'].'入室されました。';
         return new Envelope(
-            subject: $subject,
-            from: 'inf@szemi-gp.com',
-            to: $this->target_item_array['email'],
-            replyTo:'inf@szemi-gp.com',
+            /*
+            'host' => 'smtp.gmail.com',
+            'port' => '465',
+            'username' => 'hogehoge@gmail.com',
+            'password' => 'passpasspasspass',
+            'encryption' => 'ssl',
+            */
+            subject: $this->target_item_array['subject'],
+            //'from' => ['address' => 'foosoo200@gmail.com', 'name' => 'foosoo200'],
+            //from: new Address('foosoo200@gmail.com'),
+            //from: new Address($this->target_item_array['from_email'], 'Jeffrey Way'),
+            //from: $this->target_item_array['from_email'],
+            //from: new Address($this->target_item_array['from_email'], $this->target_item_array['jyuku_name']),
+            to: $this->target_item_array['to_email'],
+            //replyTo:$this->target_item_array['from_email'],
+            replyTo: $this->target_item_array['from_email'],
         );
 
     }

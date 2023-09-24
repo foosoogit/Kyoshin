@@ -50,17 +50,24 @@
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->note }}</td>
                     <td>
-                        {{--<form action="{{route('showRireki')}}" method="POST">--}}
                         <form action="{{route('admin.showRireki')}}" method="POST">
-                        {{--<form action="ShowRireki" method="POST">--}}
                             @csrf<input name="ShowRireki_Btn" type="submit" value="入退出履歴">
-                            <input type="hidden" id="studserial" name="studserial" value="{{$student->student_serial}}">
-                        </form></td>
+                            @if($student->email=="")
+                                <input type="hidden" id="studserial" name="studserial" value="{{$student->student_serial}}" disabled>    
+                            @else
+                                <input type="hidden" id="studserial" name="studserial" value="{{$student->student_serial}}">
+                            @endif
+                        </form>
+                    </td>
                     <td>
                         <form method="post" action="{{ route('student.delete', $student->id) }}">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" onClick="return clickDelete('{{ $student->name_sei }} {{ $student->name_mei }}')" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md" value="退会">
+                            @if($student->email=="")
+                                <input type="submit" onClick="return clickDelete('{{ $student->name_sei }} {{ $student->name_mei }}')" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md" value="退会" disabled>    
+                            @else
+                                <input type="submit" onClick="return clickDelete('{{ $student->name_sei }} {{ $student->name_mei }}')" class="delete-link underline text-sm text-gray-600 hover:text-gray-900 rounded-md" value="退会">
+                            @endif
                         </form>
                     </td>
                 </tr>

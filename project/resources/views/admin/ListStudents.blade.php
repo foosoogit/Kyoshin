@@ -63,7 +63,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<script>
 		function clickDelete(namae) {
-			if(!confirm(namae+'さんのデータを削除してもよろしいですか？')){
+			if(!confirm(namae+'さんを退会にします。もよろしいですか？（元の戻せます。）')){
 				return false;
 			}
 		}

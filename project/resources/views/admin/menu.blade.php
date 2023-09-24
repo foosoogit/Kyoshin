@@ -20,6 +20,7 @@
 			<li><a href="{{ route('Students.Create') }}">新規生徒登録</a></li>
 			{{--<li><a href="{{ route('Students.NewNumList') }}">新規生徒登録2</a></li>--}}
 			<li><a href="{{ route('teachers.index') }}">講師登録・追加・削除</a></li>
+			<li><a href="{{ route('teachers.show_setting') }}">環境設定</a></li>
 		</ul>
 		<form action="{{ route('logout') }}" method="post">
 			@csrf

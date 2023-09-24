@@ -32,7 +32,7 @@
                         <x-primary-button onclick="location.href='{{route('menu')}}'" >メニューに戻る</x-primary-button>
                     </div>
                      {{--@if($mnge=="modify")--}}
-                        <form method="post" action="{{ route('student.update', $stud_inf->id) }}" class="mt-6 space-y-6">
+                        <form method="post" action="{{ route('student.update', $stud_inf->id) }}" class="mt-6 space-y-6" class="form-inline text-right">
                         @csrf
                         @method('PUT')
                         {{--
@@ -72,11 +72,6 @@
                             <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
                         </div>
                         <div>
-                            <x-input-label for="email" value="email" />
-                            <x-text-input id="email" name="email" type="text" class="mt-1 block w-full" :value="old('email',optional($stud_inf)->email)"/>
-                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-                        </div>
-                        <div>
                             <x-input-label for="course" value="コース" />
                             {!!$html_cource_ckbox!!}
                             {{--                            
@@ -85,39 +80,62 @@
                             --}}
                             <x-input-error class="mt-2" :messages="$errors->get('course')" />
                         </div>
+                        <div class="form-group">
+                            <x-input-label for="protector_array[0]" value="送信先宛名-1" class="control-label"/>
+                            <x-text-input id="protector_array[0]" name="protector_array[0]" type="text" class="mt-1 block w-full" value="{{ old('protector_array[0]',$protector_array[0]) }}" class="form-control"/>様
+                            <x-input-label for="email_array[0]" value="email-1" />
+                            <x-text-input id="email_array[0]" name="email_array[0]" type="text" class="mt-1 block w-full" value="{{ old('email_array[0]',$email_array[0]) }}"/>
+                            <x-input-error class="mt-2" :messages="$errors->get('email_array[0]')" />
+                        </div>
+                        <div class="form-group">
+                            <x-input-label for="protector_array[1]" value="送信先宛名-2" class="control-label"/>
+                            <x-text-input id="protector_array[1]" name="protector_array[1]" type="text" class="mt-1 block w-full" value="{{ old('protector_array[1]',$protector_array[1]) }}" class="form-control"/>様
+                            <x-input-label for="email_array[1]" value="email-2" />
+                            <x-text-input id="email_array[1]" name="email_array[1]" type="text" class="mt-1 block w-full" value="{{ old('email_array[1]',$email_array[1]) }}"/>
+                            <x-input-error class="mt-2" :messages="$errors->get('email_array[1]')" />
+                        </div> 
+                        <div class="form-group">
+                            <x-input-label for="protector_array[2]" value="送信先宛名-3" class="control-label"/>
+                            <x-text-input id="protector_array[2]" name="protector_array[2]" type="text" class="mt-1 block w-full" value="{{ old('protector_array[2]',$protector_array[2]) }}" class="form-control"/>様
+                            <x-input-label for="email_array[2]" value="email-3" />
+                            <x-text-input id="email_array[2]" name="email_array[2]" type="text" class="mt-1 block w-full" value="{{ old('email_array[2]',$email_array[2]) }}"/>
+                            <x-input-error class="mt-2" :messages="$errors->get('email_array[2]')" />
+                        </div> 
                         <div>
                             <x-input-label for="phone" value="電話" />
                             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone',optional($stud_inf)->phone)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                         </div>
+                        {{--  
                         <div>
                             <x-input-label for="protector" value="保護者氏名" />
                             <x-text-input id="protector" name="protector" type="text" class="mt-1 block w-full" :value="old('protector',optional($stud_inf)->protector)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('protector')" />
                         </div>
+                        --}}
                         <div>
                             <x-input-label for="grade" value="学年" />
                             {!!$html_grade_slct!!}
                             <x-input-error class="mt-2" :messages="$errors->get('grade')" />
                         </div>
                         <div>
-                            <x-input-label for="elementary" value="小学校" />
+                            <x-input-label for="elementary" value="小学校名" />
                             <x-text-input id="elementary" name="elementary" type="text" class="mt-1 block w-full" :value="old('elementary',optional($stud_inf)->elementary)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('elementary')" />
                         </div>
                         <div>
-                            <x-input-label for="junior_high" value="中学校" />
+                            <x-input-label for="junior_high" value="中学校名" />
                             <x-text-input id="junior_high" name="junior_high" type="text" class="mt-1 block w-full" :value="old('junior_high',optional($stud_inf)->junior_high)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('junior_high')" />
                         </div>
                         <div>
-                            <x-input-label for="high_school" value="高校" />
+                            <x-input-label for="high_school" value="高校名" />
                             <x-text-input id="high_school" name="high_school" type="text" class="mt-1 block w-full" :value="old('high_school',optional($stud_inf)->junior_high)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('high_school')" />
                         </div>
                         <div>
                             <x-input-label for="note" value="メモ" />
-                            <textarea id="note" name="note" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" rows="6">{{ old('note',optional($stud_inf)->note) }}</textarea>
+                            <textarea id="note" name="note" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" rows="3">{{ old('note',optional($stud_inf)->note) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('note')" />
                         </div>
                         @if (session('message'))
