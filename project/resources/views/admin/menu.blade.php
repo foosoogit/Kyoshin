@@ -15,7 +15,7 @@
 			<li><a href="{{ route('teachers.show_standby_display') }}">待ち受け画面</a></li>
 			{{--<li><a href="{{ route('teachers.index') }}">待ち受け画面</a></li>--}}
 			<li><a href="{{ route('admin.showRireki') }}">入退出履歴</a></li>
-			<li><a href="#mail">メール配信</a></li>
+			<li><a href="{{ route('teachers.show_delivery_email') }}">メール配信</a></li>
 			<li><a href="{{ route('Students.List') }}">生徒一覧（新規登録・追加・削除）</a></li>
 			<li><a href="{{ route('Students.Create') }}">新規生徒登録</a></li>
 			{{--<li><a href="{{ route('Students.NewNumList') }}">新規生徒登録2</a></li>--}}

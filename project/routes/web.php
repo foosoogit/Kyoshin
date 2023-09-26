@@ -40,8 +40,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::controller(TeachersController::class)->name('teachers.')->group(function() {
         //Route::get('teachers/send_test_mail/{type}', 'send_test_mail')->name('test_mail_MsgIn.send');
-        Route::get('teachers/send_test_mail/{type}','send_test_mail')->name('test_mail_MsgIn.send');
-        //Route::get('teachers/send_test_mail/{type}', [\App\Http\Controllers\StudentController::class,'ShowStudentModifyList'])->name('Students.list_ck_modify');
+        //Route::get('teachers/show_delivery_email','show_delivery_email')->name('show_delivery_email');
+        Route::get('teachers/show_delivery_email', function () {
+            return view('admin.CreateMail');
+        })->name('show_standby_display');
+        Route::get('teachers/send_test_mail/{type}', [\App\Http\Controllers\StudentController::class,'ShowStudentModifyList'])->name('Students.list_ck_modify');
         Route::post('teachers/setting_update', 'update_setting')->name('setting.update');
         Route::get('/','show_setting')->name('show_setting');
         Route::get('teachers', 'index')->name('index');
