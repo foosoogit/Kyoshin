@@ -4,6 +4,16 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'ENV_TEST' => env('ENV_TEST'),
+    'MAIL_MAILER'=>env('MAIL_MAILER'),
+    'MAIL_HOST'=>env('MAIL_HOST'),
+    'MAIL_PORT'=>env('MAIL_PORT'),
+    'MAIL_USERNAME'=>env('MAIL_USERNAME'),
+    'MAIL_PASSWORD'=>env('MAIL_PASSWORD'),
+    'MAIL_ENCRYPTION'=>env('MAIL_ENCRYPTION'),
+    'MAIL_FROM_ADDRESS'=>env('MAIL_FROM_ADDRESS'),
+    'MAIL_FROM_NAME'=>env('MAIL_FROM_NAME'),
+    
     /*
     |--------------------------------------------------------------------------
     | Application Name

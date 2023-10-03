@@ -56,7 +56,7 @@
                             <x-input-error class="mt-2" :messages="$errors->get('Interval')" />
                         </div>
                         <div>
-                            塾名→[name-jyuku]  生徒氏名→[name-student]  保護者氏名→[name-protector] 時間→[time]
+                            塾名→[name-jyuku]  生徒氏名→[name-student]  保護者氏名→[name-protector] 時間→[time] フッター→[footer]
                             ※生徒氏名と保護者氏名はダミーデータで送信されます。
                             <x-input-label for="sbjIn" value="入室時の件名" />
                             <textarea id="sbjIn" name="sbjIn" rows="1" class="mt-1 block w-full" required autofocus >{{$configration_array['sbjIn']}}</textarea>

@@ -39,6 +39,11 @@ class DatabaseSeeder extends Seeder
 				'setumei' => "生徒リストの表示行数",
             ],
 			[
+				'subject'=> "DdisplayLineNumDeliveryStudentsList",
+				'value1' => "20",
+				'setumei' => "メール配信用生徒リストの表示行数",
+            ],
+			[
 				'subject'=> "Grade",
 				'value1' => "小1,小2,小3,小4,小5,小6,中1,中2,中3,高1,高2,高3",
 				'setumei' => "学年",

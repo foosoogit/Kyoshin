@@ -18,12 +18,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->text('student_serial')->comment('送り先生徒番号');
-            $table->string('target_date',10)->comment('日付');
-            $table->string('student_name',50)->comment('配信者');
+            $table->string('date_delivered',30)->comment('日付');
+            $table->text('student_name',50)->comment('配信者');
             $table->text('to_mail_address')->comment('送り先メールアドレス');
             $table->string('from_mail_address',50)->comment('送り元メールアドレス');
-            $table->text('subject')->comment('送り元メールアドレス');
-            $table->text('body')->comment('送り元メールアドレス');
+            $table->text('subject')->comment('件名');
+            $table->text('body')->comment('本文');
         });
     }
 

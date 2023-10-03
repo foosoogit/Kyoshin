@@ -49,8 +49,23 @@ class OtherFunc extends Controller
 			if(mb_strstr( $target,$cource)!== false){$cked='checked="checked"';}
 			$htm_cource_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="'.$cource.'" '.$cked.'>'.$cource.'<label>';
 		}
-        $htm_cource_ckbox.='</select>';
+        //$htm_cource_ckbox.='</select>';
 		return $htm_cource_ckbox;
+	}
+
+	public static function make_html_gender_ckbox($target){
+		//$target_CourceArray_array=InitConsts::CourceArray();
+		$htm_gender_ckbox='';$gender_array=array();
+		$gender_array[0]='男';$gender_array[1]='女';
+		$i=0;
+		foreach($gender_array as $gender){
+			$cked='';
+			if($target==$gender){$cked='checked="checked"';}
+			$htm_gender_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="gender[]" id=gender['.$i.'] value="'.$gender.'" '.$cked.' onchange="gender_manage(this);">'.$gender.'<label>';
+			$i++;
+		}
+        //$htm_cource_ckbox.='</select>';
+		return $htm_gender_ckbox;
 	}
 
 	public static function set_access_history($REFERER){

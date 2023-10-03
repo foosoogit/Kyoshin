@@ -27,5 +27,6 @@ class Student extends Model
         'elementary',
         'junior_high',
         'high_school',
+        'pass_for_protector',
     ];
 }

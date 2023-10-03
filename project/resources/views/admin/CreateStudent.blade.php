@@ -41,6 +41,7 @@
                             @csrf
                     @endif
                     --}}
+                    {{--{{$barcode}}--}}
                         <div>
                             <x-input-label for="serial_student" value="生徒番号" />
                             <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{optional($stud_inf)->serial_student}}" readonly/>
@@ -68,6 +69,12 @@
                         </div>
                         <div>
                             <x-input-label for="name_mei_kana" value="メイ" />
+                            <x-text-input id="name_mei_kana" name="name_mei_kana" type="text" class="mt-1 block w-full" :value="old('name_mei_kana',optional($stud_inf)->name_mei_kana)" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
+                        </div>
+                        <div>
+                            <x-input-label for="name_mei_kana" value="性別" />
+                            {!!$html_gender_ckbox!!}
                             <x-text-input id="name_mei_kana" name="name_mei_kana" type="text" class="mt-1 block w-full" :value="old('name_mei_kana',optional($stud_inf)->name_mei_kana)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
                         </div>
@@ -102,17 +109,15 @@
                             <x-input-error class="mt-2" :messages="$errors->get('email_array[2]')" />
                         </div> 
                         <div>
+                            <x-input-label for="pass_for_protector" value="保護者確認用パスワード" />
+                            <x-text-input id="pass_for_protector" name="pass_for_protector" type="text" class="mt-1 block w-full" :value="old('pass_for_protector',optional($stud_inf)->pass_for_protector)" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('pass_for_protector')" />
+                        </div>
+                        <div>
                             <x-input-label for="phone" value="電話" />
                             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone',optional($stud_inf)->phone)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                         </div>
-                        {{--  
-                        <div>
-                            <x-input-label for="protector" value="保護者氏名" />
-                            <x-text-input id="protector" name="protector" type="text" class="mt-1 block w-full" :value="old('protector',optional($stud_inf)->protector)" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('protector')" />
-                        </div>
-                        --}}
                         <div>
                             <x-input-label for="grade" value="学年" />
                             {!!$html_grade_slct!!}
@@ -120,17 +125,17 @@
                         </div>
                         <div>
                             <x-input-label for="elementary" value="小学校名" />
-                            <x-text-input id="elementary" name="elementary" type="text" class="mt-1 block w-full" :value="old('elementary',optional($stud_inf)->elementary)" required autofocus />
+                            <x-text-input id="elementary" name="elementary" type="text" class="mt-1 block w-full" :value="old('elementary',optional($stud_inf)->elementary)"/>
                             <x-input-error class="mt-2" :messages="$errors->get('elementary')" />
                         </div>
                         <div>
                             <x-input-label for="junior_high" value="中学校名" />
-                            <x-text-input id="junior_high" name="junior_high" type="text" class="mt-1 block w-full" :value="old('junior_high',optional($stud_inf)->junior_high)" required autofocus />
+                            <x-text-input id="junior_high" name="junior_high" type="text" class="mt-1 block w-full" :value="old('junior_high',optional($stud_inf)->junior_high)"/>
                             <x-input-error class="mt-2" :messages="$errors->get('junior_high')" />
                         </div>
                         <div>
                             <x-input-label for="high_school" value="高校名" />
-                            <x-text-input id="high_school" name="high_school" type="text" class="mt-1 block w-full" :value="old('high_school',optional($stud_inf)->junior_high)" required autofocus />
+                            <x-text-input id="high_school" name="high_school" type="text" class="mt-1 block w-full" :value="old('high_school',optional($stud_inf)->high_school)"/>
                             <x-input-error class="mt-2" :messages="$errors->get('high_school')" />
                         </div>
                         <div>
@@ -151,6 +156,18 @@
             </div>
         </div>
     </div>
+    <script>
+        function gender_manage(obj){
+            console.log("id="+obj.id);
+            if(obj.checked==true){
+                if(document.getElementById('gender[1]').id==obj.id){
+                    document.getElementById('gender[0]').checked=false;
+                }else{
+                    document.getElementById('gender[1]').checked=false;
+                }
+            }
+        }
+    </script>
 </body>
 </html>
 {{-- </x-app-layout> --}}

@@ -13,7 +13,6 @@
                             {{$type}}
                             <x-input-error class="mt-2" :messages="$errors->get('student_serial')" />
                         </div>
-                        
                     </form>
                 </div>
             </div>

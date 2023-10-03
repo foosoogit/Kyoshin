@@ -70,6 +70,7 @@ class ComposerStaticInitcef9e7359965e9c989cec551a76ff750
             'Psr\\Http\\Message\\' => 17,
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
+            'Picqer\\Barcode\\' => 15,
         ),
         'L' => 
         array (
@@ -247,6 +248,10 @@ class ComposerStaticInitcef9e7359965e9c989cec551a76ff750
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'League\\Config\\' => 
         array (

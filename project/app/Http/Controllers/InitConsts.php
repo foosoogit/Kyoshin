@@ -64,5 +64,11 @@ class InitConsts extends Controller
         $res=configration::where('subject','=','sbjTest')->first('value1');
         return $res['value1'];
     }
+
+    public static function getValue($tagetSbj){
+        $res=configration::where('subject','=',$tagetSbj)->first('value1');
+        return $res['value1'];
+    }
+
     
 }

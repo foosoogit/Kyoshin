@@ -32,6 +32,7 @@ class StudentFactory extends Factory
                 'name_mei_kana'=> $this->faker->firstKanaName(),
                 'gender'=> $this->faker->randomElement(['男', '女']),
                 'protector'=> $this->faker->Name(),
+                'pass_for_protector'=> sprintf('%04d', $this->faker->randomNumber(4)),
                 'postal'=> $this->faker->postcode(),
                 'address_region'=> $this->faker->prefecture(),
                 'address_locality'=> $this->faker->city(),

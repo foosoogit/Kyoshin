@@ -24,6 +24,7 @@ return new class extends Migration
 			$table->string('name_sei_kana',100)->nullable()->comment('セイ');
 			$table->string('name_mei_kana',100)->nullable()->comment('メイ');
             $table->string('protector',100)->nullable()->comment('保護者');
+            $table->string('pass_for_protector',10)->nullable()->comment('保護者閲覧用パスワード');
 			$table->string('gender',10)->nullable();
 			$table->string('birth_year',10)->nullable();
 			$table->string('birth_month',10)->nullable();

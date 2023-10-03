@@ -22,9 +22,9 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<script>
 		//alert("Hello World!");
-		console.log("BEEP");
+		//console.log("BEEP");
 		function beep(){
-			console.log(document.getElementById('beep').value);
+			//console.log(document.getElementById('beep').value);
 			/*
 			var audio_true = new Audio("true.mp3");
 			var audio;

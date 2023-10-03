@@ -39,14 +39,23 @@ Route::get('/menu', function () {
 Route::group(['middleware' => ['auth']], function(){
 
     Route::controller(TeachersController::class)->name('teachers.')->group(function() {
-        //Route::get('teachers/send_test_mail/{type}', 'send_test_mail')->name('test_mail_MsgIn.send');
-        //Route::get('teachers/show_delivery_email','show_delivery_email')->name('show_delivery_email');
-        Route::get('teachers/show_delivery_email', function () {
+        Route::post('/teachers/update_MailAccount','update_MailAccount')->name('email_account.update');
+        Route::get('/show_email_account_setup','show_email_account_setup')->name('show_email_account_setup');
+        Route::get('/','show_setting')->name('show_setting');
+        Route::post('teachers/execute_mail_delivery', 'execute_mail_delivery')->name('execute_mail_delivery');
+        Route::get('teachers/show_delivery_email', 'show_delivery_email')->name('show_delivery_email');
+        Route::get('teachers/show_delivery_email_list_students', function () {
+            return view('admin.MailDelivery');
+        })->name('show_delivery_email_list_students');
+        Route::get('teachers/show_delivery_email_history_list', function () {
+            return view('admin.HistoryMailDelivery');
+        })->name('show_delivery_email_history_list');
+        Route::get('teachers/show_create_email', function () {
             return view('admin.CreateMail');
-        })->name('show_standby_display');
+        })->name('show_create_email');
+
         Route::get('teachers/send_test_mail/{type}', [\App\Http\Controllers\StudentController::class,'ShowStudentModifyList'])->name('Students.list_ck_modify');
         Route::post('teachers/setting_update', 'update_setting')->name('setting.update');
-        Route::get('/','show_setting')->name('show_setting');
         Route::get('teachers', 'index')->name('index');
         Route::get('teachers/create', 'create')->name('create');
         Route::post('teachers', 'store')->name('store');
