@@ -18,6 +18,7 @@ use App\Http\Controllers\InitConsts;
 use App\Models\MailDelivery;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 //use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeachersController extends Controller
@@ -235,12 +236,14 @@ class TeachersController extends Controller
 
     public function send_mail(StoreInOutHistoryRequest $request)
     {
-        session(['time_now'=>date('Y-m-d H:i:s')]);
+        //session(['time_now'=>date('Y-m-d H:i:s')]);
+        //Log::alert('time_now='.session('time_now'));
+        Log::alert('student_serial='.$request->student_serial);
         //print "date=".date('Y-m-d H:i:s');
         $StudentInfSql=Student::where('serial_student','=',$request->student_serial);
         if($StudentInfSql->count()>0){
             $user = Auth::user();
-            $target_item_array['from_email']=$user->email;
+            $target_item_array['from_email']=config('app.MAIL_FROM_ADDRESS');
             $StudentInf=$StudentInfSql->first();
             
             $target_item_array['target_time']=date("Y-m-d H:i:s");
@@ -257,17 +260,19 @@ class TeachersController extends Controller
                         ->where('target_date','=',date("Y-m-d"))
                         ->whereNull('time_out')
                         ->orderBy('id', 'desc');
+            Log::alert('count='.$serch_target_history_sql->count());
             if($serch_target_history_sql->count()>0){
                 $serch_target_history_array=$serch_target_history_sql->first();
                 //$_SESSION['time_in']=$serch_target_history_array->time_in;
-                session(['time_in' => $serch_target_history_array->time_in]);
-                session(['time_now'=>date('Y-m-d H:i:s')]);
-                session(['interval'=>self::time_diff(session('time_in'), session('time_now'))]);
-                if(session('interval')['minutes']<5){
+                $time_in= $serch_target_history_array->time_in;
+                //session(['time_now'=>date('Y-m-d H:i:s')]);
+                $interval=self::time_diff($time_in, $target_item_array['target_time']);
+                if($interval<300){
                     session(['seated_type' => 'false']);
-                    //$_SESSION['seated_type']='false';
+                    echo session('seated_type');
                 }else{
                     session(['seated_type' => 'out']);
+                    echo session('seated_type');
                     $msg=InitConsts::MsgOut();
                     $sbj=InitConsts::sbjOut();
                     //$target_history=$serch_target_history->first();
@@ -278,6 +283,7 @@ class TeachersController extends Controller
                 }  
             }else{
                 session(['seated_type' => 'in']);
+                echo session('seated_type');
                 $msg=InitConsts::MsgIn();
                 $sbj=InitConsts::sbjIn();
                 InOutHistory::create([
@@ -287,11 +293,10 @@ class TeachersController extends Controller
                     'student_name'=>$StudentInf->name_sei.' '.$StudentInf->name_mei,
                     'student_name_kana'=>$StudentInf->name_sei_kana.' '.$StudentInf->name_mei_kana,
                     'to_mail_address'=>$StudentInf->email,
-                    'from_mail_address'=>'inf@szemi-gp.com',
+                    'from_mail_address'=>$target_item_array['from_email'],
                 ]);
             }
             if(session('seated_type')<>'false'){
-
                 $msg=str_replace('[name-student]', $StudentInf->name_sei." ".$StudentInf->name_mei, $msg);
                 $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
                 $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
@@ -312,31 +317,19 @@ class TeachersController extends Controller
                 }
             }
         }else{
-
+            echo 'No Record';
         }
-        return view('admin.StandbyDisplay');
+        //echo session('seated_type');
+        //echo json_encode($res);
+        //return view('admin.StandbyDisplay');
     }
 
     
     public function time_diff($d1, $d2){
-        //初期化
-        $diffTime = array();
-        //タイムスタンプ
         $timeStamp1 = strtotime($d1);
         $timeStamp2 = strtotime($d2);
-        //print "timeStamp1=".$timeStamp1;
-        //タイムスタンプの差を計算
         $difSeconds = $timeStamp2 - $timeStamp1;
-        //秒の差を取得
-        $diffTime['seconds'] = $difSeconds % 60;
-        //分の差を取得
-        $difMinutes = ($difSeconds - ($difSeconds % 60)) / 60;
-        $diffTime['minutes'] = $difMinutes % 60;
-        //時の差を取得
-        $difHours = ($difMinutes - ($difMinutes % 60)) / 60;
-        $diffTime['hours'] = $difHours;
-        //結果を返す
-        return $diffTime;
+        return $difSeconds;
    }
 
     public function show_standby_display()

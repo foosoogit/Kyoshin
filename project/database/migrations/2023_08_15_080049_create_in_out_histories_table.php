@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('time_out',20)->nullable()->comment('時間');
             $table->string('student_name',50)->comment('生徒氏名');
             $table->string('student_name_kana',50)->comment('セイトシメイ');
-            $table->string('to_mail_address',50)->comment('送り先メールアドレス');
+            $table->string('to_mail_address',200)->comment('送り先メールアドレス');
             $table->string('from_mail_address',50)->comment('送り元メールアドレス');
         });
     }

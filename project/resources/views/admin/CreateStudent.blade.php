@@ -29,9 +29,16 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <div class="flex items-center gap-4">
-                        <x-primary-button onclick="location.href='{{route('menu')}}'" >メニューに戻る</x-primary-button>
+                        <x-primary-button onclick="location.href='{{route('menu')}}'" >メニュー</x-primary-button>
+                        <x-primary-button onclick="location.href='{{route('Students.List')}}'" >生徒一覧</x-primary-button>
                     </div>
                      {{--@if($mnge=="modify")--}}
+                     {{--  
+                     @php
+                     $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+                     @endphp
+                     {!! $generator->getBarcode('0001245259636', $generator::TYPE_CODE_128) !!}
+                     --}}
                         <form method="post" action="{{ route('student.update', $stud_inf->id) }}" class="mt-6 space-y-6" class="form-inline text-right">
                         @csrf
                         @method('PUT')
@@ -42,6 +49,7 @@
                     @endif
                     --}}
                     {{--{{$barcode}}--}}
+                        {!! $barcode !!}    
                         <div>
                             <x-input-label for="serial_student" value="生徒番号" />
                             <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{optional($stud_inf)->serial_student}}" readonly/>

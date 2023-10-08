@@ -33,7 +33,7 @@ Route::get('/menu', function () {
     //return view('dashboard');
     return view('admin.menu');
 })->middleware(['auth', 'verified'])->name('menu');
-
+Route::view('barcode', 'barcode');
 //Route::get('students/create', 'create')->name('student.create');
 //Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function(){
@@ -66,12 +66,28 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('teachers/{teacher}', 'destroy')->name('destroy');
         Route::get('teachers/{id}/show_change_password', 'show_change_password')->name('show_change_password');
         Route::post('teachers/store_password', 'store_password')->name('store_password');
-        //Route::get('teachers/show_standby_display', 'show_standby_display')->name('show_standby_display');
+
+        //Route::post('teachers/send_mail', 'send_mail')->name('send_mail');
+        Route::post('send_mail', [\App\Http\Controllers\TeachersController::class,'send_mail'])->name("send_mail");
+
+        /*
         Route::get('show_standby_display', function () {
+            session(['student_serial' => ""]);
             return view('admin.StandbyDisplay');
         })->name('show_standby_display');
-        Route::get('show_standby_display','show_standby_display')->name('show_standby_display');
-        Route::post('teachers','send_mail')->name('sendmail');
+        */
+        Route::get('show_standby_display', function(){
+            session(['student_serial' => ""]);
+            return view('admin.StandbyDisplayJQ');
+        })->name('show_standby_display');
+        /*
+        Route::post('show_standby_display', function () {
+            return view('admin.StandbyDisplay');
+        })->name('show_standby_display');
+        */
+        //view('admin.StandbyDisplay')
+        //Route::get('show_standby_display','show_standby_display')->name('show_standby_display');
+        //Route::post('teachers','send_mail')->name('send_mail');
     });
 
     //Route::get('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');

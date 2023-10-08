@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+    'MAIL_FROM_ADDRESS' => env('MAIL_FROM_ADDRESS'),
     'ENV_TEST' => env('ENV_TEST'),
     'MAIL_MAILER'=>env('MAIL_MAILER'),
     'MAIL_HOST'=>env('MAIL_HOST'),

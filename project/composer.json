@@ -11,7 +11,8 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "livewire/livewire": "^2.12"
+        "livewire/livewire": "^2.12",
+        "picqer/php-barcode-generator": "^2.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
