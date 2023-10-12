@@ -16,7 +16,8 @@
                 <div class="col-auto"><x-text-input id="kensakukey_txt" name="kensakukey_txt" type="text" class="mt-1 block w-full" :value="old('kensakukey','optional(target_key)')" required autofocus wire:model.defer="kensakukey"/></div>
                 {{--  <a wire:click="search()" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">検索</a>--}}
                 <div class="col-auto"><button type="button" name="SerchBtn" id="SerchBtn" wire:click="search()" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">検索</button></div>
-                <div class="col-auto"><button type="button" name="SerchBtn" id="SerchBtn" wire:click="searchClear()" onclick="document.getElementById('kensakukey_txt').value=''" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">検索解除</button></div>
+                {{-- <div class="col-auto"><a href="{{ route('Students.List') }}">検索解除</a></div> --}}
+                <div class="col-auto"><button type="button" name="SerchClearBtn" id="SerchClearBtn" wire:click="searchClear()" onclick="document.getElementById('kensakukey_txt').value=''" class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-gray-700">検索解除</button></div>
                 {{--<a href="{{ route('student.create') }}" >新規登録</a> --}}
             </div>
             <table id="table_responsive">
@@ -73,6 +74,11 @@
                 </tr>
                 @endforeach
             </table>
-            {{$students->appends(request()->query())->links('pagination::bootstrap-4')}}
+            {{-- $data->withQueryString()->links()--}}
+            {{--{{$students->appends(request()->query())->links('pagination::bootstrap-4')}}-}}
+            {{--{{$students-&gt;appends(request()-&gt;query())-&gt;links('pagination::bootstrap-4')}}--}}
+            {{-- {!! $students->appends(['q' => $q['q']])->render() !!} --}}
+             {{ $students->appends(request()->input())->links('pagination::bootstrap-4') }} 
+            {{--{{ $students->links('pagination::bootstrap-4') }}--}}
         </div>
 </div>

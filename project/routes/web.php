@@ -68,7 +68,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('teachers/store_password', 'store_password')->name('store_password');
 
         //Route::post('teachers/send_mail', 'send_mail')->name('send_mail');
-        Route::post('send_mail', [\App\Http\Controllers\TeachersController::class,'send_mail'])->name("send_mail");
+        Route::post('send_mail_in_out', [\App\Http\Controllers\TeachersController::class,'send_mail_in_out'])->name("send_mail_in_out");
+        Route::post('in_out_manage', [\App\Http\Controllers\TeachersController::class,'in_out_manage'])->name("in_out_manage");
 
         /*
         Route::get('show_standby_display', function () {
@@ -110,13 +111,23 @@ Route::group(['middleware' => ['auth']], function(){
     //Route::get('students/ShowRireki/{studserial}', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
     Route::delete('students/delete/{StudentID}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
+
+    /*
     Route::get('students/list', function () {
         return view('admin.ListStudents');
     });
-    Route::post('students/list', function () {
+    */
+
+    Route::get('students/list', function () {
+        //session(['serchKey' =>""]);
         return view('admin.ListStudents');
     })->name('Students.List');
 
+    Route::post('students/list', function () {
+        //session(['serchKey' =>""]);
+        return view('admin.ListStudents');
+    })->name('Students.List');
+    
     Route::get('students/list_ner_num', function () {
         session(['serchKey' =>""]);
         session(['sort_key' =>"email"]);

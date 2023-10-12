@@ -56,18 +56,11 @@
 			document.getElementById('student_serial_txt').focus();
 		});
 		$('#student_serial_txt').keypress(function(e) {
-			console.log("TEST");
-            /*
-			var audio = new Audio("true.mp3"); 
-            audio.play();
-            var audio = new Audio("true.mp3"); 
-            audio_in.play();
-            var audio = new Audio("true.mp3"); 
-            audio_in.play();
-			*/
+			console.log("TEST0");
 			if(e.which == 13) {
 				$.ajax({
-					url: 'send_mail',
+					//url: 'send_mail',
+					url: 'in_out_manage',
 					type: 'post', // getかpostを指定(デフォルトは前者)
 					dataType: 'text', // 「json」を指定するとresponseがJSONとしてパースされたオブジェクトになる
 					scriptCharset: 'utf-8',
@@ -76,50 +69,23 @@
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 					}
 				}).done(function (data) {
-					if(data=="false"){
+					//console.log("seated_type="+data);
+					const item_json = JSON.parse(data);
+					//console.log("seated_type="+item_json.seated_type);
+					if(item_json.seated_type=="false"){
 						audio_false.play();
-						console.log(data);
-					}else if(data=="in"){
+						//console.log(data);
+					}else if(item_json.seated_type=="in"){
 						audio_in.play();
-						console.log(data);
-					}else if(data=="out"){
+						send_mail(data);
+						//console.log(data);
+					}else if(item_json.seated_type=="out"){
 						audio_out.play();
-						console.log(data);
+						send_mail(data);
+						//console.log(data);
 					}
-					/*
-					var dt = JSON.parse(data);
-					if(dt.flgToroku==true){
-						audio=audio_true;	
-						$('#ckToroku').text('○');
-						$('#resUketukeNo').text(dt.uketukeNo);
-						$('#genzaijikoku').text(dt.registTime);
-						$('#ckUketuke').text(dt.flgUketuke);
-						if(dt.flgUketuke>1){
-							audio=audio_false_cnt;	
-						}
-						if(dt.flgTime==true){
-							$('#ckTime').text('○');
-							$('#torokuTime').html(dt.reservTime);
-
-							//$('#torokuTime').html(dt.registTime);
-						}else{
-							console.log(dt.reservTime);
-							$('#ckTime').text('☓');
-							moji="<SPAN style='color:red'>"+dt.reservTime+"</SPAN>"
-							$('#torokuTime').html(moji);
-							audio=audio_false_time;
-						}
-					}else{
-						//alert(dt.flgToroku);
-						$('#resUketukeNo').html("<SPAN style='color:red'>"+dt.uketukeNo+"</SPAN>");
-						$('#ckToroku').text('☓');
-						audio=audio_false_uketukeNo;
-					}
-					audio.play();
-					document.getElementById('uketukeNo').focus();
-					document.getElementById('uketukeNo').value="";
-					*/
 					document.getElementById('student_serial_txt').value="";
+					document.getElementById('student_serial_txt').focus();
 					data=null;
 				}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 					alert(XMLHttpRequest.status);
@@ -131,7 +97,29 @@
 				//alert("TEST");
 			}
 		});
-		
+
+		function send_mail(item_json){
+			console.log("TEST1");
+			$.ajax({
+				url: 'send_mail_in_out',
+				type: 'post', // getかpostを指定(デフォルトは前者)
+				dataType: 'json', // 「json」を指定するとresponseがJSONとしてパースされたオブジェクトになる
+				scriptCharset: 'utf-8',
+				data: {"item_json":item_json},
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			}).done(function (data) {
+				console.log("ok");
+				data=null;
+			}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+				alert(textStatus);
+				alert(errorThrown);	
+				alert('エラー');
+			});
+		}
+
 	</script>
 </body>
 </html>

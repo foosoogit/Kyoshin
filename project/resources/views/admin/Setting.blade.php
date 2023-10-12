@@ -13,6 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     {{--  
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -56,6 +57,12 @@
                             <x-input-error class="mt-2" :messages="$errors->get('Interval')" />
                         </div>
                         <div>
+                            <x-input-label for="DdisplayLineNumStudentsList" value="一覧表に表示させる行数" />
+                            <x-text-input id="DdisplayLineNumStudentsList" name="DdisplayLineNumStudentsList" type="text" class="mt-1 block w-full" value="{{$configration_array['DdisplayLineNumStudentsList']}}" required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('DdisplayLineNumStudentsList')" />
+                        </div>
+                        <div>
+                            <span class="text-primary">[メール設定] テストメール送信先：{{ Auth::user()->email }}</span><br>
                             塾名→[name-jyuku]  生徒氏名→[name-student]  保護者氏名→[name-protector] 時間→[time] フッター→[footer]
                             ※生徒氏名と保護者氏名はダミーデータで送信されます。
                             <x-input-label for="sbjIn" value="入室時の件名" />
@@ -98,11 +105,6 @@
                             <x-input-label for="MsgFooter" value="メールフッター" />
                             <textarea id="MsgFooter" name="MsgFooter" rows="5" class="mt-1 block w-full"  required autofocus >{{$configration_array['MsgFooter']}}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('MsgFooter')" />
-                        </div>
-                        <div>
-                            <x-input-label for="DdisplayLineNumStudentsList" value="一覧表に表示させる行数" />
-                            <x-text-input id="DdisplayLineNumStudentsList" name="DdisplayLineNumStudentsList" type="text" class="mt-1 block w-full" value="{{$configration_array['DdisplayLineNumStudentsList']}}" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('DdisplayLineNumStudentsList')" />
                         </div>
                         <div class="flex items-center gap-4">
                             <x-primary-button>登録する</x-primary-button>

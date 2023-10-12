@@ -83,7 +83,6 @@
                         <div>
                             <x-input-label for="name_mei_kana" value="性別" />
                             {!!$html_gender_ckbox!!}
-                            <x-text-input id="name_mei_kana" name="name_mei_kana" type="text" class="mt-1 block w-full" :value="old('name_mei_kana',optional($stud_inf)->name_mei_kana)" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
                         </div>
                         <div>

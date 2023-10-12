@@ -231,36 +231,81 @@ class TeachersController extends Controller
         foreach($configration_all as $configration){
             $configration_array[$configration['subject']]=$configration['value1'];
         }
+        //$user = Auth::user();
+        //$to_mail=auth()->email();
+        //Log::alert('to_mail='.$to_mail );
         return view('admin.Setting',compact("configration_array"));
     }
 
-    public function send_mail(StoreInOutHistoryRequest $request)
+    public function send_mail_in_out(Request $request){
+        Log::alert('item_json='.$request->item_json);
+        $item_array=json_decode( $request->item_json , true );
+        Log::alert('seated_type='.$item_array['seated_type']);
+        Log::alert('name-student='.$item_array['name_sei']);
+        if($item_array['seated_type']=='in'){
+            $msg=InitConsts::MsgIn();
+            //Log::alert('msg='.$msg);
+            $sbj=InitConsts::sbjIn();
+        }else if($item_array['seated_type']=='out'){
+            $msg=InitConsts::MsgIn();
+            $sbj=InitConsts::sbjIn();
+        }
+
+        $msg=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $msg);
+        $msg=str_replace('[time]', $item_array['target_time'], $msg);
+        $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
+        $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
+        
+        //$sbj=str_replace('[name-protector]', $item_array['name_sei'], $sbj);
+        
+        $sbj=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $sbj);
+        $sbj=str_replace('[time]', $item_array['target_time'], $sbj);
+        $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
+        $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
+        
+        $target_item_array['subject']=$sbj;
+        $to_email_array=explode (",",$item_array['email']);
+        $protector_array=explode (",",$item_array['protector']);
+        $target_item_array['from_email']=$item_array['from_email'];
+        $i=0;
+        foreach($to_email_array as $target_email){
+            $target_item_array['msg']=str_replace('[name-protector]', $protector_array[$i], $msg);
+            $target_item_array['to_email']=$target_email;
+            Mail::send(new ContactMail($target_item_array));
+            $i++;
+        }
+        $send_msd="配信しました。";
+        $json_dat = json_encode( $send_msd , JSON_PRETTY_PRINT ) ;
+        echo $json_dat;
+    }
+
+    public function in_out_manage(StoreInOutHistoryRequest $request)
     {
-        //session(['time_now'=>date('Y-m-d H:i:s')]);
-        //Log::alert('time_now='.session('time_now'));
-        Log::alert('student_serial='.$request->student_serial);
-        //print "date=".date('Y-m-d H:i:s');
+        //Log::alert('student_serial='.$request->student_serial);
+        //Log::alert('substr4='.substr($request->student_serial, 0, 4));
+        if(substr($request->student_serial, 0, 4)=="0000"){
+            $request->student_serial=substr($request->student_serial, 4, 8);
+        }
+        //Log::alert('student_serial='.$request->student_serial);
         $StudentInfSql=Student::where('serial_student','=',$request->student_serial);
         if($StudentInfSql->count()>0){
-            $user = Auth::user();
-            $target_item_array['from_email']=config('app.MAIL_FROM_ADDRESS');
+            //$user = Auth::user();
             $StudentInf=$StudentInfSql->first();
             
             $target_item_array['target_time']=date("Y-m-d H:i:s");
             $target_item_array['target_date']=date("Y-m-d");
             $target_item_array['student_serial']=$request->student_serial;
-            
-            //$target_item_array['to_email']=explode (",",$StudentInf->email);
-            $to_email_array=explode (",",$StudentInf->email);
+            $target_item_array['from_email']=config('app.MAIL_FROM_ADDRESS');
+            //$to_email_array=explode (",",$StudentInf->email);
             $target_item_array['name_sei']=$StudentInf->name_sei;
             $target_item_array['name_mei']=$StudentInf->name_mei;
-            //$target_item_array['protector']=explode (",",$StudentInf->protector);
-            $protector_array=explode (",",$StudentInf->protector);
+            $target_item_array['protector']=$StudentInf->protector;
+            $target_item_array['email']=$StudentInf->email;
+            //$protector_array=explode (",",$StudentInf->protector);
             $serch_target_history_sql=InOutHistory::where('student_serial','=',$request->student_serial)
                         ->where('target_date','=',date("Y-m-d"))
                         ->whereNull('time_out')
                         ->orderBy('id', 'desc');
-            Log::alert('count='.$serch_target_history_sql->count());
             if($serch_target_history_sql->count()>0){
                 $serch_target_history_array=$serch_target_history_sql->first();
                 //$_SESSION['time_in']=$serch_target_history_array->time_in;
@@ -268,13 +313,21 @@ class TeachersController extends Controller
                 //session(['time_now'=>date('Y-m-d H:i:s')]);
                 $interval=self::time_diff($time_in, $target_item_array['target_time']);
                 if($interval<300){
-                    session(['seated_type' => 'false']);
-                    echo session('seated_type');
+                    //echo 'false';
+                    $target_item_array['seated_type']='false';
+                    $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
+                    echo $json;
+                    $seated_type='false';
+                    //session(['seated_type' => 'false']);
                 }else{
-                    session(['seated_type' => 'out']);
-                    echo session('seated_type');
-                    $msg=InitConsts::MsgOut();
-                    $sbj=InitConsts::sbjOut();
+                    //echo 'out';
+                    $target_item_array['seated_type']='out';
+                    $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
+                    echo $json;
+                    $seated_type='out';
+                    //session(['seated_type' => 'out']);
+                    //$msg=InitConsts::MsgOut();
+                    //$sbj=InitConsts::sbjOut();
                     //$target_history=$serch_target_history->first();
                     $inOutHistory = InOutHistory::find($serch_target_history_array->id);
                     $inOutHistory->update([  
@@ -282,10 +335,14 @@ class TeachersController extends Controller
                     ]);
                 }  
             }else{
-                session(['seated_type' => 'in']);
-                echo session('seated_type');
-                $msg=InitConsts::MsgIn();
-                $sbj=InitConsts::sbjIn();
+                //echo 'in';
+                $target_item_array['seated_type']='in';
+                $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
+                echo $json;
+                $seated_type='in';
+                //session(['seated_type' => 'in']);
+                //$msg=InitConsts::MsgIn();
+                //$sbj=InitConsts::sbjIn();
                 InOutHistory::create([
                     'student_serial'=>$request->student_serial,
                     'target_date'=>$target_item_array['target_date'],
@@ -296,7 +353,8 @@ class TeachersController extends Controller
                     'from_mail_address'=>$target_item_array['from_email'],
                 ]);
             }
-            if(session('seated_type')<>'false'){
+            /*
+            if($seated_type<>'false'){
                 $msg=str_replace('[name-student]', $StudentInf->name_sei." ".$StudentInf->name_mei, $msg);
                 $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
                 $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
@@ -316,6 +374,7 @@ class TeachersController extends Controller
                     $i++;
                 }
             }
+            */
         }else{
             echo 'No Record';
         }

@@ -140,9 +140,10 @@ class StudentController extends Controller
         }
         $stud_inf=Student::whereNull('email')->orderby('id')->first();
         session(['StudentManage' => 'create']);
-        $mnge='create';
+        $mnge='create';$barcode="";
+        $html_gender_ckbox=OtherFunc::make_html_gender_ckbox("");
         //return view('admin.CreateStudent',compact("html_cource_ckbox","stud_inf","student_serial","html_grade_slct","mnge"));
-        return view('admin.CreateStudent',compact("email_array","protector_array","html_cource_ckbox","stud_inf","html_grade_slct","mnge"));
+        return view('admin.CreateStudent',compact("html_gender_ckbox","barcode","email_array","protector_array","html_cource_ckbox","stud_inf","html_grade_slct","mnge"));
     }
 
     public function edit(Student $Student)
