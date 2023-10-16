@@ -84,7 +84,12 @@ class TeachersController extends Controller
         $env_array['MAIL_FROM_ADDRESS']=env('MAIL_FROM_ADDRESS');
         $env_array['MAIL_FROM_NAME']=env('MAIL_FROM_MAIL_FROM_NAME');
         */
-        return redirect('show_email_account_setup');
+        //$test_alert = "<script type='text/javascript'>alert('こんにちは！侍エンジニアです。');</script>";
+        //echo $test_alert;
+        //session()->flash('flash', '登録しました。');
+        return redirect('show_email_account_setup')->with('success','登録しました。');
+        //return redirect('show_email_account_setup');
+        //return back()->with('success','Item created successfully!');
         //return view('admin.MailAccountSetting',compact("env_array"));
     }
     

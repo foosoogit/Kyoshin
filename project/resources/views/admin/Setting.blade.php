@@ -40,11 +40,6 @@
                             <x-input-label for="Grade" value="対応学年" />
                             <x-text-input id="Grade" name="Grade" type="text" class="mt-1 block w-full" value="{{$configration_array['Grade']}}"/>
                             <x-input-error class="mt-2" :messages="$errors->get('Grade')" />
-                            {{--
-                            <input type="hidden" id="serial_student" name="serial_student" value="{{ $student_serial }}">
-                            <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" readonly value="{{ $student_serial }}"/>
-                            <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
-                            --}}
                         </div>
                         <div>
                             <x-input-label for="Course" value="コース" />

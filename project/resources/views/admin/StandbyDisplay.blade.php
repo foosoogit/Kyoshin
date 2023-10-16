@@ -30,7 +30,7 @@
 			document.getElementById('student_serial_txt').focus();
 		});
 		$('#student_serial_txt').keypress(function(e) {
-			console.log("TEST");
+			//console.log("TEST");
 			if(e.which == 13) {
 				$.ajax({
 					url: 'check_attendant.php',

@@ -31,7 +31,8 @@ Route::get('/', function () {
 //Route::get('/dashboard', function () {
 Route::get('/menu', function () {
     //return view('dashboard');
-    return view('admin.menu');
+    $MAIL_FROM_NAME=env('MAIL_FROM_NAME');
+    return view('admin.menu',compact('MAIL_FROM_NAME'));
 })->middleware(['auth', 'verified'])->name('menu');
 Route::view('barcode', 'barcode');
 //Route::get('students/create', 'create')->name('student.create');
@@ -111,6 +112,7 @@ Route::group(['middleware' => ['auth']], function(){
     //Route::get('students/ShowRireki/{studserial}', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
     Route::delete('students/delete/{StudentID}', [\App\Http\Controllers\StudentController::class,'destroy'])->name('student.delete');
     Route::put('students/{Student}', [\App\Http\Controllers\StudentController::class,'update'])->name('student.update');
+    Route::post('students/update_JQ', [\App\Http\Controllers\StudentController::class,'update_JQ'])->name('student.update_JQ');
 
     /*
     Route::get('students/list', function () {
@@ -156,6 +158,7 @@ Route::group(['middleware' => ['auth']], function(){
     })->name('students.store');
 
     Route::post('students/ShowInputStudent', [\App\Http\Controllers\StudentController::class,'ShowInputStudent'])->name('ShowInputStudent.Modify');
+    Route::get('students/ShowInputStudent', [\App\Http\Controllers\StudentController::class,'ShowInputStudent'])->name('ShowInputStudent.Modify');
     
     Route::get('students/create', [\App\Http\Controllers\StudentController::class,'ShowInputNewStudent'])->name('Students.Create');
 

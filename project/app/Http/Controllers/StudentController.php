@@ -11,9 +11,79 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Mail\ContactMail;
 use App\Models\InOutHistory;
 use Picqer\Barcode\BarcodeGeneratorHTML;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
+
+    function update_JQ(Request $request)
+    {
+        Log::alert('gender='.$request->gender);
+        $email_array=explode(",", $request->email);
+        $protector_array=explode(",", $request->protector);
+        $gender="";
+        if(isset($request->gender)){
+            $gender=implode( ",", $request->gender );
+        }
+        Student::where('serial_student', '=', $request->serial_student)
+            ->update([
+                'email'=>$request->email,
+                'name_sei'=>$request->name_sei,
+                'name_mei'=>$request->name_mei,
+                'name_sei_kana'=>$request->name_sei_kana,
+                'name_mei_kana'=>$request->name_mei_kana,
+                'protector'=>$request->protector,
+                'pass_for_protector'=>$request->pass_for_protector,
+                'gender'=>$gender,
+                'phone'=>$request->phone,
+                'grade'=>$request->grade,
+                'elementary'=>$request->elementary,
+                'junior_high'=>$request->junior_high,
+                'high_school'=>$request->high_school,
+                'note'=>$request->note,
+                'course'=>$request->course,
+            ]);
+        if($request->type=="mail"){
+            $stud_name=$request->name_sei." ".$request->name_mei;
+            self::send_test_mail_to_protector($stud_name,$email_array,$protector_array);
+            echo '送信しました。';
+        }else{
+            session()->flash('flash.modify', '登録しました。');
+            echo '修正しました。';
+        }
+    }
+
+    public function send_test_mail_to_protector($stud_name,$eml_ary,$ptt_ary)
+    {
+        $user = Auth::user();
+        $target_item_array['from_email']=$user->email;
+        $i=0;
+        foreach($eml_ary as $emal){
+            $msg=InitConsts::MsgTest();
+            
+            $msg=str_replace('[name-protector]', $ptt_ary[$i], $msg);
+            $msg=str_replace('[name-student]', $stud_name, $msg);
+            $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
+            $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
+            $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
+            $target_item_array['msg']=$msg;
+            
+            $sbj=InitConsts::sbjTest();
+            $sbj=str_replace('[name-protector]', $ptt_ary[$i], $sbj);
+            $sbj=str_replace('[name-student]', $stud_name, $sbj);
+            $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
+            $sbj=str_replace('[time]', date("Y-m-d H:i:s"), $sbj);
+            $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
+            $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
+            $target_item_array['subject']=$sbj;
+            $target_item_array['to_email']=$emal;
+
+            Mail::send(new ContactMail($target_item_array));
+        }
+    }
+
     public function ShowRireki(){
         return view('admin.ListStudents',compact("target_key"));
 	}
@@ -30,11 +100,6 @@ class StudentController extends Controller
     
     public function destroy($StudentID)
     {
-        //Student::destroy($id);
-        
-        //delete from InOutHistory where student_serial in(select student_serial from students where StudentID='id')
-        //print "StudentID=!".$StudentID;
-
         $InOutquery=inouthistory::whereIn("student_serial", function($query) use($StudentID){
             $query->from("students")
             ->select("serial_student")
@@ -69,9 +134,6 @@ class StudentController extends Controller
         return view('admin.ListStudents',compact("target_key"));
 	}
     public function ShowInputStudent(Request $request){
-        //$generatorPNG = new Picqer\Barcode\BarcodeGeneratorPNG();
-        //$image = $generatorPNG->getBarcode('000005263635', $generatorPNG::TYPE_CODE_128);
-
         session(['fromPage' => 'InputStudent']);
 		$stud_inf=Student::where('serial_student','=',$request->StudentSerial_Btn)->first();
         $html_grade_slct=OtherFunc::make_html_grade_slct($stud_inf->grade);
@@ -92,7 +154,6 @@ class StudentController extends Controller
                 $protector_array[$i]=""; 
             }
         }
-        //print_r($protector_array);
         $mnge='modify';
         return view('admin.CreateStudent',compact("barcode","html_gender_ckbox","protector_array","email_array","html_cource_ckbox","stud_inf","html_grade_slct","student_serial","mnge"));
 	}
@@ -166,7 +227,10 @@ class StudentController extends Controller
         $email=implode( ",", $eml_ary );
         $protector=implode( ",", $ptt_ary);
         $course = implode( ",", $request->course );
-        $gender=implode( ",", $request->gender );
+        $gender="";
+        if(isset($request->gender)){
+            $gender=implode( ",", $request->gender );
+        }
         $student = Student::find($id);
         $student->update([
             'email'=>$email,
@@ -185,10 +249,22 @@ class StudentController extends Controller
             'note'=>$request->note,
             'course'=>$course,
         ]);
-
-        $msg="修正しました。";
-        $mnge='modify';
+        if(isset($request->SendMsgToProtectorBtn)){
+            $stud_name=$request->name_sei." ".$request->name_mei;
+            self::send_test_mail_to_protector($stud_name,$eml_ary,$ptt_ary);
+            $msg="送信しました。";
+            $mnge='send_mail';
+            session()->flash('flash.send', '送信しました。');
+        }else{
+            session()->flash('flash.modify', '登録しました。');
+            $msg="修正しました。";
+            $mnge='modify';
+        }
         $serial=$student->serial_student;
-        return view('admin.menu_after_student_store',compact("msg","mnge","serial"));
+
+        //ShowInputStudent.Modify
+        //redirect()->route('students/ShowInputStudent');
+        return redirect('students/ShowInputStudent');
+        //return view('admin.menu_after_student_store',compact("msg","mnge","serial"));
     }
 }
