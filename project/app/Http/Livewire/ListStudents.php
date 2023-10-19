@@ -258,7 +258,7 @@ class ListStudents extends Component
         }
         */
         //session(['serchKey' => ""]);
-        Log::alert("serchKey=".session('serchKey'));
+        //Log::alert("serchKey=".session('serchKey'));
         /*
         if(session('serchKey')!==""){
             $targetPage=1;
@@ -272,7 +272,7 @@ class ListStudents extends Component
         
             $this->students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$this->targetPage);
         } catch (QueryException $e) {
-            Log::alert("QueryException=".$e);
+            //Log::alert("QueryException=".$e);
             return redirect('Students.List'); 
         }
         

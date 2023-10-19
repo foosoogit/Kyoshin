@@ -11,7 +11,7 @@
                     {{--<form method="post" action="{{ route('teachers.sendmail') }}" class="mt-6 space-y-6">@csrf--}}
                     {{--<form wire:submit>--}}
                         <div>
-                            <x-input-label for="name_sei" value="生徒番号の読み込み" />
+                            <x-input-label for="student_serial_txt" value="生徒番号の読み込み" />
                             {{--<x-text-input id="student_serial" name="student_serial" type="text" class="mt-1 block w-full" autofocus/>--}}
                             {{--<x-text-input id="student_serial" name="student_serial" type="text" class="mt-1 block w-full" wire:model.lazy="student_serial" autofocus/>--}}
                             {{--<x-text-input type="text" class="mt-1 block w-full" name="student_serial_txt" wire:model="student_serial" autofocus />--}}

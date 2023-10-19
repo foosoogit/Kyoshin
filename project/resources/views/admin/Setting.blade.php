@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Fonts -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <!-- Scripts -->
@@ -56,8 +57,9 @@
                             <x-text-input id="DdisplayLineNumStudentsList" name="DdisplayLineNumStudentsList" type="text" class="mt-1 block w-full" value="{{$configration_array['DdisplayLineNumStudentsList']}}" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('DdisplayLineNumStudentsList')" />
                         </div>
+                        @include('layouts.flash-message')
                         <div>
-                            <span class="text-primary">[メール設定] テストメール送信先：{{ Auth::user()->email }}</span><br>
+                            <span>[メール設定] テストメール送信先：<blockquote class="text-primary">{{ Auth::user()->email }}</blockquote></span>
                             塾名→[name-jyuku]  生徒氏名→[name-student]  保護者氏名→[name-protector] 時間→[time] フッター→[footer]
                             ※生徒氏名と保護者氏名はダミーデータで送信されます。
                             <x-input-label for="sbjIn" value="入室時の件名" />
@@ -109,6 +111,9 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>
 </html>
 {{-- </x-app-layout> --}}

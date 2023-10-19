@@ -192,7 +192,7 @@ class TeachersController extends Controller
         $msg=str_replace('[name-student]', OtherFunc::randomName(), $msg);
         $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
         $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
-        $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
+        $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
         $target_item_array['msg']=$msg;
 
         $sbj=str_replace('[name-protector]', OtherFunc::randomName(), $sbj);
@@ -212,22 +212,26 @@ class TeachersController extends Controller
 
                 $udsql=configration::where('subject','=',$configration_array['subject'])
                     ->update(['value1' => $_POST[$configration_array['subject']]]);
-
             }
         }
+        $msg="送信しました。";
         $configration_all_array=configration::all();
         foreach($configration_all_array as $configration){
             $configration_array[$configration['subject']]=$configration['value1'];
+            $msg="登録しました。";
         }
-        
         if(isset($request->SendMsgInBtn)){
             $this->send_test_mail("MsgIn");
+            $msg="送信しました。";
         }else if(isset($request->SendMsgOutBtn)){
             $this->send_test_mail("MsgOut");
+            $msg="送信しました。";
         }else if(isset($request->SendMsgTestBtn)){
             $this->send_test_mail("MsgTest");
+            $msg="送信しました。";
         }
-        return view('admin.Setting',compact("configration_array"));
+        return view('admin.Setting',compact("configration_array"))->with('success',$msg);
+        //return redirect('teachers.show_setting')->with('success',$msg);
     }
 
     public function show_setting()
@@ -243,10 +247,10 @@ class TeachersController extends Controller
     }
 
     public function send_mail_in_out(Request $request){
-        Log::alert('item_json='.$request->item_json);
+        //Log::alert('item_json='.$request->item_json);
         $item_array=json_decode( $request->item_json , true );
-        Log::alert('seated_type='.$item_array['seated_type']);
-        Log::alert('name-student='.$item_array['name_sei']);
+        //Log::alert('seated_type='.$item_array['seated_type']);
+        //Log::alert('name-student='.$item_array['name_sei']);
         if($item_array['seated_type']=='in'){
             $msg=InitConsts::MsgIn();
             //Log::alert('msg='.$msg);
@@ -284,22 +288,40 @@ class TeachersController extends Controller
         echo $json_dat;
     }
 
-    public function in_out_manage(StoreInOutHistoryRequest $request)
+    //public function in_out_manage(StoreInOutHistoryRequest $request)
+    public function in_out_manage(Request $request)
     {
-        //Log::alert('student_serial='.$request->student_serial);
-        //Log::alert('substr4='.substr($request->student_serial, 0, 4));
+        Log::alert('student_serial-10='.$request->student_serial);
+        $student_serial=$request->student_serial;
+
+        $student_serial_length=strlen($student_serial);
+        Log::alert('student_serial_length-10='.$student_serial_length);
+        
+        if($student_serial_length>=10){
+            Log::alert('student_serial_length-2='.$student_serial_length);
+            $student_serial=substr($student_serial,0,$student_serial_length-1);
+            $student_serial_int=intval($student_serial);
+            $student_serial=strval($student_serial_int);
+        } 
+          
+        Log::alert('student_serial-20='.$student_serial);
+        /*
         if(substr($request->student_serial, 0, 4)=="0000"){
             $request->student_serial=substr($request->student_serial, 4, 8);
         }
-        //Log::alert('student_serial='.$request->student_serial);
-        $StudentInfSql=Student::where('serial_student','=',$request->student_serial);
+        */
+        
+        //$StudentInfSql=Student::where('serial_student','=',$request->student_serial);
+        $StudentInfSql=Student::where('serial_student','=',$student_serial);
+        Log::alert('StudentInfSql->count='.$StudentInfSql->count());
         if($StudentInfSql->count()>0){
             //$user = Auth::user();
             $StudentInf=$StudentInfSql->first();
             
             $target_item_array['target_time']=date("Y-m-d H:i:s");
             $target_item_array['target_date']=date("Y-m-d");
-            $target_item_array['student_serial']=$request->student_serial;
+            //$target_item_array['student_serial']=$request->student_serial;
+            $target_item_array['student_serial']= $student_serial;
             $target_item_array['from_email']=config('app.MAIL_FROM_ADDRESS');
             //$to_email_array=explode (",",$StudentInf->email);
             $target_item_array['name_sei']=$StudentInf->name_sei;
@@ -307,7 +329,8 @@ class TeachersController extends Controller
             $target_item_array['protector']=$StudentInf->protector;
             $target_item_array['email']=$StudentInf->email;
             //$protector_array=explode (",",$StudentInf->protector);
-            $serch_target_history_sql=InOutHistory::where('student_serial','=',$request->student_serial)
+            //$serch_target_history_sql=InOutHistory::where('student_serial','=',$request->student_serial)
+            $serch_target_history_sql=InOutHistory::where('student_serial','=',$student_serial)
                         ->where('target_date','=',date("Y-m-d"))
                         ->whereNull('time_out')
                         ->orderBy('id', 'desc');
@@ -315,21 +338,22 @@ class TeachersController extends Controller
                 $serch_target_history_array=$serch_target_history_sql->first();
                 //$_SESSION['time_in']=$serch_target_history_array->time_in;
                 $time_in= $serch_target_history_array->time_in;
-                //session(['time_now'=>date('Y-m-d H:i:s')]);
                 $interval=self::time_diff($time_in, $target_item_array['target_time']);
                 if($interval<300){
                     //echo 'false';
                     $target_item_array['seated_type']='false';
                     $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
                     echo $json;
-                    $seated_type='false';
+                    //echo 'false';
+                    //$seated_type='false';
                     //session(['seated_type' => 'false']);
                 }else{
                     //echo 'out';
                     $target_item_array['seated_type']='out';
                     $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
                     echo $json;
-                    $seated_type='out';
+                    //echo 'out';
+                    //$seated_type='out';
                     //session(['seated_type' => 'out']);
                     //$msg=InitConsts::MsgOut();
                     //$sbj=InitConsts::sbjOut();
@@ -344,12 +368,14 @@ class TeachersController extends Controller
                 $target_item_array['seated_type']='in';
                 $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
                 echo $json;
-                $seated_type='in';
+                //echo 'in';
+                //$seated_type='in';
                 //session(['seated_type' => 'in']);
                 //$msg=InitConsts::MsgIn();
                 //$sbj=InitConsts::sbjIn();
                 InOutHistory::create([
-                    'student_serial'=>$request->student_serial,
+                    //'student_serial'=>$request->student_serial,
+                    'student_serial'=>$student_serial,
                     'target_date'=>$target_item_array['target_date'],
                     'time_in'=>$target_item_array['target_time'],
                     'student_name'=>$StudentInf->name_sei.' '.$StudentInf->name_mei,
@@ -381,7 +407,9 @@ class TeachersController extends Controller
             }
             */
         }else{
-            echo 'No Record';
+            $target_item_array['seated_type']='No Record';
+            $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
+            echo $json;
         }
         //echo session('seated_type');
         //echo json_encode($res);
@@ -429,7 +457,6 @@ class TeachersController extends Controller
      */
     public function index()
     {
-        
         if(session('sort_key')=='time_in' || session('sort_key')=='time_out'){session('sort_key')=="";}
         return view('admin.ListTeachers');
     }

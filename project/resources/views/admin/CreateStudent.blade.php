@@ -7,6 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Fonts -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <!-- Scripts -->
@@ -15,6 +18,7 @@
 <body class="font-sans antialiased">
     <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    {{--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>--}}
     {{--  
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -30,57 +34,57 @@
                         <x-primary-button onclick="location.href='{{route('menu')}}'" >メニュー</x-primary-button>
                         <x-primary-button onclick="location.href='{{route('Students.List')}}'" >生徒一覧</x-primary-button>
                     </div>
-                    <div>
+                    <div class="m-4">
                         {!! $barcode !!}
                         <x-input-label for="serial_student" value="生徒番号" />
                         <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{optional($stud_inf)->serial_student}}" readonly/>
                         <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
                     </div>
-                    <div style="line-height: 2.0;">
+                    <div class="m-4">
                         <x-input-label for="name_sei" value="姓" />
                         <x-text-input id="name_sei" name="name_sei" type="text" class="mt-1 block w-full" :value="old('name_sei',optional($stud_inf)->name_sei)" required autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('name_sei')" />
                     </div>
-                    <div style="line-height: 2.0;">
+                    <div class="m-4">
                         <x-input-label for="name_mei" value="名" />
                         <x-text-input id="name_mei" name="name_mei" type="text" class="mt-1 block w-full" :value="old('name_mei',optional($stud_inf)->name_mei)" required autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('name_mei')" />
                     </div>
-                    <div style="line-height: 2.0;">
+                    <div class="m-4">
                         <x-input-label for="name_sei_kana" value="セイ" />
                         <x-text-input id="name_sei_kana" name="name_sei_kana" type="text" class="mt-1 block w-full" :value="old('name_sei_kana',optional($stud_inf)->name_sei_kana)" required autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('name_sei_kana')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="name_mei_kana" value="メイ" />
                         <x-text-input id="name_mei_kana" name="name_mei_kana" type="text" class="mt-1 block w-full" :value="old('name_mei_kana',optional($stud_inf)->name_mei_kana)" required autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="name_mei_kana" value="性別" />
                         {!!$html_gender_ckbox!!}
                         <x-input-error class="mt-2" :messages="$errors->get('name_mei_kana')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="course" value="コース" />
                         {!!$html_cource_ckbox!!}
                         <x-input-error class="mt-2" :messages="$errors->get('course')" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-4">
                         <x-input-label for="protector_array[0]" value="送信先宛名-1" class="control-label"/>
                         <x-text-input id="protector_array[0]" name="protector_array[0]" type="text" class="mt-1 block w-full" value="{{ old('protector_array[0]',$protector_array[0]) }}" class="form-control"/>様
                         <x-input-label for="email_array[0]" value="email-1" />
                         <x-text-input id="email_array[0]" name="email_array[0]" type="text" class="mt-1 block w-full" value="{{ old('email_array[0]',$email_array[0]) }}"/>
                         <x-input-error class="mt-2" :messages="$errors->get('email_array[0]')" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group m-4">
                         <x-input-label for="protector_array[1]" value="送信先宛名-2" class="control-label"/>
                         <x-text-input id="protector_array[1]" name="protector_array[1]" type="text" class="mt-1 block w-full" value="{{ old('protector_array[1]',$protector_array[1]) }}" class="form-control"/>様
                         <x-input-label for="email_array[1]" value="email-2" />
                         <x-text-input id="email_array[1]" name="email_array[1]" type="text" class="mt-1 block w-full" value="{{ old('email_array[1]',$email_array[1]) }}"/>
                         <x-input-error class="mt-2" :messages="$errors->get('email_array[1]')" />
                     </div> 
-                    <div class="form-group">
+                    <div class="form-group m-4">
                         <x-input-label for="protector_array[2]" value="送信先宛名-3" class="control-label"/>
                         <x-text-input id="protector_array[2]" name="protector_array[2]" type="text" class="mt-1 block w-full" value="{{ old('protector_array[2]',$protector_array[2]) }}" class="form-control"/>様
                         <x-input-label for="email_array[2]" value="email-3" />
@@ -91,37 +95,37 @@
                     @if( session('flash.send') )
                         <div class="alert alert-send">{{ session('flash.send') }}</div>
                     @endif
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="pass_for_protector" value="保護者確認用パスワード" />
                         <x-text-input id="pass_for_protector" name="pass_for_protector" type="text" class="mt-1 block w-full" :value="old('pass_for_protector',optional($stud_inf)->pass_for_protector)" autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('pass_for_protector')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="phone" value="電話" />
                         <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone',optional($stud_inf)->phone)" required autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="grade" value="学年" />
                         {!!$html_grade_slct!!}
                         <x-input-error class="mt-2" :messages="$errors->get('grade')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="elementary" value="小学校名" />
                         <x-text-input id="elementary" name="elementary" type="text" class="mt-1 block w-full" :value="old('elementary',optional($stud_inf)->elementary)"/>
                         <x-input-error class="mt-2" :messages="$errors->get('elementary')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="junior_high" value="中学校名" />
                         <x-text-input id="junior_high" name="junior_high" type="text" class="mt-1 block w-full" :value="old('junior_high',optional($stud_inf)->junior_high)"/>
                         <x-input-error class="mt-2" :messages="$errors->get('junior_high')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="high_school" value="高校名" />
                         <x-text-input id="high_school" name="high_school" type="text" class="mt-1 block w-full" :value="old('high_school',optional($stud_inf)->high_school)"/>
                         <x-input-error class="mt-2" :messages="$errors->get('high_school')" />
                     </div>
-                    <div>
+                    <div class="m-4">
                         <x-input-label for="note" value="メモ" />
                         <textarea id="note" name="note" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" rows="3">{{ old('note',optional($stud_inf)->note) }}</textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('note')" />
@@ -154,6 +158,7 @@
             }
         }
         function save_manage(type){
+            console.log('TEST');
             const email_array = [],protector_array = [],course_array=[],gender_array=[];
             var course=document.getElementsByName("course[]");
             for(i=0;i<course.length;i++){
@@ -168,11 +173,11 @@
                     protector_array.push(document.getElementById("protector_array["+i+"]").value);
                 }
             }
-            gender="";
-            var gender_array=document.getElementsByName("gender[]");
-            for(i=0;i<gender_array.length;i++){
-                if(gender_array[i].value!=''){
-                    gender=gender_array[i].value;
+            var gender="";
+            //var gender_array=document.getElementsByName("gender");
+            for(i=0;i<2;i++){
+                if(document.getElementById("gender["+i+"]").checked){
+                    gender=document.getElementById("gender["+i+"]").value;
                     break;
                 }
             }
@@ -202,7 +207,6 @@
                     "note":$('#note').val(),
                     "course":courses,
                     "type":type
-
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -219,6 +223,9 @@
             });
         }
 	</script>
+    {{--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>
 </html>
 {{-- </x-app-layout> --}}

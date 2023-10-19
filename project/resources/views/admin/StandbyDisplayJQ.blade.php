@@ -36,6 +36,8 @@
                                 <x-text-input type="text" class="mt-1 block w-full" name="student_serial_txt" id="student_serial_txt" autofocus />
                                 {{--<x-text-input type="text" class="mt-1 block w-full" wire:keydown.enter.model="student_serial" autofocus />--}}
                                 <x-input-error class="mt-2" :messages="$errors->get('student_serial')" />
+								<label id="seated_type"></label>
+
                             </div>
                         {{--</form>--}}
                     </div>
@@ -56,7 +58,8 @@
 			document.getElementById('student_serial_txt').focus();
 		});
 		$('#student_serial_txt').keypress(function(e) {
-			console.log("TEST0");
+			console.log("TEST1");
+			console.log("student_serial="+$('#student_serial_txt').val());
 			if(e.which == 13) {
 				$.ajax({
 					//url: 'send_mail',
@@ -69,20 +72,30 @@
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 					}
 				}).done(function (data) {
+					//console.log("data=".data);
 					//console.log("seated_type="+data);
 					const item_json = JSON.parse(data);
 					//console.log("seated_type="+item_json.seated_type);
 					if(item_json.seated_type=="false"){
+					//if(data=="false"){
 						audio_false.play();
 						//console.log(data);
+						document.getElementById("seated_type").innerText = '退出時間が短すぎます。';
 					}else if(item_json.seated_type=="in"){
+					//}else if(data=="in"){
 						audio_in.play();
+						document.getElementById("seated_type").innerText = '入室しました。';
 						send_mail(data);
 						//console.log(data);
 					}else if(item_json.seated_type=="out"){
+					//}else if(data=="out"){
 						audio_out.play();
+						document.getElementById("seated_type").innerText = '入室しました。';
 						send_mail(data);
 						//console.log(data);
+					}else{
+						audio_false.play();
+						document.getElementById("seated_type").innerText = '登録データが見つかりません。';
 					}
 					document.getElementById('student_serial_txt').value="";
 					document.getElementById('student_serial_txt').focus();

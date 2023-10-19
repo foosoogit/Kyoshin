@@ -7,6 +7,7 @@ use App\Models\InOutHistory;
 use App\Http\Controllers\OtherFunc;
 use Livewire\WithPagination;
 use App\Http\Controllers\InitConsts;
+use Illuminate\Support\Facades\Log;
 
 class ListRireki extends Component
 {
@@ -22,10 +23,10 @@ class ListRireki extends Component
 	}
 
     public function search_from_top_menu(Request $request){
-		$this->serch_key_p=$request->input('user_serial');
+        $this->serch_key_p=$request->input('user_serial');
 		session(['serchKey' => $request->input('user_serial')]);
 	}
-
+    
     public function search(){
 		if(session(['serchKey' => $this->kensakukey])==""){
            $this->serch_key_p=$this->kensakukey;
@@ -70,6 +71,7 @@ class ListRireki extends Component
             session(['serchKey' => $this->serch_key_p]);
         }
         
+        Log::alert('serchKey='.session('serchKey'));
         self::$key="%".session('serchKey')."%";
         $InOutHistory =$InOutHistory->where('student_serial','like',self::$key)
                     ->orwhere('time_in','like',self::$key)

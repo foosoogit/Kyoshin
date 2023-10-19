@@ -58,16 +58,26 @@
       </tr>
       <tr>
         <th scope="row">6</th>
+        <td><a href="{{ route('protector.login') }}">保護者用入退出確認ページ</a></td>
+        <td>保護者が生徒の入退出履歴を確認できるページです。</td>
+      </tr>
+      <tr>
+        <th scope="row">7</th>
         <td><a href="{{ route('teachers.index') }}">講師登録・追加・削除</a></td>
         <td>講師の登録・追加・削除</td>
       </tr>
       <tr>
-        <th scope="row">7</th>
+        <th scope="row">8</th>
         <td><a href="{{ route('teachers.show_setting') }}">環境設定</a></td>
         <td>塾名/対応学年/コース/入室→退出までの最短時間/一覧表に表示させる行数/テストメール送信/入退室時メッセージ</td>
       </tr>
       <tr>
-        <th scope="row">8</th>
+        <th scope="row">9</th>
+        <td><a href="{{ route('teachers.show_email_account_setup') }}">メールアカウントのセットアップ</a></td>
+        <td>メールアカウントをセットアップします。</td>
+      </tr>
+      <tr>
+        <th scope="row">10</th>
         <td>
           <form action="{{ route('logout') }}" method="post">@csrf
             <input type="submit" value="ログアウト">

@@ -7,6 +7,7 @@ use App\Http\Controllers\InitConsts;
 use App\Models\Student;
 use App\Http\Controllers\TeachersController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,19 @@ use Illuminate\Http\Request;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/show_rireki_for_protector', function () {
+    //session(['serchKey' =>$request->studserial]);
+    return view('protector.RirekiForProtector');
+})->name('show_rireki_for_protector');
+Route::post('/show_rireki_for_protector', function () {
+    //session(['serchKey' =>$request->studserial]);
+    return view('protector.RirekiForProtector');
+})->name('show_rireki_for_protector');
+
+Route::get('/login_protector', function () {
+    return view('protector.LoginProtector');
+})->name('protector.login');
+
 Route::get('/', function () {
     $user = User::first();
     Mail::send(new ContactMail($user));
@@ -38,7 +52,6 @@ Route::view('barcode', 'barcode');
 //Route::get('students/create', 'create')->name('student.create');
 //Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function(){
-
     Route::controller(TeachersController::class)->name('teachers.')->group(function() {
         Route::post('/teachers/update_MailAccount','update_MailAccount')->name('email_account.update');
         Route::get('/show_email_account_setup','show_email_account_setup')->name('show_email_account_setup');
@@ -95,6 +108,7 @@ Route::group(['middleware' => ['auth']], function(){
     //Route::get('students/ShowRireki', [\App\Http\Controllers\StudentController::class,'ShowRireki'])->name('showRireki');
 
     Route::get('ShowRireki', function () {
+        //session(['serchKey' =>$request->studserial]);
         session(['serchKey' =>'']);
         session(['sort_key' =>"time_in"]);
         session(['asc_desc' =>'desc']);
@@ -102,6 +116,7 @@ Route::group(['middleware' => ['auth']], function(){
     })->name('admin.showRireki');
 
     Route::post('ShowRireki', function (Request $request) {
+        Log::alert('studserial-1='.$request->studserial);
         session(['serchKey' =>$request->studserial]);
         session(['sort_key' =>"time_in"]);
         session(['asc_desc' =>'desc']);

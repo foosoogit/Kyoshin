@@ -18,15 +18,22 @@ use Illuminate\Support\Facades\Log;
 class StudentController extends Controller
 {
 
+    public function show_login_guest()
+    {
+        return view('guest.show_login_guest');
+    }
+
     function update_JQ(Request $request)
     {
         Log::alert('gender='.$request->gender);
         $email_array=explode(",", $request->email);
         $protector_array=explode(",", $request->protector);
+        /*
         $gender="";
         if(isset($request->gender)){
             $gender=implode( ",", $request->gender );
         }
+        */
         Student::where('serial_student', '=', $request->serial_student)
             ->update([
                 'email'=>$request->email,
@@ -36,7 +43,7 @@ class StudentController extends Controller
                 'name_mei_kana'=>$request->name_mei_kana,
                 'protector'=>$request->protector,
                 'pass_for_protector'=>$request->pass_for_protector,
-                'gender'=>$gender,
+                'gender'=>$request->gender,
                 'phone'=>$request->phone,
                 'grade'=>$request->grade,
                 'elementary'=>$request->elementary,
@@ -67,7 +74,7 @@ class StudentController extends Controller
             $msg=str_replace('[name-student]', $stud_name, $msg);
             $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
             $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
-            $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
+            $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
             $target_item_array['msg']=$msg;
             
             $sbj=InitConsts::sbjTest();
