@@ -12,11 +12,11 @@
         </div>
         入退出履歴 生徒指名：{{ session('target_stud_inf_array')->name_sei }}{{ session('target_stud_inf_array')->name_mei }}様
         <br class="d-none d-sm-block">日付検索： <input name="target_day" id="target_day" type="date" wire:change="search_day(document.getElementById('target_day').value)" value="{{$target_day}}"/>
-        <x-primary-button wire:click="search_day('')" >検索解除</x-primary-button>
+        <x-primary-button wire:click="search_day('')" class='btn btn-primary btn-sm'>検索解除</x-primary-button>
         <table id="table_responsive">
             <tr>
-                <th>日付<button type="button" class="btn-orderby-border" wire:click="sort('day_in-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
-                    <button type="button" class="btn-orderby-border" wire:click="sort('day_in-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button>
+                <th>日付&nbsp;<button type="button" class="btn-orderby-border" wire:click="sort_day('target_date-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                    <button type="button" class="btn-orderby-border" wire:click="sort_day('target_date-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button>
                 <th>入室時間</th>
                 <th>退室時間</th>
             </tr>

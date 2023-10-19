@@ -13,7 +13,7 @@ class RirekiForProtector extends Component
 {
     public $msg;
     use WithPagination;
-    public $sort_key_p = '',$asc_desc_p="",$serch_key_p="",$targetPage=null,$target_day="";
+    public $sort_key_p = '',$asc_desc_p="",$serch_key_p="",$targetPage=null,$target_day="",$sort_type="";
 	public $kensakukey="";
     public static $key="";
     protected $histories;
@@ -27,7 +27,12 @@ class RirekiForProtector extends Component
         //Log::alert('histories='.$this->histories);
         return view('livewire.rireki-for-protector',['histories'=>$this->histories,'target_day'=>'']);
     }
-
+    public function sort_day($target){
+        Log::alert("sort_day=".$target);
+        $sort_array=explode("-", $target);
+        $this->sort_type=$sort_array[1];
+        Log::alert("sort_type=".$this->sort_type);
+    }
     public function search_day($target){
         Log::alert("target_day=".$target);
         $this->target_day=$target;
@@ -42,6 +47,9 @@ class RirekiForProtector extends Component
             $HistoriesQuery = $HistoriesQuery->where('target_date','=',$this->target_day);
         }else{
             $this->target_day="";
+        }
+        if($this->sort_type<>""){
+            $HistoriesQuery = $HistoriesQuery->orderBy('target_date',$this->sort_type); 
         }
         /*
         if($this->sort_key_p=='time_in' | $this->sort_key_p=='time_out'){
