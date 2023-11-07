@@ -59,7 +59,7 @@
       <tr>
         <th scope="row">6</th>
         <td><a href="{{ route('protector.login') }}">保護者用入退出確認ページ</a></td>
-        <td>保護者が生徒の入退出履歴を確認できるページです。</td>
+        <td>保護者が生徒の入退出履歴を確認できるページです。https://jyuku-in-out-mail.net/login_protector</td>
       </tr>
       <tr>
         <th scope="row">7</th>

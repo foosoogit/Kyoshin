@@ -5,6 +5,9 @@
                 <div class="max-w-xl">
                     <div class="flex items-center gap-4">
                         {{ env('MAIL_FROM_NAME') }} 保護者様用入退出履歴チェック
+                        @auth
+                        <x-primary-button class='btn btn-primary btn-sm' onclick="history.back()">メニューに戻る(管理者のみ表示されてます。)</x-primary-button>
+                        @endauth
                     </div>
                         <div>
                             ログイン

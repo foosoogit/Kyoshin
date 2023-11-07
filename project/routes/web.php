@@ -31,12 +31,13 @@ Route::post('/show_rireki_for_protector', function () {
 Route::get('/login_protector', function () {
     return view('protector.LoginProtector');
 })->name('protector.login');
-
+/*
 Route::get('/', function () {
     $user = User::first();
     Mail::send(new ContactMail($user));
     return view('welcome');
 });
+*/
 
 Route::get('/', function () {
     return view('welcome');

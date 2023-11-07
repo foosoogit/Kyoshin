@@ -1,0 +1,4 @@
+[name-protector]様
+[name-student]さんが入室されました。
+入出時間：[time]
+[footer] 

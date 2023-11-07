@@ -125,7 +125,8 @@ class MailDelivery extends Component
             $targetPage=null;
         }
         if(self::$key=="%%"){$targetPage=null;}
-        $students=$StudentQuery->paginate($perPage = initConsts::getValue('DdisplayLineNumDeliveryStudentsList'),['*'], 'page',$targetPage);
+        //$students=$StudentQuery->paginate($perPage = initConsts::getValue('DdisplayLineNumDeliveryStudentsList'),['*'], 'page',$targetPage);
+        $students=$StudentQuery->paginate(200);
 
         //return view('livewire.mail-delivery',compact("students","show_inp_mail_html"));
         return view('livewire.mail-delivery',compact("students"));

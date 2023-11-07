@@ -19,6 +19,7 @@ use App\Models\MailDelivery;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 //use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeachersController extends Controller
@@ -118,20 +119,33 @@ class TeachersController extends Controller
     
     public function execute_mail_delivery(Request $request){
         $user = Auth::user();
+        $name_student=OtherFunc::randomName();
+        $name_protector=OtherFunc::randomName();
+
         $msg=$request->body;
-        $msg=str_replace('[name-protector]', OtherFunc::randomName(), $msg);
-        $msg=str_replace('[name-student]', OtherFunc::randomName(), $msg);
+
+        $msg=str_replace('[name-protector]', $name_protector, $msg);
+        $msg=str_replace('[name-student]', $name_student, $msg);
+
+        $msg=OtherFunc::ConvertPlaceholder($msg,"body");
+        /*
         $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
         $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
         $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
+        */
         $target_item_array['msg']=$msg;
                 
         $sbj=$request->subject;
-        $sbj=str_replace('[name-protector]', OtherFunc::randomName(), $sbj);
-        $sbj=str_replace('[name-student]', OtherFunc::randomName(), $sbj);
+        $sbj=str_replace('[name-protector]', $name_protector, $sbj);
+        $sbj=str_replace('[name-student]', $name_student, $sbj);
+
+        $sbj=OtherFunc::ConvertPlaceholder($sbj,"sbj");
+        /*
         $sbj=str_replace('[time]', date("Y-m-d H:i:s"), $sbj);
         $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
         $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
+        */
+
         $target_item_array['subject']=$sbj;
         $target_item_array['from_email']=$user->email;
         $student_serial_array=explode(',', $request->student_serial_hdn);
@@ -169,16 +183,11 @@ class TeachersController extends Controller
     
     public function send_test_mail($type)
     {
-        /*
-        Mail::to($request->user());
-            ->cc($moreUsers)
-            ->bcc($evenMoreUsers)
-            ->send(new OrderShipped($order));
-        */
         $user = Auth::user();
         $target_item_array['to_email']=$user->email;
         $target_item_array['from_email']=$user->email;
         if($type=="MsgIn"){
+            //$msg=Storage::get('MsgIn.txt');
             $msg=InitConsts::MsgIn();
             $sbj=InitConsts::sbjIn();
         }else if($type=="MsgOut"){
@@ -188,20 +197,33 @@ class TeachersController extends Controller
             $msg=InitConsts::MsgTest();
             $sbj=InitConsts::sbjTest();
         }
-        $msg=str_replace('[name-protector]', OtherFunc::randomName(), $msg);
-        $msg=str_replace('[name-student]', OtherFunc::randomName(), $msg);
+        $name_student=OtherFunc::randomName();
+        $name_protector=OtherFunc::randomName();
+        $msg=str_replace('[name-protector]',  $name_protector, $msg);
+        $msg=str_replace('[name-student]', $name_student, $msg);
+
+        $msg=OtherFunc::ConvertPlaceholder($msg,"body");
+        //$msg=htmlentities($msg);
+        /*
         $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
         $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
         $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
+        */
         $target_item_array['msg']=$msg;
+        $sbj=str_replace('[name-protector]',  $name_protector, $sbj);
+        $sbj=str_replace('[name-student]', $name_student, $sbj);
 
-        $sbj=str_replace('[name-protector]', OtherFunc::randomName(), $sbj);
-        $sbj=str_replace('[name-student]', OtherFunc::randomName(), $sbj);
+        $sbj=OtherFunc::ConvertPlaceholder($sbj,"sbj");
+        /*
         $sbj=str_replace('[time]', date("Y-m-d H:i:s"), $sbj);
         $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
         $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
+        */
+        //Mail::send(['text' => 'mail.emailconfirm']
         $target_item_array['subject']=$sbj;
         Mail::send(new ContactMail($target_item_array));
+        //Mail::send(new SendTestMail($target_item_array));
+        //Mail::raw($body, static fn (Message $message) => $message->to($user->email)->subject($subject));
     }
 
     public function update_setting(Request $request)
@@ -242,7 +264,6 @@ class TeachersController extends Controller
         }
         //$user = Auth::user();
         //$to_mail=auth()->email();
-        //Log::alert('to_mail='.$to_mail );
         return view('admin.Setting',compact("configration_array"));
     }
 
@@ -262,16 +283,20 @@ class TeachersController extends Controller
 
         $msg=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $msg);
         $msg=str_replace('[time]', $item_array['target_time'], $msg);
+        $msg=OtherFunc::ConvertPlaceholder($msg,"body");
+        /*
         $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
         $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
-        
+        */
         //$sbj=str_replace('[name-protector]', $item_array['name_sei'], $sbj);
-        
         $sbj=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $sbj);
         $sbj=str_replace('[time]', $item_array['target_time'], $sbj);
+        $sbj=OtherFunc::ConvertPlaceholder($sbj,"sbj");
+        /*
         $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
         $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
-        
+        */
+
         $target_item_array['subject']=$sbj;
         $to_email_array=explode (",",$item_array['email']);
         $protector_array=explode (",",$item_array['protector']);
@@ -291,88 +316,57 @@ class TeachersController extends Controller
     //public function in_out_manage(StoreInOutHistoryRequest $request)
     public function in_out_manage(Request $request)
     {
-        Log::alert('student_serial-10='.$request->student_serial);
+        //Log::alert('student_serial-10='.$request->student_serial);
         $student_serial=$request->student_serial;
 
         $student_serial_length=strlen($student_serial);
-        Log::alert('student_serial_length-10='.$student_serial_length);
-        
+        //Log::alert('student_serial_length-10='.$student_serial_length);
+        /*
         if($student_serial_length>=10){
-            Log::alert('student_serial_length-2='.$student_serial_length);
+            //Log::alert('student_serial_length-2='.$student_serial_length);
             $student_serial=substr($student_serial,0,$student_serial_length-1);
             $student_serial_int=intval($student_serial);
             $student_serial=strval($student_serial_int);
         } 
-          
-        Log::alert('student_serial-20='.$student_serial);
-        /*
-        if(substr($request->student_serial, 0, 4)=="0000"){
-            $request->student_serial=substr($request->student_serial, 4, 8);
-        }
         */
-        
-        //$StudentInfSql=Student::where('serial_student','=',$request->student_serial);
+          
         $StudentInfSql=Student::where('serial_student','=',$student_serial);
-        Log::alert('StudentInfSql->count='.$StudentInfSql->count());
+        //Log::alert('StudentInfSql->count='.$StudentInfSql->count());
         if($StudentInfSql->count()>0){
-            //$user = Auth::user();
             $StudentInf=$StudentInfSql->first();
-            
             $target_item_array['target_time']=date("Y-m-d H:i:s");
             $target_item_array['target_date']=date("Y-m-d");
-            //$target_item_array['student_serial']=$request->student_serial;
             $target_item_array['student_serial']= $student_serial;
             $target_item_array['from_email']=config('app.MAIL_FROM_ADDRESS');
-            //$to_email_array=explode (",",$StudentInf->email);
             $target_item_array['name_sei']=$StudentInf->name_sei;
             $target_item_array['name_mei']=$StudentInf->name_mei;
             $target_item_array['protector']=$StudentInf->protector;
             $target_item_array['email']=$StudentInf->email;
-            //$protector_array=explode (",",$StudentInf->protector);
-            //$serch_target_history_sql=InOutHistory::where('student_serial','=',$request->student_serial)
             $serch_target_history_sql=InOutHistory::where('student_serial','=',$student_serial)
                         ->where('target_date','=',date("Y-m-d"))
                         ->whereNull('time_out')
                         ->orderBy('id', 'desc');
             if($serch_target_history_sql->count()>0){
                 $serch_target_history_array=$serch_target_history_sql->first();
-                //$_SESSION['time_in']=$serch_target_history_array->time_in;
                 $time_in= $serch_target_history_array->time_in;
                 $interval=self::time_diff($time_in, $target_item_array['target_time']);
                 if($interval<300){
-                    //echo 'false';
                     $target_item_array['seated_type']='false';
                     $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
                     echo $json;
-                    //echo 'false';
-                    //$seated_type='false';
-                    //session(['seated_type' => 'false']);
                 }else{
-                    //echo 'out';
                     $target_item_array['seated_type']='out';
                     $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
                     echo $json;
-                    //echo 'out';
-                    //$seated_type='out';
-                    //session(['seated_type' => 'out']);
-                    //$msg=InitConsts::MsgOut();
-                    //$sbj=InitConsts::sbjOut();
-                    //$target_history=$serch_target_history->first();
                     $inOutHistory = InOutHistory::find($serch_target_history_array->id);
                     $inOutHistory->update([  
                         "time_out" => $target_item_array['target_time'],  
                     ]);
                 }  
             }else{
-                //echo 'in';
                 $target_item_array['seated_type']='in';
                 $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
                 echo $json;
-                //echo 'in';
-                //$seated_type='in';
-                //session(['seated_type' => 'in']);
-                //$msg=InitConsts::MsgIn();
-                //$sbj=InitConsts::sbjIn();
                 InOutHistory::create([
                     //'student_serial'=>$request->student_serial,
                     'student_serial'=>$student_serial,
@@ -384,29 +378,7 @@ class TeachersController extends Controller
                     'from_mail_address'=>$target_item_array['from_email'],
                 ]);
             }
-            /*
-            if($seated_type<>'false'){
-                $msg=str_replace('[name-student]', $StudentInf->name_sei." ".$StudentInf->name_mei, $msg);
-                $msg=str_replace('[time]', date("Y-m-d H:i:s"), $msg);
-                $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
-                $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
-                
-                $sbj=str_replace('[name-protector]', $StudentInf->protector, $sbj);
-                $sbj=str_replace('[name-student]', $StudentInf->name_sei." ".$StudentInf->name_mei, $sbj);
-                $sbj=str_replace('[time]', date("Y-m-d H:i:s"), $sbj);
-                $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
-                $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
-                $target_item_array['subject']=$sbj;
-                $i=0;
-                foreach($to_email_array as $target_email){
-                    $target_item_array['msg']=str_replace('[name-protector]', $protector_array[$i], $msg);
-                    $target_item_array['to_email']=$target_email;
-                    Mail::send(new ContactMail($target_item_array));
-                    $i++;
-                }
-            }
-            */
-        }else{
+         }else{
             $target_item_array['seated_type']='No Record';
             $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
             echo $json;

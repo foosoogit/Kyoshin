@@ -6,10 +6,40 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Http\Controllers\InitConsts;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class OtherFunc extends Controller
 {
-    public static function randomName() {
+    public static function ConvertPlaceholder($target_txt,$type){
+		//$target_txt=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $target_txt);
+        //$target_txt=str_replace('[time]', $item_array['target_time'], $target_txt);
+        $target_txt=str_replace('[name-jyuku]', InitConsts::JyukuName(), $target_txt);
+        $target_txt=str_replace('[footer]', InitConsts::MsgFooter(), $target_txt);
+		$target_txt=str_replace('[time]', date("Y-m-d H:i:s"), $target_txt);
+		//$target_txt=htmlentities($target_txt, ENT_QUOTES);
+        if($type=="body"){
+			$target_txt=str_replace(array("\r\n","\r",PHP_EOL), "<br/>", $target_txt);
+			$target_txt=str_replace(" ", "&nbsp;", $target_txt);
+			$target_txt=str_replace("　", "&emsp;", $target_txt);
+		}
+		
+		//$target_txt=str_replace(array("\r\n","\r","\n",PHP_EOL), "<br>", $target_txt);
+		//$target_txt=str_replace(" ", "&nbsp;", $target_txt);
+		//$target_txt=str_replace("　", "&emsp;", $target_txt);
+		
+		//$target_txt=htmlentities($target_txt, ENT_QUOTES, 'UTF-8');
+		
+		//$target_txt=str_replace(array("\r\n","\r","\n"),PHP_EOL, $target_txt);
+		//$target_txt=htmlentities($target_txt);
+		
+		//$target_txt=str_replace("\n", PHP_EOL, PHP_EOL,$target_txt);
+		//$target_txt.$target_txt;
+		//$target_txt=mb_convert_encoding($target_txt,"UTF-8","auto");
+		Log::alert('target_txt='.$target_txt );
+		return $target_txt;
+	}
+
+	public static function randomName() {
 		$myoujiAry = array('佐藤', '鈴木', '高橋', '田中', '渡辺', '伊藤', '山本', '中村', '小林', '加藤', '吉田', '山田', '佐々木', '山口',
 			'斎藤', '松本', '井上', '木村', '林', '清水', '山崎', '森', '阿部', '池田', '橋本', '山下', '石川', '中島', '前田', '藤田',
 			'小川', '後藤', '岡田', '長谷川', '村上', '近藤', '石井', '齊藤', '坂本', '遠藤', '青木', '藤井', '西村', '福田', '太田', '三浦',

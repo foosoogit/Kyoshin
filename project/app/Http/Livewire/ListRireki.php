@@ -12,13 +12,18 @@ use Illuminate\Support\Facades\Log;
 class ListRireki extends Component
 {
     use WithPagination;
-    public $sort_key_p = '',$asc_desc_p="",$serch_key_p="";
+    public $sort_key_p = '',$asc_desc_p="",$serch_key_p="",$target_day="";
 	public $kensakukey="";
     public static $key="";
+
+    public function search_day($target){
+        $this->target_day=$target;
+    }
 
     public function searchClear(){
 		$this->serch_key_p="";
 		$this->kensakukey="";
+        $this->target_day="";
 		session(['serchKey' => '']);
 	}
 
@@ -45,7 +50,6 @@ class ListRireki extends Component
 		$sort_key_array=explode("-", $sort_key);
 		session(['sort_key' =>$sort_key_array[0]]);
 		session(['asc_desc' =>$sort_key_array[1]]);
-        //print "sort_key1=".session('sort_key');
 	}
 
     public function render()
@@ -71,13 +75,19 @@ class ListRireki extends Component
             session(['serchKey' => $this->serch_key_p]);
         }
         
-        Log::alert('serchKey='.session('serchKey'));
         self::$key="%".session('serchKey')."%";
-        $InOutHistory =$InOutHistory->where('student_serial','like',self::$key)
-                    ->orwhere('time_in','like',self::$key)
-                    ->orwhere('time_out','like',self::$key)
-                    ->orwhere('student_name','like',self::$key)
-                    ->orwhere('to_mail_address','like',self::$key);
+        
+        Log::alert('target_day='.$this->target_day);
+        if($this->target_day<>""){
+            Log::alert('target_day2='.$this->target_day);
+            $InOutHistory =$InOutHistory->where('target_date','=',$this->target_day);
+        }else{
+            $InOutHistory =$InOutHistory->where('student_serial','like',self::$key)
+            ->orwhere('time_in','like',self::$key)
+            ->orwhere('time_out','like',self::$key)
+            ->orwhere('student_name','like',self::$key)
+            ->orwhere('to_mail_address','like',self::$key);
+        }
     
         $targetSortKey="";
         if(session('sort_key')<>""){

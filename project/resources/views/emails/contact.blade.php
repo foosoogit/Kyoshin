@@ -1,5 +1,6 @@
-{!! $target_item_array['msg'] !!}
+{!!$target_item_array['msg']!!}
 {{--  
+{!! $target_item_array['msg'] !!}
 {!! nl2br($target_item_array['msg']) !!}
 {!! $target_item_array['protector'] !!} 様
 

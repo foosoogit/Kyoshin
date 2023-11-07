@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Student;
 use Illuminate\Mail\Mailables\Address;
 use App\Http\Controllers\OtherFunc;
+use Illuminate\Mail\Mailables\Headers;
 
 class ContactMail extends Mailable
 {
@@ -60,12 +61,12 @@ class ContactMail extends Mailable
             //from: $this->target_item_array['from_email'],
             //from: new Address($this->target_item_array['from_email'], $this->target_item_array['jyuku_name']),
             to: $this->target_item_array['to_email'],
+            //message:$this->target_item_array['msg'],
             //replyTo:$this->target_item_array['from_email'],
             replyTo: $this->target_item_array['from_email'],
         );
 
     }
-
     /**
      * Get the message content definition.
      *
@@ -75,6 +76,7 @@ class ContactMail extends Mailable
     {
         return new Content(
             markdown: 'emails.contact',
+            //text: $this->target_item_array['msg'],
             text: 'emails.contact',
         );
     }

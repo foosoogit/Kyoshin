@@ -28,13 +28,13 @@ class RirekiForProtector extends Component
         return view('livewire.rireki-for-protector',['histories'=>$this->histories,'target_day'=>'']);
     }
     public function sort_day($target){
-        Log::alert("sort_day=".$target);
+        //Log::alert("sort_day=".$target);
         $sort_array=explode("-", $target);
         $this->sort_type=$sort_array[1];
-        Log::alert("sort_type=".$this->sort_type);
+        //Log::alert("sort_type=".$this->sort_type);
     }
     public function search_day($target){
-        Log::alert("target_day=".$target);
+        //Log::alert("target_day=".$target);
         $this->target_day=$target;
     }
     public function search_stud()
@@ -49,7 +49,9 @@ class RirekiForProtector extends Component
             $this->target_day="";
         }
         if($this->sort_type<>""){
-            $HistoriesQuery = $HistoriesQuery->orderBy('target_date',$this->sort_type); 
+            $HistoriesQuery = $HistoriesQuery->orderBy('time_in',$this->sort_type); 
+        }else{
+            $HistoriesQuery = $HistoriesQuery->orderBy('time_in','desc');
         }
         /*
         if($this->sort_key_p=='time_in' | $this->sort_key_p=='time_out'){
