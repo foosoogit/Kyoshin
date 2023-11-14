@@ -43,7 +43,8 @@ class ListStudents extends Component
 		$sort_key_array=explode("-", $sort_key);
 		session(['sort_key' =>$sort_key_array[0]]);
 		session(['asc_desc' =>$sort_key_array[1]]);
-        //print "sort_key1=".session('sort_key');
+        Log::alert("sort_key=".session('sort_key'));
+        Log::alert("asc_desc=".session('asc_desc'));
 	}
 
     public function updatedType()
@@ -147,7 +148,7 @@ class ListStudents extends Component
 		//print "asc_desc=".session('asc_desc');
         //$StudentQuery =$StudentQuery->orderBy('serial_student', 'asc');
         //$students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
-        //Log::alert("key=".self::$key);
+
         //if(self::$key=="%%"){$targetPage=null;}
         //$targetPage=null;
         //$students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
@@ -162,7 +163,7 @@ class ListStudents extends Component
 
     public function search_stud()
     {
-        try {
+        //try {
         if(isset($_SERVER['HTTP_REFERER'])){
             OtherFunc::set_access_history($_SERVER['HTTP_REFERER']);
         }
@@ -189,7 +190,7 @@ class ListStudents extends Component
         }else if(session('serchKey')==""){
             session(['serchKey' => $this->serch_key_p]);
         }
-        Log::alert("serch_key_p=".$this->serch_key_p);
+        //Log::alert("serch_key_p=".$this->serch_key_p);
         
         if(session('serchKey')<>""){
             self::$key="%".session('serchKey')."%";
@@ -208,13 +209,45 @@ class ListStudents extends Component
         $targetSortKey="";
         if(session('sort_key')<>""){
             $targetSortKey=session('sort_key');
-        }else{
+        }
+        /*
+        else{
             $targetSortKey=$this->sort_key_p;
         }
-
+        */
+        /*
         if($this->sort_key_p=='time_in' | $this->sort_key_p=='time_out'){
             $this->sort_key_p='serial_student';
         }
+        */
+        /*
+        if($targetSortKey<>''){
+            if($targetSortKey=="name_sei"){
+                if($this->asc_desc_p=="ASC"){
+                    $StudentQuery =$StudentQuery->orderBy('name_sei', 'asc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei', 'asc');
+                }else{
+                    $StudentQuery =$StudentQuery->orderBy('name_sei', 'desc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei', 'desc');
+                }
+            }else if($targetSortKey=="name_sei_kana"){
+                if($this->asc_desc_p=="ASC"){
+                    $StudentQuery =$StudentQuery->orderBy('name_sei_kana', 'asc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei_kana', 'asc');
+                }else{
+                    $StudentQuery =$StudentQuery->orderBy('name_sei_kana', 'desc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei_kana', 'desc');
+                }
+            }else{
+                if(session('asc_desc')=="ASC"){
+                    $StudentQuery =$StudentQuery->orderBy($targetSortKey, 'asc');
+                }else{
+                    $StudentQuery =$StudentQuery->orderBy($targetSortKey, 'desc');
+                }
+            }
+        }
+        */
+        /*
         if($this->sort_key_p<>''){
             if($this->sort_key_p=="name_sei"){
                 if($this->asc_desc_p=="ASC"){
@@ -240,6 +273,8 @@ class ListStudents extends Component
                 }
             }
         }
+        */
+
         //$this->students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$targetPage);
         /*
         if(session('target_page_for_pager')!==null){
@@ -270,11 +305,11 @@ class ListStudents extends Component
         
 
         
-            $this->students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$this->targetPage);
-        } catch (QueryException $e) {
+        $this->students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*'], 'page',$this->targetPage);
+        //} catch (QueryException $e) {
             //Log::alert("QueryException=".$e);
-            return redirect('Students.List'); 
-        }
+        //    return redirect('Students.List'); 
+        //}
         
         //$this->students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),['*']);
         //$this->students=$StudentQuery->paginate($perPage = initConsts::DdisplayLineNumStudentsList(),$targetPage);

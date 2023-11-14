@@ -25,7 +25,6 @@ class StudentController extends Controller
 
     function update_JQ(Request $request)
     {
-        Log::alert('gender='.$request->gender);
         $email_array=explode(",", $request->email);
         $protector_array=explode(",", $request->protector);
         /*
@@ -113,7 +112,6 @@ class StudentController extends Controller
             ->where("id", "=", $StudentID);
         })->delete();
 
-       //dd($InOutquery->toSql(), $InOutquery->getBindings());
        Student::find($StudentID)->delete();
        /*
        $student = Student::find($StudentID);
@@ -206,7 +204,10 @@ class StudentController extends Controller
             $protector_array[$i]="";
             $email_array[$i]="";
         }
-        $stud_inf=Student::whereNull('email')->orderby('id')->first();
+        $stud_inf=Student::where('name_sei','=','')
+                ->where('name_mei','=','')
+                ->orderby('id')->first();
+        //Log::alert('serial_student='.$stud_inf->count());
         session(['StudentManage' => 'create']);
         $mnge='create';$barcode="";
         $html_gender_ckbox=OtherFunc::make_html_gender_ckbox("");

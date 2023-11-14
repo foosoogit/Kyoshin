@@ -37,7 +37,7 @@
                     <div class="m-4">
                         {!! $barcode !!}
                         <x-input-label for="serial_student" value="生徒番号" />
-                        <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{optional($stud_inf)->serial_student}}" readonly/>
+                        <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{$stud_inf->serial_student}}" readonly/>
                         <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
                     </div>
                     <div class="m-4">

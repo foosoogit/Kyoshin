@@ -145,6 +145,9 @@ class TeachersController extends Controller
         $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
         $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
         */
+        $student_serial=$request->student_serial;
+        //$student_serial_length=strlen($student_serial);
+        $student_serial=substr($student_serial, -7, 6);
 
         $target_item_array['subject']=$sbj;
         $target_item_array['from_email']=$user->email;
@@ -316,11 +319,12 @@ class TeachersController extends Controller
     //public function in_out_manage(StoreInOutHistoryRequest $request)
     public function in_out_manage(Request $request)
     {
-        //Log::alert('student_serial-10='.$request->student_serial);
         $student_serial=$request->student_serial;
-
-        $student_serial_length=strlen($student_serial);
-        //Log::alert('student_serial_length-10='.$student_serial_length);
+        //$student_serial_length=strlen($student_serial);
+        $student_serial=substr($student_serial, -7, 6);
+        $student_serial=trim($student_serial);;
+        //$student_serial=trim($student_serial, '　');
+        Log::alert('student_serial='.$student_serial);
         /*
         if($student_serial_length>=10){
             //Log::alert('student_serial_length-2='.$student_serial_length);
@@ -329,9 +333,9 @@ class TeachersController extends Controller
             $student_serial=strval($student_serial_int);
         } 
         */
-          
         $StudentInfSql=Student::where('serial_student','=',$student_serial);
-        //Log::alert('StudentInfSql->count='.$StudentInfSql->count());
+        //dd(Student::where('serial_student','=',$student_serial)->toSql(), Student::where('serial_student','=',$student_serial)->getBindings());
+        Log::alert(Student::where('serial_student','=',$student_serial)->toSql(), Student::where('serial_student','=',$student_serial)->getBindings());
         if($StudentInfSql->count()>0){
             $StudentInf=$StudentInfSql->first();
             $target_item_array['target_time']=date("Y-m-d H:i:s");
