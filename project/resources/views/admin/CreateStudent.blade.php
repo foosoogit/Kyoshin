@@ -26,7 +26,7 @@
         </h2>
     </x-slot>
     --}}
-    <div class="py-12">
+    <div class="py-12 text-5xl">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl" style="line-height: 40px">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="m-4">
                         {!! $barcode !!}
-                        <x-input-label for="serial_student" value="生徒番号" />
+                        <x-input-label for="serial_student" class="max-w-7xl" value="生徒番号" />
                         <x-text-input id="serial_student" name="serial_student" type="text" class="mt-1 block w-full" value="{{$stud_inf->serial_student}}" readonly/>
                         <x-input-error class="mt-2" :messages="$errors->get('serial_student')" />
                     </div>
