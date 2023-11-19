@@ -30,11 +30,12 @@
                         <button type="button" class="btn-orderby-border" wire:click="sort('name_sei_kana-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>学年<br><button type="button" class="btn-orderby-border" wire:click="sort('grade-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
                         <button type="button" class="btn-orderby-border" wire:click="sort('grade-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
+                    <th>電話<br><button type="button" class="btn-orderby-border" wire:click="sort('phone-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                        <button type="button" class="btn-orderby-border" wire:click="sort('phone-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>コース<br><button type="button" class="btn-orderby-border" wire:click="sort('course-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
                         <button type="button" class="btn-orderby-border" wire:click="sort('course-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
                     <th>メールアドレス<br><button type="button" class="btn-orderby-border" wire:click="sort('email-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
                         <button type="button" class="btn-orderby-border" wire:click="sort('email-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button></th>
-                    <th>電話</th>
                     <th>メモ</th>
                     <th>入退出履歴</th>
                     <th>削除</th>
@@ -45,10 +46,10 @@
                     </td>
                     <td>{{ $student->name_sei }} {{ $student->name_mei }}</td>
                     <td>{{ $student->name_sei_kana }} {{ $student->name_mei_kana }}</td>
+                    <td>{{ $student->phone }}</td>
                     <td>{{ $student->grade }}</td>
                     <td>{{ $student->course }}</td>
                     <td>{{ $student->email }}</td>
-                    <td>{{ $student->phone }}</td>
                     <td>{{ $student->note }}</td>
                     <td>
                         <form action="{{route('admin.showRireki')}}" method="POST">

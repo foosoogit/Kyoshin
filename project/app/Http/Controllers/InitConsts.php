@@ -7,9 +7,15 @@ use App\Models\configration;
 
 class InitConsts extends Controller
 {
-    public static function CourceArray(){
-        $Tcource=configration::where('subject','=','Course')->first();
-        $course_array=explode(",", $Tcource->value1);
+    public static function GenderArray(){
+        $res=configration::where('subject','=','Gender')->first();
+        $gender_array=explode(",", $res->value1);
+        return $gender_array;
+    }
+
+    public static function courseArray(){
+        $course=configration::where('subject','=','Course')->first();
+        $course_array=explode(",", $course->value1);
         return $course_array;
     }
 
@@ -69,6 +75,5 @@ class InitConsts extends Controller
         $res=configration::where('subject','=',$tagetSbj)->first('value1');
         return $res['value1'];
     }
-
     
 }

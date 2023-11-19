@@ -35,7 +35,6 @@ class OtherFunc extends Controller
 		//$target_txt=str_replace("\n", PHP_EOL, PHP_EOL,$target_txt);
 		//$target_txt.$target_txt;
 		//$target_txt=mb_convert_encoding($target_txt,"UTF-8","auto");
-		Log::alert('target_txt='.$target_txt );
 		return $target_txt;
 	}
 
@@ -72,29 +71,42 @@ class OtherFunc extends Controller
 	}
 
 	public static function make_html_course_ckbox($target){
-		$target_CourceArray_array=InitConsts::CourceArray();
-		$htm_cource_ckbox='';
-		foreach($target_CourceArray_array as $cource){
+		$target_CourseArray_array=InitConsts::courseArray();
+		$htm_course_ckbox='';
+		//$htm_cource_ckbox='<div class="form-group"><span class="control-label">コース</span>';
+		$htm_course_ckbox='<span class="control-label mr-3">コース</span>';
+		$i=0;
+		foreach($target_CourseArray_array as $course){
 			$cked='';
-			if(mb_strstr( $target,$cource)!== false){$cked='checked="checked"';}
-			$htm_cource_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="'.$cource.'" '.$cked.'>'.$cource.'<label>';
+			if(mb_strstr( $target,$course)!== false){$cked='checked="checked"';}
+			$htm_course_ckbox.='<div class="form-check form-check-inline">';
+			$htm_course_ckbox.='<input name="course[]" type="checkbox" value="'.$course.'" id="course'.$i.'" '.$cked.'>';
+			$htm_course_ckbox.='<label class="ml-3" for="course'.$i.'">'.$course.'</label>';
+			$htm_course_ckbox.='</div>';
+			$i++;
+			//$htm_cource_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="course[]" value="'.$cource.'" '.$cked.'>'.$cource.'<label>';
 		}
         //$htm_cource_ckbox.='</select>';
-		return $htm_cource_ckbox;
+		return $htm_course_ckbox;
 	}
 
 	public static function make_html_gender_ckbox($target){
-		//$target_CourceArray_array=InitConsts::CourceArray();
-		$htm_gender_ckbox='';$gender_array=array();
-		$gender_array[0]='男';$gender_array[1]='女';
+		$gender_array=InitConsts::GenderArray();
+		$htm_gender_ckbox='';
 		$i=0;
+		Log::alert('target='.$target );
+		//$htm_gender_ckbox='<label>性別</label>';
+		//$htm_gender_ckbox='<div class="form-group"><span class="control-label">性別</span>';
+		$htm_gender_ckbox='<span class="control-label mr-3">性別</span>';
 		foreach($gender_array as $gender){
 			$cked='';
 			if($target==$gender){$cked='checked="checked"';}
-			$htm_gender_ckbox.='<label class="block font-medium text-sm text-gray-700"><input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="checkbox" name="gender[]" id=gender['.$i.'] value="'.$gender.'" '.$cked.' onchange="gender_manage(this);">'.$gender.'<label>';
+			$htm_gender_ckbox.='<div class="form-check form-check-inline">';
+			$htm_gender_ckbox.='<input name="gender[]" type="radio" value="'.$gender.'" id="gender['.$i.']" '.$cked.'>';
+			$htm_gender_ckbox.='<label class="ml-3" for="gender['.$i.']">'.$gender.'</label>';
+			$htm_gender_ckbox.='</div>';
 			$i++;
 		}
-        //$htm_cource_ckbox.='</select>';
 		return $htm_gender_ckbox;
 	}
 

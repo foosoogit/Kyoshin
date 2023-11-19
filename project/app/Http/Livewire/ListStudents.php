@@ -208,7 +208,8 @@ class ListStudents extends Component
     
         $targetSortKey="";
         if(session('sort_key')<>""){
-            $targetSortKey=session('sort_key');
+            $StudentQuery =$StudentQuery->orderBy(session('sort_key'), session('asc_desc'));
+            //$targetSortKey=session('sort_key');
         }
         /*
         else{
