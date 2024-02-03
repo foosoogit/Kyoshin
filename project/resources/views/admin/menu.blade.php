@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                   <th scope="row">4</th>
-                  <td><a href="{{ route('Students.List') }}">生徒一覧（修正・退会）</a></td>
+                  <td><a href="{{ route('Students.List.get') }}">生徒一覧（修正・退会）</a></td>
                   <td>生徒一覧、修正、退会処理できます。</td>
                 </tr>
                 <tr>

@@ -13,20 +13,25 @@ class HistoryMailDelivery extends Component
 {
     use WithPagination;
     public $sort_key_p = '',$asc_desc_p="",$serch_key_p="";
-	public $kensakukey="";
+	  public $kensakukey="";
     public static $key="";
-    
+
+    public function delete_mail_history($id){
+      $MailDelivery = MailDelivery::find($id);
+      $MailDelivery->delete();
+    }
+
     public function searchClear(){
 		$this->serch_key_p="";
 		$this->kensakukey="";
 		session(['serchKeyMail' => '']);
-	}
+	 }
 
     public function search(){
 		$this->serch_key_p=$this->kensakukey;
 		session(['serchKeyMail' => $this->kensakukey]);
 	}
-    
+
     public function sort($sort_key){
 		$sort_key_array=array();
 		$sort_key_array=explode("-", $sort_key);
@@ -78,7 +83,7 @@ class HistoryMailDelivery extends Component
         }else{
             $targetPage=null;
         }
-        
+
         if(self::$key=="%%"){$targetPage=null;}
 
         //$targetPage=1;

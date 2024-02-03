@@ -101,6 +101,11 @@ class DatabaseSeeder extends Seeder
 				'value1' => "テストメール --[name-jyuku]--",
 				'setumei' => "テストメールの件名",
 			],
+            [
+				'subject'=> "sbjTest",
+				'value1' => "テストメール --[name-jyuku]--",
+				'setumei' => "テストメールの件名",
+			],
         ];
 		foreach($configrations as $configration) {
 			$conf = new configration();
@@ -110,7 +115,8 @@ class DatabaseSeeder extends Seeder
 			$conf->save();
 		}
 
-		//Student::factory()->count(50)->create();
+		Student::factory()->count(50)->create();
+        /*
 		$init_students = [
 			[
 				'serial_student' => '2000009867183',
@@ -313,6 +319,8 @@ class DatabaseSeeder extends Seeder
 			$student->course = $init_student['course'];
 			$student->save();
 		}
+        */
+        
 		$init_users = [
 			[
 			'serial_user'=> "T_0000",
@@ -350,6 +358,7 @@ class DatabaseSeeder extends Seeder
 				//'address'=> "千葉県************",
 			],
         ];
+        
         foreach($init_users as $init_user) {
 			$user = new User();
 			$user->serial_user=$init_user['serial_user'];

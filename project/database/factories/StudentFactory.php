@@ -21,7 +21,7 @@ class StudentFactory extends Factory
     
     public function definition()
     {
-        if(self::$sequence<=900400020){
+        if(self::$sequence<=900400040){
             return [
                 //'serial_student' => $this->faker->regexify('[0-9]{5}'),'name' => 'hogehoge'.self::$sequence++,
                 'serial_student' => sprintf('%09d', self::$sequence++),

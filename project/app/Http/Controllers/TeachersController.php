@@ -94,6 +94,10 @@ class TeachersController extends Controller
         //return view('admin.MailAccountSetting',compact("env_array"));
     }
     
+    public function test(){
+        return view('admin.ListStudents');
+    }
+
     public function show_email_account_setup(){
         $env_array=array();
         $env_array['MAIL_MAILER']=env('MAIL_MAILER');
@@ -119,13 +123,13 @@ class TeachersController extends Controller
     
     public function execute_mail_delivery(Request $request){
         $user = Auth::user();
-        $name_student=OtherFunc::randomName();
-        $name_protector=OtherFunc::randomName();
+        //$name_student=OtherFunc::randomName();
+        //$name_protector=OtherFunc::randomName();
 
         $msg=$request->body;
 
-        $msg=str_replace('[name-protector]', $name_protector, $msg);
-        $msg=str_replace('[name-student]', $name_student, $msg);
+        //$msg=str_replace('[name-protector]', $name_protector, $msg);
+        //$msg=str_replace('[name-student]', $name_student, $msg);
 
         $msg=OtherFunc::ConvertPlaceholder($msg,"body");
         /*
@@ -136,8 +140,8 @@ class TeachersController extends Controller
         $target_item_array['msg']=$msg;
                 
         $sbj=$request->subject;
-        $sbj=str_replace('[name-protector]', $name_protector, $sbj);
-        $sbj=str_replace('[name-student]', $name_student, $sbj);
+        //$sbj=str_replace('[name-protector]', $name_protector, $sbj);
+        //$sbj=str_replace('[name-student]', $name_student, $sbj);
 
         $sbj=OtherFunc::ConvertPlaceholder($sbj,"sbj");
         /*
@@ -163,7 +167,9 @@ class TeachersController extends Controller
             foreach($to_email_array as $target_email){
                 $target_item_array['msg']=str_replace('[name-protector]', $protector_array[$i], $msg);
                 $target_item_array['to_email']=$target_email;
-                Mail::send(new ContactMail($target_item_array));
+                if($target_email<>""){
+                    Mail::send(new ContactMail($target_item_array));
+                }
                 //Mail::send(new ContactMail($target_item_array));
                 $i++;
             }
@@ -256,7 +262,6 @@ class TeachersController extends Controller
             $msg="送信しました。";
         }
         return view('admin.Setting',compact("configration_array"))->with('success',$msg);
-        //return redirect('teachers.show_setting')->with('success',$msg);
     }
 
     public function show_setting()
@@ -265,8 +270,6 @@ class TeachersController extends Controller
         foreach($configration_all as $configration){
             $configration_array[$configration['subject']]=$configration['value1'];
         }
-        //$user = Auth::user();
-        //$to_mail=auth()->email();
         return view('admin.Setting',compact("configration_array"));
     }
 
@@ -287,18 +290,10 @@ class TeachersController extends Controller
         $msg=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $msg);
         $msg=str_replace('[time]', $item_array['target_time'], $msg);
         $msg=OtherFunc::ConvertPlaceholder($msg,"body");
-        /*
-        $msg=str_replace('[name-jyuku]', InitConsts::JyukuName(), $msg);
-        $msg=str_replace('[footer]', InitConsts::MsgFooter(), $msg);
-        */
-        //$sbj=str_replace('[name-protector]', $item_array['name_sei'], $sbj);
+
         $sbj=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $sbj);
         $sbj=str_replace('[time]', $item_array['target_time'], $sbj);
         $sbj=OtherFunc::ConvertPlaceholder($sbj,"sbj");
-        /*
-        $sbj=str_replace('[footer]', InitConsts::MsgFooter(), $sbj);
-        $sbj=str_replace('[name-jyuku]', InitConsts::JyukuName(), $sbj);
-        */
 
         $target_item_array['subject']=$sbj;
         $to_email_array=explode (",",$item_array['email']);
@@ -320,22 +315,25 @@ class TeachersController extends Controller
     public function in_out_manage(Request $request)
     {
         $student_serial=$request->student_serial;
-        //$student_serial_length=strlen($student_serial);
-        $student_serial=substr($student_serial, -7, 6);
-        $student_serial=trim($student_serial);;
+        //Log::alert('student_serial 1='.$student_serial);
+        
+        //$student_serial=substr($student_serial, -7, 6);
+        //$student_serial=trim($student_serial);
         //$student_serial=trim($student_serial, '　');
-        Log::alert('student_serial='.$student_serial);
-        /*
-        if($student_serial_length>=10){
-            //Log::alert('student_serial_length-2='.$student_serial_length);
+        
+        $student_serial = str_replace('20000', '', $student_serial);
+        $student_serial_length=strlen($student_serial);
+        Log::alert('student_serial 2='.$student_serial);
+        if($student_serial_length>=7){
             $student_serial=substr($student_serial,0,$student_serial_length-1);
             $student_serial_int=intval($student_serial);
             $student_serial=strval($student_serial_int);
+            Log::alert('student_serial 2='.$student_serial);
         } 
-        */
+
         $StudentInfSql=Student::where('serial_student','=',$student_serial);
         //dd(Student::where('serial_student','=',$student_serial)->toSql(), Student::where('serial_student','=',$student_serial)->getBindings());
-        Log::alert(Student::where('serial_student','=',$student_serial)->toSql(), Student::where('serial_student','=',$student_serial)->getBindings());
+        //Log::alert(Student::where('serial_student','=',$student_serial)->toSql(), Student::where('serial_student','=',$student_serial)->getBindings());
         if($StudentInfSql->count()>0){
             $StudentInf=$StudentInfSql->first();
             $target_item_array['target_time']=date("Y-m-d H:i:s");
@@ -354,6 +352,7 @@ class TeachersController extends Controller
                 $serch_target_history_array=$serch_target_history_sql->first();
                 $time_in= $serch_target_history_array->time_in;
                 $interval=self::time_diff($time_in, $target_item_array['target_time']);
+                Log::alert('interval='.$interval);
                 if($interval<300){
                     $target_item_array['seated_type']='false';
                     $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;

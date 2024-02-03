@@ -8,7 +8,7 @@ use App\Models\Student;
 use App\Http\Controllers\TeachersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+use App\Http\Livewire\ListStudents;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,7 +43,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('/dashboard', function () {
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
 Route::get('/menu', function () {
     //return view('dashboard');
     $MAIL_FROM_NAME=env('MAIL_FROM_NAME');
@@ -59,12 +62,23 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('/','show_setting')->name('show_setting');
         Route::post('teachers/execute_mail_delivery', 'execute_mail_delivery')->name('execute_mail_delivery');
         Route::get('teachers/show_delivery_email', 'show_delivery_email')->name('show_delivery_email');
+        Route::post('teachers/show_delivery_email', 'show_delivery_email')->name('show_delivery_email.post');
         Route::get('teachers/show_delivery_email_list_students', function () {
             return view('admin.MailDelivery');
         })->name('show_delivery_email_list_students');
+
+        Route::post('teachers/show_delivery_email_list_students', function () {
+            return view('admin.MailDelivery');
+        })->name('show_delivery_email_list_students.post');
+
         Route::get('teachers/show_delivery_email_history_list', function () {
             return view('admin.HistoryMailDelivery');
         })->name('show_delivery_email_history_list');
+
+        Route::post('teachers/show_delivery_email_history_list', function () {
+            return view('admin.HistoryMailDelivery');
+        })->name('show_delivery_email_history_list.post');
+
         Route::get('teachers/show_create_email', function () {
             return view('admin.CreateMail');
         })->name('show_create_email');
@@ -135,17 +149,28 @@ Route::group(['middleware' => ['auth']], function(){
         return view('admin.ListStudents');
     });
     */
+    
+    //Route::get('students/list', [ListStudents::class,'render'])->name('Students.List.get');
+    //Route::get('students/list', ListStudents::class)->name('Students.List.get');
 
+    
+    /*
     Route::get('students/list', function () {
         //session(['serchKey' =>""]);
         return view('admin.ListStudents');
-    })->name('Students.List');
+    })->name('Students.List.get');
 
+    //Route::get('/students/list',ListStudents::class)->name('Students.List.get');
+    Route::post('students/list', [ListStudents::class,function(Request $request){}])->name('Students.List.post');
+   */
+
+
+    /*
     Route::post('students/list', function () {
         //session(['serchKey' =>""]);
         return view('admin.ListStudents');
-    })->name('Students.List');
-    
+    })->name('Students.List.post');
+    */
     Route::get('students/list_ner_num', function () {
         session(['serchKey' =>""]);
         session(['sort_key' =>"email"]);
@@ -183,6 +208,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('students', [\App\Http\Controllers\StudentController::class,'store'])->name('student');
     Route::post('students/store', [\App\Http\Controllers\StudentController::class,'store'])->name('student.store');
 
-   Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('students/list', [TeachersController::class, 'test'])->name('Students.List.get');
+    Route::get('livewire/message/list-students', [TeachersController::class, 'test']);
+    
+    //Route::post('students/list', [TeachersController::class, 'test'])->name('Students.List.post');
+
+   //Route::get('/logout', 'Auth\LoginController@logout');
 });
 require __DIR__.'/auth.php';

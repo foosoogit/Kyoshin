@@ -1,5 +1,5 @@
 <div>
-    <div class="py-12"> 
+    <div class="py-12">
        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 h6">
            <div class="pb-4 row justify-content-center align-middle h6">
                <div class="col-auto">
@@ -17,10 +17,11 @@
                             <tr>
                                 <th>配信日<br><button type="button" class="btn-orderby-border" wire:click="sort('date_delivered-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
                                     <button type="button" class="btn-orderby-border" wire:click="sort('date_delivered-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button>
-                                    </th>
-                                <th>件名<br><button type="button" class="btn-orderby-border" wire:click="sort('subject-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
-                                <button type="button" class="btn-orderby-border" wire:click="sort('subject-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button>
                                 </th>
+                                <th>件名<br><button type="button" class="btn-orderby-border" wire:click="sort('subject-ASC')"><img src="{{ asset('images/sort_A_Z.png') }}" width="15px" /></button>
+                                    <button type="button" class="btn-orderby-border" wire:click="sort('subject-Desc')"><img src="{{ asset('images/sort_Z_A.png') }}" width="15px" /></button>
+                                </th>
+                                <th>削除</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,6 +31,11 @@
                                 <td>
                                     <a href="javascript:setDeriveredMailToBody('{{ $Deliveied->subject }}','{{ $Deliveied->body }}','{{ $Deliveied->student_name }}');">{{ $Deliveied->subject }}</a>
                                     <input type="hidden" id="mail_body" name="mail_body" value="{{ $Deliveied->body }}">
+                                </td>
+                                <td>
+                                  <button type="button" class="btn-orderby-border" onClick="delete_mail('{{ $Deliveied->id }}')">
+                                      <img src="{{ asset('images/trash_can.png') }}" width="15px" />
+                                  </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -45,11 +51,17 @@
     <script>
     function setDeriveredMailToBody(sbj,body,stut_name){
         var parentWin=window.parent;
-        parentWin.document.getElementById('subject').value=sbj;
+        body=body.replace(/&nbsp;/g, ' ');
+        body=body.replace(/&emsp;/g, ' ');
+        body=body.replace(/<br\/>/g, '\n');
+        
         parentWin.document.getElementById('body').value=body;
-
-        var send_student_tara=document.getElementById('send_student_tara');
-        send_student_tara.value=stut_name.replace(/,/g, '\n');
+        parentWin.document.getElementById('subject').value=sbj;
+    }
+    function delete_mail(id){
+      if(window.confirm('メール履歴を削除します。よろしいですか？')){
+          @this.delete_mail_history(id);
+      }
     }
 </script>
 </div>

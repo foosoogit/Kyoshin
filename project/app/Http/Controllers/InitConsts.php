@@ -75,5 +75,4 @@ class InitConsts extends Controller
         $res=configration::where('subject','=',$tagetSbj)->first('value1');
         return $res['value1'];
     }
-    
 }

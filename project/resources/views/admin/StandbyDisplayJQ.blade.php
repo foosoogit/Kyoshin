@@ -73,13 +73,15 @@
 					}
 				}).done(function (data) {
 					const item_json = JSON.parse(data);
+					//console.log("test1="+data);
 					if(item_json.seated_type=="false"){
 					//if(data=="false"){
 						audio_false.play();
-						//console.log(data);
-						document.getElementById("seated_type").style.display="";
+						//console.log("test2="+data);
+						//document.getElementById("seated_type").style.display="";
 						document.getElementById("seated_type").innerText = item_json.name_sei + ' '+item_json.name_mei+'さんの退出時間が短すぎます。';
-						dispNone();
+						$('#name_fadeout_alert').show();
+						//dispNone();
 					}else if(item_json.seated_type=="in"){
 					//}else if(data=="in"){
 						audio_in.play();
@@ -95,7 +97,8 @@
 					}else{
 						audio_false.play();
 						document.getElementById("seated_type").innerText = '登録データが見つかりません。';
-						dispNone();
+						$('#name_fadeout_alert').show();
+						//dispNone();
 					}
 					document.getElementById('student_serial_txt').value="";
 					document.getElementById('student_serial_txt').focus();
@@ -120,7 +123,7 @@
 		}
 
 		function send_mail(item_json){
-			console.log("TEST1");
+			//console.log("TEST1");
 			$.ajax({
 				url: 'send_mail_in_out',
 				type: 'post', // getかpostを指定(デフォルトは前者)
@@ -131,7 +134,7 @@
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			}).done(function (data) {
-				console.log("ok");
+				//console.log("ok");
 				data=null;
 			}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 				alert(XMLHttpRequest.status);
