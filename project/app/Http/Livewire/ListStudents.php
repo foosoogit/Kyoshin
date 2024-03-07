@@ -21,7 +21,6 @@ class ListStudents extends Component
     public static $key="";
     public $Unregistered_flg=false;
     public $Retiree_flg=false;
-    //public $students="";
 
     public $orderColumn = "serial_student";
     public $sortOrder = "asc";
@@ -29,7 +28,6 @@ class ListStudents extends Component
     public $StudentQuery="";
 
     public function registered(){
-        //Log::info($obj);
         if(session('registered_flg')=="checked"){
             session(['registered_flg' => ""]);
         }else{
