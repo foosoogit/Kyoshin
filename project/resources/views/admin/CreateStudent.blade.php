@@ -27,7 +27,7 @@
                                 <x-primary-button class="btn btn-primary" onclick="location.href='{{route('menu')}}'">メニュー</x-primary-button>
                             </div>
                             <div class="col-auto">
-                                <x-primary-button class="btn btn-primary" onclick="location.href='{{route('Students.List')}}'" >生徒一覧</x-primary-button>
+                                <x-primary-button class="btn btn-primary" onclick="location.href='{{route('Students.List.get')}}'" >生徒一覧</x-primary-button>
                             </div>
                         </div>
                         </p>
@@ -36,6 +36,7 @@
                                 <label for="serial_student" class="max-w-7xl font-large">生徒番号 </label>
                             </div>
                             <div class="col-auto">
+                                serial_student={{$stud_inf->serial_student}}
                                 <input id="serial_student" name="serial_student" type="text" class="form-control" value="{{$stud_inf->serial_student}}" readonly/>
                             </div>
                             <div class="col-auto">

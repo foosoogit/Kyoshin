@@ -7,34 +7,31 @@ use App\Models\Student;
 use App\Http\Controllers\InitConsts;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class OtherFunc extends Controller
 {
-    public static function ConvertPlaceholder($target_txt,$type){
-		//$target_txt=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $target_txt);
-        //$target_txt=str_replace('[time]', $item_array['target_time'], $target_txt);
+	public static function validateMail($tagetEmail){
+		$target_array = array('mail'=>$tagetEmail);
+		$validator = Validator::make($target_array,
+			['mail' => 'email']
+	);
+		if($validator->fails()) {
+			return $tagetEmail;
+		}else{
+			return null;
+		}
+	}
+
+	public static function ConvertPlaceholder($target_txt,$type){
         $target_txt=str_replace('[name-jyuku]', InitConsts::JyukuName(), $target_txt);
         $target_txt=str_replace('[footer]', InitConsts::MsgFooter(), $target_txt);
 		$target_txt=str_replace('[time]', date("Y-m-d H:i:s"), $target_txt);
-		//$target_txt=htmlentities($target_txt, ENT_QUOTES);
         if($type=="body"){
 			$target_txt=str_replace(array("\r\n","\r",PHP_EOL), "<br/>", $target_txt);
 			$target_txt=str_replace(" ", "&nbsp;", $target_txt);
 			$target_txt=str_replace("　", "&emsp;", $target_txt);
 		}
-		
-		//$target_txt=str_replace(array("\r\n","\r","\n",PHP_EOL), "<br>", $target_txt);
-		//$target_txt=str_replace(" ", "&nbsp;", $target_txt);
-		//$target_txt=str_replace("　", "&emsp;", $target_txt);
-		
-		//$target_txt=htmlentities($target_txt, ENT_QUOTES, 'UTF-8');
-		
-		//$target_txt=str_replace(array("\r\n","\r","\n"),PHP_EOL, $target_txt);
-		//$target_txt=htmlentities($target_txt);
-		
-		//$target_txt=str_replace("\n", PHP_EOL, PHP_EOL,$target_txt);
-		//$target_txt.$target_txt;
-		//$target_txt=mb_convert_encoding($target_txt,"UTF-8","auto");
 		return $target_txt;
 	}
 

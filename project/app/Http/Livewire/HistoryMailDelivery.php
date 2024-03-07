@@ -68,7 +68,17 @@ class HistoryMailDelivery extends Component
         }else{
             $targetSortKey=$this->sort_key_p;
         }
-
+        
+        if($this->sort_key_p<>''){
+            if($this->asc_desc_p=="ASC"){
+                $mailDeliveiedQuery =$mailDeliveiedQuery->orderBy($this->sort_key_p, 'asc');
+            }else{
+                $mailDeliveiedQuery =$mailDeliveiedQuery->orderBy($this->sort_key_p, 'desc');
+            }
+        }else{
+            $mailDeliveiedQuery =$mailDeliveiedQuery->orderBy("date_delivered", 'desc');
+        }
+        /*
         if($this->sort_key_p<>''){
             if($this->asc_desc_p=="ASC"){
                 $mailDeliveiedQuery =$mailDeliveiedQuery->orderBy($this->sort_key_p, 'asc');
@@ -76,7 +86,7 @@ class HistoryMailDelivery extends Component
                 $mailDeliveiedQuery =$mailDeliveiedQuery->orderBy($this->sort_key_p, 'desc');
             }
         }
-
+        */
         if(session('target_page_for_pager_mail')!==null){
             $targetPage=session('target_page_for_pager_mail');
             session(['target_page_for_pager_mail'=>null]);

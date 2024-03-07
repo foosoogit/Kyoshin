@@ -102,9 +102,9 @@ class DatabaseSeeder extends Seeder
 				'setumei' => "テストメールの件名",
 			],
             [
-				'subject'=> "sbjTest",
-				'value1' => "テストメール --[name-jyuku]--",
-				'setumei' => "テストメールの件名",
+				'subject'=> "Gender",
+				'value1' => "男,女",
+				'setumei' => "性別",
 			],
         ];
 		foreach($configrations as $configration) {

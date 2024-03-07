@@ -57,12 +57,16 @@ Route::view('barcode', 'barcode');
 //Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function(){
     Route::controller(TeachersController::class)->name('teachers.')->group(function() {
+        Route::post('/teachers/ajax_get_mail_sending_to', [TeachersController::class,'ajax_get_mail_sending_to'])->name("ajax_get_mail_sending_to");
         Route::post('/teachers/update_MailAccount','update_MailAccount')->name('email_account.update');
         Route::get('/show_email_account_setup','show_email_account_setup')->name('show_email_account_setup');
         Route::get('/','show_setting')->name('show_setting');
         Route::post('teachers/execute_mail_delivery', 'execute_mail_delivery')->name('execute_mail_delivery');
-        Route::get('teachers/show_delivery_email', 'show_delivery_email')->name('show_delivery_email');
+        Route::get('teachers/show_delivery_email', 'show_delivery_email')->name('show_delivery_email.get');
         Route::post('teachers/show_delivery_email', 'show_delivery_email')->name('show_delivery_email.post');
+
+        Route::get('livewire/message/mail-delivery', 'stud_list_maildelivery');
+
         Route::get('teachers/show_delivery_email_list_students', function () {
             return view('admin.MailDelivery');
         })->name('show_delivery_email_list_students');
@@ -208,9 +212,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('students', [\App\Http\Controllers\StudentController::class,'store'])->name('student');
     Route::post('students/store', [\App\Http\Controllers\StudentController::class,'store'])->name('student.store');
 
-    Route::get('students/list', [TeachersController::class, 'test'])->name('Students.List.get');
-    Route::get('livewire/message/list-students', [TeachersController::class, 'test']);
-    
+    Route::get('students/list', [TeachersController::class, 'show_students_list'])->name('Students.List.get');
+    //Route::get('livewire/message/list-students', [TeachersController::class, 'test']);
+    Route::get('livewire/message/list-students', [TeachersController::class, 'show_students_list']);
+    Route::get('livewire/update', [TeachersController::class, 'show_students_list']);
+
     //Route::post('students/list', [TeachersController::class, 'test'])->name('Students.List.post');
 
    //Route::get('/logout', 'Auth\LoginController@logout');

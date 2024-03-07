@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                   <th scope="row">3</th>
-                  <td><a href="{{ route('teachers.show_delivery_email') }}">メール配信</a></td>
+                  <td><a href="{{ route('teachers.show_delivery_email.get') }}">メール配信</a></td>
                   <td>保護者に一斉メールを配信できます。（配信先選択可能）</td>
                 </tr>
                 <tr>
