@@ -24,6 +24,10 @@ use Illuminate\Support\Facades\Storage;
 
 class TeachersController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     public function show_students_list(){
         if(session('registered_flg')===null){
             session(['registered_flg' => "checked"]);

@@ -106,10 +106,18 @@
 					window.setTimeout(dispNone, 5000);
 					//name_fadeOut();
 				}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+					if(XMLHttpRequest.status==419){
+						alert('ログインしてください。');
+						//location.href = '/menu';
+						location.href = 'show_standby_display';
+						
+					}
+					/*
 					alert(XMLHttpRequest.status);
 					alert(textStatus);
 					alert(errorThrown);	
 					alert('エラー');
+					*/
 				});
 			}else{
 				//alert("TEST");
