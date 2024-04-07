@@ -62,7 +62,6 @@
 			if(e.which == 13) {
 				document.getElementById("student_serial_txt").disabled=true;
 				$.ajax({
-					//url: 'send_mail',
 					url: 'in_out_manage',
 					type: 'post', // getかpostを指定(デフォルトは前者)
 					dataType: 'text', // 「json」を指定するとresponseがJSONとしてパースされたオブジェクトになる
@@ -73,42 +72,33 @@
 					}
 				}).done(function (data) {
 					const item_json = JSON.parse(data);
-					//console.log("test1="+data);
+					//console.log("item_json-2="+JSON.stringify(item_json, null, 2));
 					if(item_json.seated_type=="false"){
-					//if(data=="false"){
 						audio_false.play();
-						//console.log("test2="+data);
-						//document.getElementById("seated_type").style.display="";
 						document.getElementById("seated_type").innerText = item_json.name_sei + ' '+item_json.name_mei+'さんの退出時間が短すぎます。';
 						$('#name_fadeout_alert').show();
-						//dispNone();
 					}else if(item_json.seated_type=="in"){
-					//}else if(data=="in"){
 						audio_in.play();
 						document.getElementById("seated_type").innerText =  item_json.name_sei + ' '+item_json.name_mei+'さんが入室しました。';
+						//send_mail(item_json);
 						send_mail(data);
-						//console.log(data);
 					}else if(item_json.seated_type=="out"){
-					//}else if(data=="out"){
 						audio_out.play();
 						document.getElementById("seated_type").innerText =  item_json.name_sei + ' '+item_json.name_mei+'さんが退室しました。';
 						send_mail(data);
-						//console.log(data);
+						//send_mail(item_json);
 					}else{
 						audio_false.play();
 						document.getElementById("seated_type").innerText = '登録データが見つかりません。';
 						$('#name_fadeout_alert').show();
-						//dispNone();
 					}
 					document.getElementById('student_serial_txt').value="";
 					document.getElementById('student_serial_txt').focus();
 					data=null;
 					window.setTimeout(dispNone, 5000);
-					//name_fadeOut();
 				}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 					if(XMLHttpRequest.status==419){
 						alert('ログインしてください。');
-						//location.href = '/menu';
 						location.href = 'show_standby_display';
 						
 					}
@@ -131,7 +121,6 @@
 		}
 
 		function send_mail(item_json){
-			//console.log("TEST1");
 			$.ajax({
 				url: 'send_mail_in_out',
 				type: 'post', // getかpostを指定(デフォルトは前者)

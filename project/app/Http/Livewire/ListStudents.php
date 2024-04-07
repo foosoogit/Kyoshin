@@ -74,8 +74,11 @@ class ListStudents extends Component
     public function sort($sort_key){
         $sort_key_array=array();
         $sort_key_array=explode("-", $sort_key);
-        $this->sortOrder=$sort_key_array[1];
-        $this->orderColumn=$sort_key_array[0];
+        //$this->sortOrder=$sort_key_array[1];
+        //$this->orderColumn=$sort_key_array[0];
+        $this->sort_key_p=$sort_key_array[0];
+        $this->asc_desc_p=$sort_key_array[1];
+        //Log::alert("message");
     }
 
     public function render(){
@@ -83,12 +86,21 @@ class ListStudents extends Component
             OtherFunc::set_access_history($_SERVER['HTTP_REFERER']);
         }
         $StudentQuery = Student::query();
+        //select * from students where name_sei is not null and (grade<>'退会' or grade is null) and students.deleted_at is null
         if(session('registered_flg')=="checked" && session('unregistered_flg')=="" && session('withdrawn_flg')==""){
-            $StudentQuery =$StudentQuery->where('name_sei','<>',"")
-                ->where('grade','<>','退会');
+            $users = $StudentQuery->where('name_sei','<>',null)
+                        ->where('name_sei','<>',"")
+                        ->Where(function($query) {
+                            $query->where('grade','=',null)
+                            ->orwhere('grade','<>','退会');
+                        });
             //$StudentQuery=$StudentQuery->orderby($this->orderColumn,$this->sortOrder);
         }else if(session('registered_flg')=="checked" && session('unregistered_flg')=="" && session('withdrawn_flg')=="checked"){
-            $StudentQuery =$StudentQuery->where('name_sei','=',"");
+            $StudentQuery =$StudentQuery->where('grade','=',"退会")
+                ->orWhere(function($query) {
+                    $query->where('name_sei','<>',"")
+                    ->orwhere('name_sei','<>',null);
+                });
         }else if(session('registered_flg')=="checked" && session('unregistered_flg')=="checked" && session('withdrawn_flg')==""){
             $StudentQuery =$StudentQuery->where('grade','<>','退会')
                 ->orwhere('grade','=',null);
@@ -113,6 +125,48 @@ class ListStudents extends Component
                 ->orwhere('phone','like',self::$key)
                 ->orwhere('course','like',self::$key);
         }
+
+        $targetSortKey="";
+        if(session('sort_key')<>""){
+            $targetSortKey=session('sort_key');
+        }else{
+            $targetSortKey=$this->sort_key_p;
+        }
+
+        if($this->sort_key_p=='time_in' | $this->sort_key_p=='time_out'){
+            $this->sort_key_p='serial_student';
+        }
+        if($this->sort_key_p<>''){
+            if($this->sort_key_p=="name_sei"){
+                if($this->asc_desc_p=="ASC"){
+                    $StudentQuery =$StudentQuery->orderBy('name_sei', 'asc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei', 'asc');
+                }else{
+                    $StudentQuery =$StudentQuery->orderBy('name_sei', 'desc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei', 'desc');
+                }
+            }else if($this->sort_key_p=="name_sei_kana"){
+                if($this->asc_desc_p=="ASC"){
+                    $StudentQuery =$StudentQuery->orderBy('name_sei_kana', 'asc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei_kana', 'asc');
+                }else{
+                    $StudentQuery =$StudentQuery->orderBy('name_sei_kana', 'desc');
+                    $StudentQuery =$StudentQuery->orderBy('name_mei_kana', 'desc');
+                }
+            }else{
+                if($this->asc_desc_p=="ASC"){
+                    $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'asc');
+                }else{
+                    $StudentQuery =$StudentQuery->orderBy($this->sort_key_p, 'desc');
+                }
+            }
+        }
+        /*
+        if(session('sort_key2')<>""){
+            $StudentQuery =$StudentQuery->orderBy(session('sort_key2'), session('asc_desc2'));
+        }
+        */
+
         $REQUEST_array=explode("page=", $_SERVER['REQUEST_URI']);
         if(isset($REQUEST_array[1])){
             session(['page_history' => $REQUEST_array[1]]);

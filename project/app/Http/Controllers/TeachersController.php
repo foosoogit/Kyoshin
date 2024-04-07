@@ -349,10 +349,13 @@ class TeachersController extends Controller
     }
 
     public function send_mail_in_out(Request $request){
-        //Log::alert('item_json='.$request->item_json);
+        
+        //log.alert($request->item_json);
+
+        //$item_array=json_decode( $_POST["item_json"] , true );
         $item_array=json_decode( $request->item_json , true );
-        //Log::alert('seated_type='.$item_array['seated_type']);
-        //Log::alert('name-student='.$item_array['name_sei']);
+        log::info($item_array);
+        
         if($item_array['seated_type']=='in'){
             $msg=InitConsts::MsgIn();
             //Log::alert('msg='.$msg);
