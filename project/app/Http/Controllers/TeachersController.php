@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Storage;
 class TeachersController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
     
     public function show_students_list(){
@@ -42,14 +42,16 @@ class TeachersController extends Controller
     }
 
     public function execute_mail_delivery(Request $request){
-        $user = Auth::user();
+        //$user = Auth::user();
+        $from_mail_add=config('mail.from.address');
         $msg=$request->body;
         $msg=OtherFunc::ConvertPlaceholder($msg,"body");
         $target_item_array['msg']=$msg;
         $sbj=$request->subject;
         $sbj=OtherFunc::ConvertPlaceholder($sbj,"sbj");
         $target_item_array['subject']=$sbj;
-        $target_item_array['from_email']=$user->email;
+        //$target_item_array['from_email']=$user->email;
+        $target_item_array['from_email']=$from_mail_add;
         $student_serial_array=explode(',', $request->student_serial_hdn);
         $target_stud_email_array=array();
         $send_stud_serial_array=array();
@@ -77,7 +79,8 @@ class TeachersController extends Controller
         $send_stud_serial=implode( ",", $send_stud_serial_array);
         MailDelivery::updateOrInsert(
             ['id' => $request->id],
-            ['student_serial' => $send_stud_serial, 'date_delivered' => date("Y-m-d H:i:s"), 'to_mail_address' => $send_mail, 'student_name'=>$send_name,'from_mail_address' =>$user->email, 'subject' => $sbj, 'body' => $msg]
+            //['student_serial' => $send_stud_serial, 'date_delivered' => date("Y-m-d H:i:s"), 'to_mail_address' => $send_mail, 'student_name'=>$send_name,'from_mail_address' =>$user->email, 'subject' => $sbj, 'body' => $msg]
+            ['student_serial' => $send_stud_serial, 'date_delivered' => date("Y-m-d H:i:s"), 'to_mail_address' => $send_mail, 'student_name'=>$send_name,'from_mail_address' =>$from_mail_add, 'subject' => $sbj, 'body' => $msg]
         );
         $show_list_students_html = [];
         $show_list_students_html[] = '<iframe src="show_delivery_email_list_students" style="display:block;width:100%;height:100%;" class="h6" id="StudList_if" ></iframe>';
@@ -267,9 +270,14 @@ class TeachersController extends Controller
     */
     public function send_test_mail($type)
     {
-        $user = Auth::user();
-        $target_item_array['to_email']=$user->email;
-        $target_item_array['from_email']=$user->email;
+        //$user = Auth::user();
+        $from_mail_add=config('mail.from.address');
+        $target_item_array['to_email']=$from_mail_add;
+        $target_item_array['from_email']=$from_mail_add;
+
+        //$target_item_array['to_email']=$user->email;
+        //$target_item_array['from_email']=$user->email;
+
         if($type=="MsgIn"){
             //$msg=Storage::get('MsgIn.txt');
             $msg=InitConsts::MsgIn();
@@ -361,8 +369,8 @@ class TeachersController extends Controller
             //Log::alert('msg='.$msg);
             $sbj=InitConsts::sbjIn();
         }else if($item_array['seated_type']=='out'){
-            $msg=InitConsts::MsgIn();
-            $sbj=InitConsts::sbjIn();
+            $msg=InitConsts::MsgOut();
+            $sbj=InitConsts::sbjOut();
         }
 
         $msg=str_replace('[name-student]', $item_array['name_sei']." ".$item_array['name_mei'], $msg);
@@ -378,10 +386,21 @@ class TeachersController extends Controller
         $protector_array=explode (",",$item_array['protector']);
         $target_item_array['from_email']=$item_array['from_email'];
         $i=0;
+        log::info($to_email_array);
         foreach($to_email_array as $target_email){
             $target_item_array['msg']=str_replace('[name-protector]', $protector_array[$i], $msg);
             $target_item_array['to_email']=$target_email;
+            log::info($target_item_array);
             Mail::send(new ContactMail($target_item_array));
+            /*
+            if (count(Mail::failures()) > 0){
+                $send_msd="メール送信に失敗しました。";
+                //$send_msd="配信しました。";
+                $json_dat = json_encode( $send_msd , JSON_PRETTY_PRINT ) ;
+                echo $json_dat;
+                return;
+            }
+            */
             $i++;
         }
         $send_msd="配信しました。";
@@ -389,7 +408,6 @@ class TeachersController extends Controller
         echo $json_dat;
     }
 
-    //public function in_out_manage(StoreInOutHistoryRequest $request)
     public function in_out_manage(Request $request)
     {
         $student_serial=$request->student_serial;
@@ -430,7 +448,7 @@ class TeachersController extends Controller
                 $serch_target_history_array=$serch_target_history_sql->first();
                 $time_in= $serch_target_history_array->time_in;
                 $interval=self::time_diff($time_in, $target_item_array['target_time']);
-                Log::alert('interval='.$interval);
+                //Log::alert('interval='.$interval);
                 if($interval<300){
                     $target_item_array['seated_type']='false';
                     $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
@@ -459,7 +477,7 @@ class TeachersController extends Controller
                     'from_mail_address'=>$target_item_array['from_email'],
                 ]);
             }
-         }else{
+        }else{
             $target_item_array['seated_type']='No Record';
             $json = json_encode( $target_item_array , JSON_PRETTY_PRINT ) ;
             echo $json;

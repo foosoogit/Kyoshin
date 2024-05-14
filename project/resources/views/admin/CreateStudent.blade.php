@@ -36,7 +36,6 @@
                                 <label for="serial_student" class="max-w-7xl font-large">生徒番号 </label>
                             </div>
                             <div class="col-auto">
-                                serial_student={{$stud_inf->serial_student}}
                                 <input id="serial_student" name="serial_student" type="text" class="form-control" value="{{$stud_inf->serial_student}}" readonly/>
                             </div>
                             <div class="col-auto">

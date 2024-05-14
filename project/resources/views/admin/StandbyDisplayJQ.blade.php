@@ -95,7 +95,7 @@
 					document.getElementById('student_serial_txt').value="";
 					document.getElementById('student_serial_txt').focus();
 					data=null;
-					window.setTimeout(dispNone, 5000);
+					window.setTimeout(dispNone, 4000);
 				}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 					if(XMLHttpRequest.status==419){
 						alert('ログインしてください。');
@@ -143,7 +143,7 @@
 		}
 		function name_fadeOut(){
 			//$('#name_fadeout_alert').fadeOut('100');
-			$('#name_fadeout_alert').hide(5000);
+			$('#name_fadeout_alert').hide(4000);
 			//$('div').fadeOut('fast');
 		}
 		setInterval('showClock()',1000);
