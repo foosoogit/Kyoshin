@@ -362,7 +362,7 @@ class TeachersController extends Controller
 
         //$item_array=json_decode( $_POST["item_json"] , true );
         $item_array=json_decode( $request->item_json , true );
-        log::info($item_array);
+        //log::info($item_array);
         
         if($item_array['seated_type']=='in'){
             $msg=InitConsts::MsgIn();
